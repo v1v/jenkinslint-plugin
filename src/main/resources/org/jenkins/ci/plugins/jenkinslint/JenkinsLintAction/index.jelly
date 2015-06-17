@@ -13,10 +13,31 @@
         <thead>
           <tr>
             <th class="pane-header">Job Name</th>
+            <th class="pane-header">JL-001</th>
           </tr>
         </thead>
         <tbody id="jenkinsLintTableBody">
-            <td class="pane">${check}</td>
+            <j:forEach var="job" items="${it.jobSet.elements()}">
+                <tr>
+                <td><a href="${app.rootUrl}${job.url}">${job.name}</a></td>
+                <j:if test="${job.checkSet.first().ignored}">
+                    <j:if test="${job.checkSet.first().found}">
+                        <td style="background-color: #f0f0f0;"/>
+                    </j:if>
+                    <j:if test="${!job.checkSet.first().found}">
+                        <td style="background-color: green;"/>
+                    </j:if>
+                </j:if>
+                <j:if test="${!job.checkSet.first().ignored}">
+                    <j:if test="${job.checkSet.first().found}">
+                        <td style="background-color: red;"/>
+                    </j:if>
+                    <j:if test="${!job.checkSet.first().found}">
+                        <td style="background-color: green;"/>
+                    </j:if>
+                </j:if>
+                </tr>
+            </j:forEach>
        </tbody>
      </table>
    </l:main-panel>
