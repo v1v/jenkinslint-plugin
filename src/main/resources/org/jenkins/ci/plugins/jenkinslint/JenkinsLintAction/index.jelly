@@ -1,0 +1,24 @@
+<?jelly escape-by-default='false'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+  <j:getStatic var="permission" className="hudson.model.Item" field="CREATE"/>
+  <l:layout norefresh="true" permission="${permission}" title="${%Jenkins.Lint.Title}">
+    <st:include it="${app}" page="sidepanel.jelly"/>
+    <l:main-panel>
+      <j:set var="data" value="${it.data}"/>
+        <h1>${%Jenkins.Lint.Title}</h1>
+        <h3>${%Jenkins.Lint.Description}</h3>
+        <br/>
+      <br/>
+      <table class="sortable pane bigtable" id="jenkinsLintTable">
+        <thead>
+          <tr>
+            <th class="pane-header">Job Name</th>
+          </tr>
+        </thead>
+        <tbody id="jenkinsLintTableBody">
+            <td class="pane">${check}</td>
+       </tbody>
+     </table>
+   </l:main-panel>
+ </l:layout>
+</j:jelly>
