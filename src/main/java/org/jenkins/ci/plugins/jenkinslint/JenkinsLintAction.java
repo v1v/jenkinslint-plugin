@@ -1,7 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.Extension;
-import hudson.model.Item;
 import hudson.model.Project;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
@@ -33,21 +32,12 @@ public final class JenkinsLintAction implements RootAction {
         }
     }
 
-    private boolean isIgnored(String ruleName, String jobDescription){
-        if (ruleName != null && jobDescription != null) {
-            if (jobDescription.indexOf("lint:ignored:"+ ruleName) > -1) {
-                return true;
-            }
-            return false;
-        }
-        return false;
+    private boolean isIgnored(String ruleName, String jobDescription) {
+        return ruleName != null && jobDescription != null && jobDescription.contains("lint:ignored:" + ruleName);
     }
 
     private boolean checkJobName(String jobName) {
-        if (jobName.contains(" ")){
-            return true;
-        }
-        return false;
+        return jobName.contains(" ");
     }
 
     public String getDisplayName() {
