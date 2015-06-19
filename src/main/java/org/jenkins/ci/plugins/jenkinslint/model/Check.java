@@ -11,9 +11,9 @@ public final class Check implements Comparable<Check> {
 
     public Check(final String name, final boolean found, final boolean ignored) {
         super();
-        this.name = name;
-        this.found = found;
-        this.ignored = ignored;
+        this.setName(name);
+        this.setFound(found);
+        this.setIgnored(ignored);
     }
 
     public String getName() {
@@ -28,7 +28,7 @@ public final class Check implements Comparable<Check> {
         if (this == other) {
             return 0;
         }
-        return name.compareTo(other.getName());
+        return getName().compareTo(other.getName());
     }
 
     public boolean isFound() {
@@ -57,18 +57,16 @@ public final class Check implements Comparable<Check> {
             return false;
         }
 
-        return name.equals(((Check) obj).getName());
+        return getName().equals(((Check) obj).getName());
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return getName().hashCode();
     }
 
     @Override
     public String toString() {
-        return new StringBuilder().append("Check: ").append(name).
-                append(", ").append(found).
-                append(", ").append(ignored).toString();
+        return "Check: " + getName() + ", " + isFound() + ", " + isIgnored();
     }
 }
