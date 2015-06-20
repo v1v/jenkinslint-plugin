@@ -15,7 +15,7 @@
 
   <name>Jenkins Lint Plugin</name>
   <description>
-    List of installed plugins, how many projects are using them, what plugins are only config based.
+    Checks Jenkins Jobs for practices and behaviour that could potentially be improved.
   </description>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Lint+Plugin</url>
 
