@@ -10,6 +10,7 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
     private String name;
     private boolean found = false;
     private boolean ignored = false;
+    private String id = "JL-";
     protected static final Logger LOG = Logger.getLogger(AbstractCheck.class.getName());
 
     public AbstractCheck(final String name, final boolean found, final boolean ignored) {
@@ -25,6 +26,10 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int compareTo(final AbstractCheck other) {
