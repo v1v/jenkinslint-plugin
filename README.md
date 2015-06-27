@@ -7,12 +7,16 @@ See [Jenkins Lint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Li
 
 [![Build Status](https://buildhive.cloudbees.com/job/jenkinsci/job/jenkins-lint-plugin/badge/icon)](https://buildhive.cloudbees.com/job/jenkinsci/job/jenkins-lint-plugin/)
 
-TODO
-----
 
-- Job types: maven2-moduleset and FeatureBranch
-- Disable Plugin from Table
-- Classify plugins type
+Motivation
+==========
+
+
+
+List available Checks
+=====================
+
+
 
 Development
 ===========
@@ -34,7 +38,7 @@ to create the plugin .hpi file.
 
 To install:
 
-1. copy the resulting ./target/plugin-stats-plugin.hpi file to the $JENKINS_HOME/plugins directory. Don't forget to restart Jenkins afterwards.
+1. copy the resulting ./target/jenkins-lint-plugin.hpi file to the $JENKINS_HOME/plugins directory. Don't forget to restart Jenkins afterwards.
 
 2. or use the plugin management console (http://example.com:8080/pluginManager/advanced) to upload the hpi file. You have to restart Jenkins in order to find the plugin in the installed plugins list.
 
@@ -46,13 +50,17 @@ Plugin releases
 
 
 Authors
--------
+=======
 
 Victor Martinez
 
 
+References
+==========
+
+
 License
--------
+=======
 
     The MIT License
 
