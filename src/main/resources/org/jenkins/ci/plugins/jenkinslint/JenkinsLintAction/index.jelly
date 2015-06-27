@@ -5,11 +5,18 @@
     <l:side-panel>
       <l:tasks>
           <l:task icon="images/24x24/up.gif" href="${rootURL}/" title="${%Back to Dashboard}" />
-          <l:task icon="plugin/jenkins-lint-plugin/images/48x48/directory.png" href="${rootURL}/jenkins-lint" title="${%Back to Jenkins Lint}" />
-          <l:task icon="plugin/jobConfigHistory/img/filter.png" href="?filter=description" title="${%Show checker descriptions}" />
+          <l:task icon="plugin/jenkins-lint-plugin/images/48x48/directory.png" href="${rootURL}/jenkins-lint" title="${%Jenkins Lint}" />
+          <l:task icon="plugin/jobConfigHistory/img/filter.png" href="?filter=description" title="${%    |--- Show checker descriptions}" />
       </l:tasks>
     </l:side-panel>
     <l:main-panel>
+        <style>
+            code {
+                color: #C7254E;
+                background-color: #F9F2F4;
+                border-radius: 4px;
+            }
+        </style>
         <j:set var="filter" value="${request.getParameter('filter')}"/>
         <j:set var="index" value="0"/>
         <j:set var="data" value="${it.data}"/>
@@ -65,13 +72,13 @@
                     </thead>
                     <tbody id="jenkinsLintDescriptionTableBody">
                         <tr>
-                            <td>Description: ${checker.getDescription()}</td>
+                            <td><b>Description:</b> ${checker.getDescription()}</td>
                         </tr>
                         <tr>
-                            <td>Severity: <a href="${app.rootUrl}${job.url}">${job.name}</a></td>
+                            <td><b>Severity:</b> ${checker.getSeverity()}</td>
                         </tr>
                         <tr>
-                            <td>Control Comment: #ignore::${checker.getName()}</td>
+                            <td><b>Control Comment:</b> To disable this checker you can add <code>lint:ignored::${checker.getName()}</code> to your Jenkins project.</td>
                         </tr>
                     </tbody>
                 </table>
