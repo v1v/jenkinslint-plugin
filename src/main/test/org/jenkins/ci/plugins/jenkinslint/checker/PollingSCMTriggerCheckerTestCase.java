@@ -1,6 +1,8 @@
 package org.jenkins.ci.plugins.jenkinslint.checker;
 
 import hudson.model.FreeStyleProject;
+import hudson.model.Project;
+import hudson.triggers.SCMTrigger;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -9,12 +11,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * PollingSCMChecker Test Case.
+ * PollingSCMTrigger Test Case.
  *
  * @author Victor Martinez
  */
 public class PollingSCMTriggerCheckerTestCase {
-    private PollingSCMChecker checker = new PollingSCMChecker("PollingSCMChecker", false, false);
+    private PollingSCMTriggerChecker checker = new PollingSCMTriggerChecker("PollingSCMTriggerChecker", false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
@@ -22,9 +24,9 @@ public class PollingSCMTriggerCheckerTestCase {
         FreeStyleProject project = j.createFreeStyleProject();
         assertTrue(checker.executeCheck(project));
     }
-    @Test public void testGitSCMJob() throws Exception {
+    @Test public void testTriggerSCMJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        project.setScm(new hudson.plugins.git.GitSCM(""));
+        project.addTrigger(new SCMTrigger("", true));
         assertFalse(checker.executeCheck(project));
     }
 }

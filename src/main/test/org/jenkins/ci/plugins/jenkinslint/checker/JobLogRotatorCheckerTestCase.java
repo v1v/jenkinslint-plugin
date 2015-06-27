@@ -1,6 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.checker;
 
 import hudson.model.FreeStyleProject;
+import hudson.tasks.LogRotator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -9,30 +10,27 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * JobNameChecker Test Case.
+ * JobLogRotatorChecker Test Case.
  *
  * @author Victor Martinez
  */
 public class JobLogRotatorCheckerTestCase {
-    private JobNameChecker checker = new JobNameChecker("JobNameChecker", false, false);
+    private JobLogRotatorChecker checker = new JobLogRotatorChecker("JobLogRotatorChecker", false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
+
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.executeCheck(project));
+        assertTrue(checker.executeCheck(project));
     }
-    @Test public void testEmptyJobName() throws Exception {
+    @Test public void testEmptyLogRotatorJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject("");
-        assertFalse(checker.executeCheck(project));
+        project.setBuildDiscarder(new LogRotator(null,null,null,null));
+        assertTrue(checker.executeCheck(project));
     }
-    @Test public void testJobNameWithSpaces() throws Exception {
-        FreeStyleProject project = j.createFreeStyleProject("Name A");
-        assertTrue(checker.executeCheck(project));
-        project = j.createFreeStyleProject(" Name A");
-        assertTrue(checker.executeCheck(project));
-        project = j.createFreeStyleProject("Name ");
-        assertTrue(checker.executeCheck(project));
-        project = j.createFreeStyleProject("Name A B C");
+    @Test public void testLogRotatorJob() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject("");
+        project.setBuildDiscarder(new LogRotator(-1,-1,-1,-1));
         assertTrue(checker.executeCheck(project));
     }
 }
