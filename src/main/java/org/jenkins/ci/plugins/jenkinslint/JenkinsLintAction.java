@@ -27,23 +27,23 @@ public final class JenkinsLintAction implements RootAction {
         jobSet.clear();
         checkList.clear();
 
-        checkList.add(new JobNameChecker("JobName", "", "", false, false));
-        checkList.add(new JobDescriptionChecker("JobDescription", "", "", false, false));
-        checkList.add(new JobAssignedLabelChecker("JobAssignedLabel", "", "", false, false));
-        checkList.add(new JobLogRotatorChecker("JobLogRotator", "", "", false, false));
-        checkList.add(new MavenJobTypeChecker("MavenJob", "", "", false, false));
-        checkList.add(new CleanupWorkspaceChecker("CleanUp", "", "", false, false));
-        checkList.add(new JavadocChecker("Javadoc", "", "", false, false));
-        checkList.add(new ArtifactChecker("Artifact", "", "", false, false));
-        checkList.add(new NullSCMChecker("NullSCM", "", "", false, false));
-        checkList.add(new PollingSCMTriggerChecker("PollingSCM", "", "", false, false));
-        checkList.add(new GitShallowChecker("GitShallow", "", "", false, false));
+        checkList.add(new JobNameChecker(false, false));
+        checkList.add(new JobDescriptionChecker(false, false));
+        checkList.add(new JobAssignedLabelChecker(false, false));
+        checkList.add(new JobLogRotatorChecker(false, false));
+        checkList.add(new MavenJobTypeChecker(false, false));
+        checkList.add(new CleanupWorkspaceChecker(false, false));
+        checkList.add(new JavadocChecker(false, false));
+        checkList.add(new ArtifactChecker(false, false));
+        checkList.add(new NullSCMChecker(false, false));
+        checkList.add(new PollingSCMTriggerChecker( false, false));
+        checkList.add(new GitShallowChecker(false, false));
 
         for (Project item : Jenkins.getInstance().getAllItems(Project.class)) {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
             Job newJob = new Job(item.getName(), item.getUrl());
             for (CheckInterface checker : checkList) {
-                LOG.log(Level.INFO, checker.getClass().getName() + " " + item.getName() + " " + checker.executeCheck(item));
+                LOG.log(Level.FINER, checker.getClass().getName() + " " + item.getName() + " " + checker.executeCheck(item));
                 newJob.addCheck(new Check(checker.getClass().getName(),checker.executeCheck(item),false));
             }
             jobSet.put(item.getName(),newJob);

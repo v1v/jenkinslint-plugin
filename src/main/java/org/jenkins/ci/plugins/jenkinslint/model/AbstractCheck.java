@@ -15,21 +15,11 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
     private String severity;
     protected static final Logger LOG = Logger.getLogger(AbstractCheck.class.getName());
 
-    public AbstractCheck(final String name, final boolean found, final boolean ignored) {
+    public AbstractCheck(final boolean found, final boolean ignored) {
         super();
-        this.setName(name);
+        this.setName(this.getClass().getSimpleName());
         this.setFound(found);
         this.setIgnored(ignored);
-    }
-
-    public AbstractCheck(final String name, final String description, final boolean found, final boolean ignored) {
-        this(name, found, ignored);
-        this.setDescription(description);
-    }
-
-    public AbstractCheck(final String name, final String description, final String severity, final boolean found, final boolean ignored) {
-        this(name, description, found, ignored);
-        this.setSeverity(severity);
     }
 
     public String getName() {

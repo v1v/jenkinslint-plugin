@@ -8,8 +8,10 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class MavenJobTypeChecker extends AbstractCheck{
 
-    public MavenJobTypeChecker(final String name, final String description, final String severity, final boolean found, final boolean ignored) {
-        super(name, description, severity, found, ignored);
+    public MavenJobTypeChecker(final boolean found, final boolean ignored) {
+        super(found, ignored);
+        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setSeverity("High");
     }
 
     public boolean executeCheck(Item item) {

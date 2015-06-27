@@ -13,8 +13,10 @@ public class JobLogRotatorChecker extends AbstractCheck{
 
     private final int EMPTY = -1;
 
-    public JobLogRotatorChecker(final String name, final String description, final String severity, final boolean found, final boolean ignored) {
-        super(name, description, severity, found, ignored);
+    public JobLogRotatorChecker(final boolean found, final boolean ignored) {
+        super(found, ignored);
+        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setSeverity("High");
     }
 
     public boolean executeCheck(Item item) {
