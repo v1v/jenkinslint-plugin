@@ -2,51 +2,82 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
   <j:getStatic var="permission" className="hudson.model.Item" field="CREATE"/>
   <l:layout norefresh="true" permission="${permission}" title="${%Jenkins.Lint.Title}">
-    <st:include it="${app}" page="sidepanel.jelly"/>
+    <l:side-panel>
+      <l:tasks>
+          <l:task icon="images/24x24/up.gif" href="${rootURL}/" title="${%Back to Dashboard}" />
+          <l:task icon="plugin/jenkins-lint-plugin/images/48x48/directory.png" href="${rootURL}/jenkins-lint" title="${%Back to Jenkins Lint}" />
+          <l:task icon="plugin/jobConfigHistory/img/filter.png" href="?filter=description" title="${%Show checker descriptions}" />
+      </l:tasks>
+    </l:side-panel>
     <l:main-panel>
+        <j:set var="filter" value="${request.getParameter('filter')}"/>
         <j:set var="index" value="0"/>
-
         <j:set var="data" value="${it.data}"/>
         <h1>${%Jenkins.Lint.Title}</h1>
         <h3>${%Jenkins.Lint.Description}</h3>
-        <br/>
-      <br/>
-      <table class="sortable pane bigtable" id="jenkinsLintTable">
-        <thead>
-          <tr>
-            <th class="pane-header">Job Name</th>
-              <j:forEach var="checker" items="${it.checkList}">
-                  <j:set var="index" value="${index+1}"/>
-                  <th tooltip="${checker.getName()}" class="pane-header">${checker.getId()}${index}</th>
-              </j:forEach>
-          </tr>
-        </thead>
-        <tbody id="jenkinsLintTableBody">
-            <j:forEach var="job" items="${it.jobSet.elements()}">
-                <tr>
-                <td><a href="${app.rootUrl}${job.url}">${job.name}</a></td>
-                <j:forEach var="check" items="${job.checkSet}">
-                    <j:if test="${check.ignored}">
-                    <j:if test="${check.found}">
-                        <td style="background-color: #f0f0f0;"/>
-                    </j:if>
-                    <j:if test="${!check.found}">
-                        <td style="background-color: green;"/>
-                    </j:if>
-                    </j:if>
-                    <j:if test="${!check.ignored}">
-                        <j:if test="${check.found}">
-                            <td style="background-color: red;"/>
+        <j:if test="${(filter == null)}">
+            <table class="sortable pane bigtable" id="jenkinsLintTable">
+            <thead>
+              <tr>
+                <th class="pane-header">Job Name</th>
+                  <j:forEach var="checker" items="${it.checkList}">
+                      <j:set var="index" value="${index+1}"/>
+                      <th tooltip="${checker.getName()}" class="pane-header">${checker.getId()}${index}</th>
+                  </j:forEach>
+              </tr>
+            </thead>
+            <tbody id="jenkinsLintTableBody">
+                <j:forEach var="job" items="${it.jobSet.elements()}">
+                    <tr>
+                    <td><a href="${app.rootUrl}${job.url}">${job.name}</a></td>
+                    <j:forEach var="check" items="${job.checkSet}">
+                        <j:if test="${check.ignored}">
+                            <j:if test="${check.found}">
+                                <td style="background-color: #f0f0f0;"/>
+                            </j:if>
+                            <j:if test="${!check.found}">
+                                <td style="background-color: green;"/>
+                            </j:if>
                         </j:if>
-                        <j:if test="${!check.found}">
-                            <td style="background-color: green;"/>
+                        <j:if test="${!check.ignored}">
+                            <j:if test="${check.found}">
+                                <td style="background-color: red;"/>
+                            </j:if>
+                            <j:if test="${!check.found}">
+                                <td style="background-color: green;"/>
+                            </j:if>
                         </j:if>
-                    </j:if>
+                    </j:forEach>
+                    </tr>
                 </j:forEach>
-                </tr>
+           </tbody>
+         </table>
+        </j:if>
+        <j:if test="${(filter != null) and (filter == 'description')}">
+            <j:set var="index" value="0"/>
+            <j:forEach var="checker" items="${it.checkList}">
+                <j:set var="index" value="${index+1}"/>
+                <table class="pane bigtable" id="jenkinsLintDescriptionTable">
+                    <thead>
+                        <tr>
+                            <th class="pane-header">${checker.getId()}${index}: ${checker.getName()}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jenkinsLintDescriptionTableBody">
+                        <tr>
+                            <td>Description: ${checker.getDescription()}</td>
+                        </tr>
+                        <tr>
+                            <td>Severity: <a href="${app.rootUrl}${job.url}">${job.name}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Control Comment: #ignore::${checker.getName()}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
             </j:forEach>
-       </tbody>
-     </table>
-   </l:main-panel>
+        </j:if>
+    </l:main-panel>
  </l:layout>
 </j:jelly>
