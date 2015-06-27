@@ -9,12 +9,6 @@
         <h3>${%Jenkins.Lint.Description}</h3>
         <br/>
       <br/>
-            <select name="goalType">
-                <j:forEach var="checker" items="${it.checkList}">
-                    <option value="${checker.getName()}">${checker.getName()}</option>
-                </j:forEach>
-                <option value="findBugsGoal">FindBugs goal</option>
-            </select>
       <table class="sortable pane bigtable" id="jenkinsLintTable">
         <thead>
           <tr>
