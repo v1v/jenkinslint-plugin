@@ -12,6 +12,7 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
     private boolean found = false;
     private boolean ignored = false;
     private String id = "JL-";
+    private String severity;
     protected static final Logger LOG = Logger.getLogger(AbstractCheck.class.getName());
 
     public AbstractCheck(final String name, final boolean found, final boolean ignored) {
@@ -24,6 +25,11 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
     public AbstractCheck(final String name, final String description, final boolean found, final boolean ignored) {
         this(name, found, ignored);
         this.setDescription(description);
+    }
+
+    public AbstractCheck(final String name, final String description, final String severity, final boolean found, final boolean ignored) {
+        this(name, description, found, ignored);
+        this.setSeverity(severity);
     }
 
     public String getName() {
@@ -44,6 +50,14 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
     }
 
     public int compareTo(final AbstractCheck other) {

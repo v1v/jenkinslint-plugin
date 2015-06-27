@@ -13,8 +13,8 @@ public class JobLogRotatorChecker extends AbstractCheck{
 
     private final int EMPTY = -1;
 
-    public JobLogRotatorChecker(final String name, final boolean found, final boolean ignored) {
-        super(name, found, ignored);
+    public JobLogRotatorChecker(final String name, final String description, final String severity, final boolean found, final boolean ignored) {
+        super(name, description, severity, found, ignored);
     }
 
     public boolean executeCheck(Item item) {

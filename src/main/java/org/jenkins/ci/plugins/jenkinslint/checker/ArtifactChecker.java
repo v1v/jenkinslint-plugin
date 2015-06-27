@@ -15,8 +15,8 @@ import java.util.logging.Level;
  */
 public class ArtifactChecker extends AbstractCheck {
 
-    public ArtifactChecker(final String name, final boolean found, final boolean ignored) {
-        super(name, found, ignored);
+    public ArtifactChecker(final String name, final String description, final String severity, final boolean found, final boolean ignored) {
+        super(name, description, severity, found, ignored);
     }
 
     public boolean executeCheck(Item item) {
