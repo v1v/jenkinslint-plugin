@@ -9,33 +9,43 @@
         <h3>${%Jenkins.Lint.Description}</h3>
         <br/>
       <br/>
+            <select name="goalType">
+                <j:forEach var="checker" items="${it.checkList}">
+                    <option value="${checker.getName()}">${checker.getName()}</option>
+                </j:forEach>
+                <option value="findBugsGoal">FindBugs goal</option>
+            </select>
       <table class="sortable pane bigtable" id="jenkinsLintTable">
         <thead>
           <tr>
             <th class="pane-header">Job Name</th>
-            <th class="pane-header">JL-001</th>
+              <j:forEach var="checker" items="${it.checkList}">
+                <th class="pane-header">${checker.getName()}</th>
+              </j:forEach>
           </tr>
         </thead>
         <tbody id="jenkinsLintTableBody">
             <j:forEach var="job" items="${it.jobSet.elements()}">
                 <tr>
                 <td><a href="${app.rootUrl}${job.url}">${job.name}</a></td>
-                <j:if test="${job.checkSet.first().ignored}">
-                    <j:if test="${job.checkSet.first().found}">
+                <j:forEach var="check" items="${job.checkSet}">
+                    <j:if test="${check.ignored}">
+                    <j:if test="${check.found}">
                         <td style="background-color: #f0f0f0;"/>
                     </j:if>
-                    <j:if test="${!job.checkSet.first().found}">
+                    <j:if test="${!check.found}">
                         <td style="background-color: green;"/>
                     </j:if>
-                </j:if>
-                <j:if test="${!job.checkSet.first().ignored}">
-                    <j:if test="${job.checkSet.first().found}">
-                        <td style="background-color: red;"/>
                     </j:if>
-                    <j:if test="${!job.checkSet.first().found}">
-                        <td style="background-color: green;"/>
+                    <j:if test="${!check.ignored}">
+                        <j:if test="${check.found}">
+                            <td style="background-color: red;"/>
+                        </j:if>
+                        <j:if test="${!check.found}">
+                            <td style="background-color: green;"/>
+                        </j:if>
                     </j:if>
-                </j:if>
+                </j:forEach>
                 </tr>
             </j:forEach>
        </tbody>
