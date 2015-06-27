@@ -8,6 +8,7 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckInterface {
     private String name;
+    private String description;
     private boolean found = false;
     private boolean ignored = false;
     private String id = "JL-";
@@ -20,6 +21,11 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
         this.setIgnored(ignored);
     }
 
+    public AbstractCheck(final String name, final String description, final boolean found, final boolean ignored) {
+        this(name, found, ignored);
+        this.setDescription(description);
+    }
+
     public String getName() {
         return name;
     }
@@ -30,6 +36,14 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckI
 
     public String getId() {
         return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
     }
 
     public int compareTo(final AbstractCheck other) {
