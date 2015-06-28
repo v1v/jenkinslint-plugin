@@ -13,11 +13,32 @@ See [Jenkins Lint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Li
 Motivation
 ==========
 
+Jenkins is an awesome Automation System, and there are a bunch of people using it in different ways, for instances:
+developers, testers, automation, build engineers, release engineers, scrum master, product owner and so on. Unfortunately, as
+the number of jobs grows, maintaining them becomes tedious, and the paradigm of no using a predefined set of best practices
+falls apart.
+
+The Jenkins jenkins-lint-plugin attempts to solve this problem by allowing jobs to be evaluated with some predefined
+best practices. The goal is for your team to be able to define those best practices to be related to their project.
+
+Manually reviewing those jobs wouldn't be too hard, but doing the same thing all over again for every new job or for
+a hundred other projects is where it gets difficult and tedious. This provides a much more powerful way of analyzing them.
 
 
 List available Checks
 =====================
 
+* Artifact Publisher check  -
+* CleanUp Workspace check   -
+* Git Shallow clone check   -
+* Javadoc Publisher check   -
+* Job Assigned Label check  -
+* Job Description check     -
+* Job Log Rotator check     -
+* Job Name check            -
+* Maven Job Type check      -
+* Null SCM check            -
+* Polling SCM Trigger check -
 
 
 Development
