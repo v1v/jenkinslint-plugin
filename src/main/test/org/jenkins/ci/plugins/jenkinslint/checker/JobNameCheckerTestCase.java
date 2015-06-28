@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class JobNameCheckerTestCase {
-    private JobNameChecker checker = new JobNameChecker("JobNameChecker", false, false);
+    private JobNameChecker checker = new JobNameChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {

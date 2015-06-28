@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class JobLogRotatorCheckerTestCase {
-    private JobLogRotatorChecker checker = new JobLogRotatorChecker("JobLogRotatorChecker", false, false);
+    private JobLogRotatorChecker checker = new JobLogRotatorChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 

@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class GitShallowCheckerTestCase {
-    private GitShallowChecker checker = new GitShallowChecker("GitShallowChecker", false, false);
+    private GitShallowChecker checker = new GitShallowChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 

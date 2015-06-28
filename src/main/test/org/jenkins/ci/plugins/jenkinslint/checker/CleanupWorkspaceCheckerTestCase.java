@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class CleanupWorkspaceCheckerTestCase {
-    private CleanupWorkspaceChecker checker = new CleanupWorkspaceChecker("CleanupWorkspaceChecker", false, false);
+    private CleanupWorkspaceChecker checker = new CleanupWorkspaceChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 

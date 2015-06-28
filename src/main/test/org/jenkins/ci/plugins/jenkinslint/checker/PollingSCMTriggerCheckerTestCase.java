@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class PollingSCMTriggerCheckerTestCase {
-    private PollingSCMTriggerChecker checker = new PollingSCMTriggerChecker("PollingSCMTriggerChecker", false, false);
+    private PollingSCMTriggerChecker checker = new PollingSCMTriggerChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 

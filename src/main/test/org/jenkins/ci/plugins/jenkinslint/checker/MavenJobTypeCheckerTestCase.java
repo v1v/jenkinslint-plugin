@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class MavenJobTypeCheckerTestCase {
-    private MavenJobTypeChecker checker = new MavenJobTypeChecker("MavenJobTypeChecker", false, false);
+    private MavenJobTypeChecker checker = new MavenJobTypeChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 

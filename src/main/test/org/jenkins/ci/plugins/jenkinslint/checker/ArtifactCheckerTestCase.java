@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class ArtifactCheckerTestCase {
-    private ArtifactChecker checker = new ArtifactChecker("ArtifactChecker", false, false);
+    private ArtifactChecker checker = new ArtifactChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testEmptyJob() throws Exception {

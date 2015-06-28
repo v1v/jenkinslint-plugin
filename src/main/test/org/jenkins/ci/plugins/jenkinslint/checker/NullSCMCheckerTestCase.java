@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class NullSCMCheckerTestCase {
-    private NullSCMChecker checker = new NullSCMChecker("NullSCMChecker", false, false);
+    private NullSCMChecker checker = new NullSCMChecker(false, false);
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
