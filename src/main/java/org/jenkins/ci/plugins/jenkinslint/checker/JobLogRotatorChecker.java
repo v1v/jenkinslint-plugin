@@ -15,7 +15,7 @@ public class JobLogRotatorChecker extends AbstractCheck{
 
     public JobLogRotatorChecker(final boolean found, final boolean ignored) {
         super(found, ignored);
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("When setting Jenkins Jobs with some Log Rotator configuration helps to reduce the amount of disk space and speed up Jenkins UI.");
         this.setSeverity("High");
     }
 
