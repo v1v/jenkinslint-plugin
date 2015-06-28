@@ -11,7 +11,7 @@ public class JobDescriptionChecker extends AbstractCheck{
 
     public JobDescriptionChecker(final boolean found, final boolean ignored) {
         super(found, ignored);
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("In order to comply with the style guide, Jenkins project description might help you to know what it does and further details..");
         this.setSeverity("Medium");
     }
 
