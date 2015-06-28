@@ -1,7 +1,9 @@
 Jenkins Lint Plugin
 ===================
 
-This plugin permits Jenkins to list of installed plugins, how many projects are using them, what plugins are only config based.
+This plugin has mainly two goals:
+- To make it easier to detect issues in your Jenkins configuration that will cause Jenkins to blow up when you attempt to run those jobs.
+- To encourage discussion within the Jenkins community on the more subjective stuff. Having a set of checks to base discussion on helps drive out what we as a community think is good style.
 
 See [Jenkins Lint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Lint+Plugin) for more information.
 
