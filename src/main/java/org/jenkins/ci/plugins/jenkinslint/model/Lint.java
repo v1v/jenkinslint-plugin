@@ -4,12 +4,12 @@ package org.jenkins.ci.plugins.jenkinslint.model;
  * Check class.
  * @author Victor Martinez
  */
-public final class Check implements Comparable<Check> {
+public final class Lint implements Comparable<Lint> {
     private String name;
     private boolean found = false;
     private boolean ignored = false;
 
-    public Check(final String name, final boolean found, final boolean ignored) {
+    public Lint(final String name, final boolean found, final boolean ignored) {
         super();
         this.setName(name);
         this.setFound(found);
@@ -24,7 +24,7 @@ public final class Check implements Comparable<Check> {
         this.name = name;
     }
 
-    public int compareTo(final Check other) {
+    public int compareTo(final Lint other) {
         if (this == other) {
             return 0;
         }
@@ -53,11 +53,11 @@ public final class Check implements Comparable<Check> {
             return true;
         }
 
-        if (!(obj instanceof Check)) {
+        if (!(obj instanceof Lint)) {
             return false;
         }
 
-        return getName().equals(((Check) obj).getName());
+        return getName().equals(((Lint) obj).getName());
     }
 
     @Override
@@ -67,6 +67,6 @@ public final class Check implements Comparable<Check> {
 
     @Override
     public String toString() {
-        return "Check: " + getName() + ", " + isFound() + ", " + isIgnored();
+        return "Lint: " + getName() + ", " + isFound() + ", " + isIgnored();
     }
 }

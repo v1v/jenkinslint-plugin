@@ -10,7 +10,7 @@ import java.util.TreeSet;
 public final class Job implements Comparable<Job> {
     private String name;
     private String url;
-    private final SortedSet<Check> checkSet = new TreeSet<Check>();
+    private final SortedSet<Lint> lintSet = new TreeSet<Lint>();
 
     public Job(final String name, final String url) {
         super();
@@ -34,12 +34,12 @@ public final class Job implements Comparable<Job> {
         this.url = url;
     }
 
-    public SortedSet<Check> getCheckSet() {
-        return checkSet;
+    public SortedSet<Lint> getLintSet() {
+        return lintSet;
     }
 
-    public void addCheck(Check check) {
-        checkSet.add(check);
+    public void addCheck(Lint lint) {
+        lintSet.add(lint);
     }
 
     public int compareTo(final Job other) {
@@ -71,6 +71,6 @@ public final class Job implements Comparable<Job> {
     public String toString() {
         return new StringBuilder().append("Job: ").append(name).
                     append(", ").append(url).
-                    append(", ").append(checkSet).toString();
+                    append(", ").append(lintSet).toString();
     }
 }
