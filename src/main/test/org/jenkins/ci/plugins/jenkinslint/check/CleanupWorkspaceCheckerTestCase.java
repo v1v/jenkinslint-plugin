@@ -1,11 +1,9 @@
-package org.jenkins.ci.plugins.jenkinslint.checker;
+package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
-import hudson.plugins.ws_cleanup.Pattern;
 import hudson.plugins.ws_cleanup.PreBuildCleanup;
 import hudson.plugins.ws_cleanup.WsCleanup;
 import hudson.tasks.ArtifactArchiver;
-import hudson.tasks.JavadocArchiver;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;

@@ -1,8 +1,7 @@
-package org.jenkins.ci.plugins.jenkinslint.checker;
+package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
-import hudson.triggers.SCMTrigger;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;

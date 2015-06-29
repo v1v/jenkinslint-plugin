@@ -1,9 +1,8 @@
-package org.jenkins.ci.plugins.jenkinslint.checker;
+package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.triggers.SCMTrigger;
-import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 /**

@@ -6,7 +6,7 @@ import hudson.model.Item;
  * Check interface.
  * @author Victor Martinez
  */
-public interface CheckInterface {
+public interface InterfaceCheck {
 
     boolean executeCheck(Item item);
 }

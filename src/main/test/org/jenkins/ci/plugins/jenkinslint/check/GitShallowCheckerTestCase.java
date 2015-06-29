@@ -1,16 +1,9 @@
-package org.jenkins.ci.plugins.jenkinslint.checker;
+package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
-import hudson.plugins.git.BranchSpec;
-import hudson.plugins.git.SubmoduleConfig;
-import hudson.plugins.git.UserRemoteConfig;
-import hudson.plugins.git.browser.GitRepositoryBrowser;
 import hudson.plugins.git.extensions.GitSCMExtension;
 import hudson.plugins.git.extensions.impl.CleanCheckout;
 import hudson.plugins.git.extensions.impl.CloneOption;
-import hudson.plugins.ws_cleanup.PreBuildCleanup;
-import hudson.plugins.ws_cleanup.WsCleanup;
-import hudson.tasks.ArtifactArchiver;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;

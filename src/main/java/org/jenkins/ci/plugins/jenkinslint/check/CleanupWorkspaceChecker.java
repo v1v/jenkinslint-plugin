@@ -1,4 +1,4 @@
-package org.jenkins.ci.plugins.jenkinslint.checker;
+package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Descriptor;
 import hudson.model.Item;

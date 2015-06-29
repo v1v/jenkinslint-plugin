@@ -1,11 +1,7 @@
-package org.jenkins.ci.plugins.jenkinslint.checker;
+package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.model.Descriptor;
 import hudson.model.Item;
 import hudson.model.Project;
-import hudson.tasks.ArtifactArchiver;
-import hudson.tasks.Publisher;
-import hudson.util.DescribableList;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 /**
