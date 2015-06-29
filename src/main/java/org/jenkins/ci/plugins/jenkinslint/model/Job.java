@@ -38,7 +38,7 @@ public final class Job implements Comparable<Job> {
         return lintSet;
     }
 
-    public void addCheck(Lint lint) {
+    public void addLint(Lint lint) {
         lintSet.add(lint);
     }
 
