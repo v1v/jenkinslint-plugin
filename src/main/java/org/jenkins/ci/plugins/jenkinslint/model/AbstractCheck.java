@@ -6,7 +6,7 @@ import java.util.logging.Logger;
  * AbstractCheck class.
  * @author Victor Martinez
  */
-public abstract class AbstractCheck implements Comparable<AbstractCheck>, CheckInterface {
+public abstract class AbstractCheck implements Comparable<AbstractCheck>, InterfaceCheck {
     private String name;
     private String description;
     private boolean found = false;
