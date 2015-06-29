@@ -22,7 +22,7 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, Interf
         this.setIgnored(ignored);
     }
 
-    protected void setIgnored(String jobDescription) {
+    public void setIgnored(String jobDescription) {
         this.setIgnored(jobDescription != null && jobDescription.contains("lint:ignored:" + this.getName()));
     }
 

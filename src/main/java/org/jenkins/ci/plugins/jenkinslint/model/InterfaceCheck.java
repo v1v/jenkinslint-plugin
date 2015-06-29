@@ -9,4 +9,6 @@ import hudson.model.Item;
 public interface InterfaceCheck {
 
     boolean executeCheck(Item item);
+    void setIgnored(String jobDescription);
+    boolean isIgnored();
 }

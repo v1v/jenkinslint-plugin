@@ -44,7 +44,8 @@ public final class JenkinsLintAction implements RootAction {
             Job newJob = new Job(item.getName(), item.getUrl());
             for (InterfaceCheck checker : checkList) {
                 LOG.log(Level.FINER, checker.getClass().getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                newJob.addLint(new Lint(checker.getClass().getName(), checker.executeCheck(item), false));
+                checker.setIgnored(item.getDescription());
+                newJob.addLint(new Lint(checker.getClass().getName(), checker.executeCheck(item), checker.isIgnored()));
             }
             jobSet.put(item.getName(),newJob);
             LOG.log(Level.FINER, newJob.toString());
