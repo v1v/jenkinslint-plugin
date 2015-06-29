@@ -1,7 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
 
 /**
  * Job class.
@@ -10,7 +9,7 @@ import java.util.TreeSet;
 public final class Job implements Comparable<Job> {
     private String name;
     private String url;
-    private final SortedSet<Lint> lintSet = new TreeSet<Lint>();
+    private final ArrayList<Lint> lintList = new ArrayList<Lint>();
 
     public Job(final String name, final String url) {
         super();
@@ -34,12 +33,12 @@ public final class Job implements Comparable<Job> {
         this.url = url;
     }
 
-    public SortedSet<Lint> getLintSet() {
-        return lintSet;
+    public ArrayList<Lint> getLintList() {
+        return lintList;
     }
 
     public void addLint(Lint lint) {
-        lintSet.add(lint);
+        lintList.add(lint);
     }
 
     public int compareTo(final Job other) {
@@ -71,6 +70,6 @@ public final class Job implements Comparable<Job> {
     public String toString() {
         return new StringBuilder().append("Job: ").append(name).
                     append(", ").append(url).
-                    append(", ").append(lintSet).toString();
+                    append(", ").append(lintList).toString();
     }
 }
