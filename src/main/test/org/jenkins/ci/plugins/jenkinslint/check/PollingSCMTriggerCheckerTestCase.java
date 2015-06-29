@@ -28,4 +28,11 @@ public class PollingSCMTriggerCheckerTestCase {
         project.addTrigger(new SCMTrigger("", true));
         assertFalse(checker.executeCheck(project));
     }
+    @Test public void testControlComment() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        assertFalse(checker.isIgnored());
+        project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
+        checker.setIgnored(project.getDescription());
+        assertTrue(checker.isIgnored());
+    }
 }

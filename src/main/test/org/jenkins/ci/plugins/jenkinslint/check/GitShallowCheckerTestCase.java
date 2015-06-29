@@ -64,4 +64,11 @@ public class GitShallowCheckerTestCase {
         project.setScm(new hudson.plugins.git.GitSCM(null, null, false, null, null, "", extensions));
         assertFalse(checker.executeCheck(project));
     }
+    @Test public void testControlComment() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        assertFalse(checker.isIgnored());
+        project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
+        checker.setIgnored(project.getDescription());
+        assertTrue(checker.isIgnored());
+    }
 }

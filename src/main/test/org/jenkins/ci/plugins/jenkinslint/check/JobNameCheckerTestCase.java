@@ -35,4 +35,11 @@ public class JobNameCheckerTestCase {
         project = j.createFreeStyleProject("Name A B C");
         assertTrue(checker.executeCheck(project));
     }
+    @Test public void testControlComment() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        assertFalse(checker.isIgnored());
+        project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
+        checker.setIgnored(project.getDescription());
+        assertTrue(checker.isIgnored());
+    }
 }
