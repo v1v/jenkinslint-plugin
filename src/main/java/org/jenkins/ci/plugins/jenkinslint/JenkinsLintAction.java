@@ -4,9 +4,9 @@ import hudson.Extension;
 import hudson.model.Project;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
-import org.jenkins.ci.plugins.jenkinslint.checker.*;
-import org.jenkins.ci.plugins.jenkinslint.model.Check;
-import org.jenkins.ci.plugins.jenkinslint.model.CheckInterface;
+import org.jenkins.ci.plugins.jenkinslint.check.*;
+import org.jenkins.ci.plugins.jenkinslint.model.Lint;
+import org.jenkins.ci.plugins.jenkinslint.model.InterfaceCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.Job;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public final class JenkinsLintAction implements RootAction {
 
     private static final Logger LOG = Logger.getLogger(JenkinsLintAction.class.getName());
     private Hashtable<String, Job> jobSet = new Hashtable<String, Job>();
-    private ArrayList<CheckInterface> checkList = new ArrayList<CheckInterface>();
+    private ArrayList<InterfaceCheck> checkList = new ArrayList<InterfaceCheck>();
 
     public void getData() throws IOException {
         LOG.log(Level.FINE, "getData()");
@@ -42,17 +42,14 @@ public final class JenkinsLintAction implements RootAction {
         for (Project item : Jenkins.getInstance().getAllItems(Project.class)) {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
             Job newJob = new Job(item.getName(), item.getUrl());
-            for (CheckInterface checker : checkList) {
+            for (InterfaceCheck checker : checkList) {
                 LOG.log(Level.FINER, checker.getClass().getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                newJob.addCheck(new Check(checker.getClass().getName(),checker.executeCheck(item),false));
+                newJob.addLint(new Lint(checker.getClass().getName(), checker.executeCheck(item), false));
             }
             jobSet.put(item.getName(),newJob);
             LOG.log(Level.FINER, newJob.toString());
+            //TODO: Update Job Data item.getActions().add(new GeneratedJobsAction());
         }
-    }
-
-    private boolean isIgnored(String ruleName, String jobDescription) {
-        return ruleName != null && jobDescription != null && jobDescription.contains("lint:ignored:" + ruleName);
     }
 
     public String getDisplayName() {
@@ -71,7 +68,7 @@ public final class JenkinsLintAction implements RootAction {
         return jobSet;
     }
 
-    public ArrayList<CheckInterface> getCheckList() {
+    public ArrayList<InterfaceCheck> getCheckList() {
         return checkList;
     }
 }
