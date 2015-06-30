@@ -10,8 +10,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class CleanupWorkspaceChecker extends AbstractCheck{
 
-    public CleanupWorkspaceChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public CleanupWorkspaceChecker() {
+        super();
         this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
         this.setSeverity("Medium");
     }

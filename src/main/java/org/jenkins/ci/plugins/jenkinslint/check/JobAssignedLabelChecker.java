@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class JobAssignedLabelChecker extends AbstractCheck{
 
-    public JobAssignedLabelChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public JobAssignedLabelChecker() {
+        super();
         this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
         this.setSeverity("Medium");
     }

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class GitShallowCheckerTestCase {
-    private GitShallowChecker checker = new GitShallowChecker(false, false);
+    private GitShallowChecker checker = new GitShallowChecker();
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
@@ -66,9 +66,8 @@ public class GitShallowCheckerTestCase {
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.isIgnored());
+        assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
-        checker.setIgnored(project.getDescription());
-        assertTrue(checker.isIgnored());
+        assertTrue(checker.isIgnored(project.getDescription()));
     }
 }

@@ -9,21 +9,13 @@ import java.util.logging.Logger;
 public abstract class AbstractCheck implements Comparable<AbstractCheck>, InterfaceCheck {
     private String name;
     private String description;
-    private boolean found = false;
-    private boolean ignored = false;
     private String id = "JL-";
     private String severity;
     protected static final Logger LOG = Logger.getLogger(AbstractCheck.class.getName());
 
-    public AbstractCheck(final boolean found, final boolean ignored) {
+    public AbstractCheck() {
         super();
         this.setName(this.getClass().getSimpleName());
-        this.setFound(found);
-        this.setIgnored(ignored);
-    }
-
-    public void setIgnored(String jobDescription) {
-        this.setIgnored(jobDescription != null && jobDescription.contains("lint:ignored:" + this.getName()));
     }
 
     public String getName() {
@@ -61,20 +53,8 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, Interf
         return getName().compareTo(other.getName());
     }
 
-    public boolean isFound() {
-        return found;
-    }
-
-    public void setFound(boolean found) {
-        this.found = found;
-    }
-
-    public boolean isIgnored() {
-        return ignored;
-    }
-
-    public void setIgnored(boolean ignored) {
-        this.ignored = ignored;
+    public boolean isIgnored(String jobDescription) {
+        return jobDescription != null && jobDescription.contains("lint:ignored:" + this.getName());
     }
 
     @Override
@@ -97,6 +77,6 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, Interf
 
     @Override
     public String toString() {
-        return "Check: " + getName() + ", " + isFound() + ", " + isIgnored();
+        return "Check: " + getName() + ", " + getDescription() ;
     }
 }

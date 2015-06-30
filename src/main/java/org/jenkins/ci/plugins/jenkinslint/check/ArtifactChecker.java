@@ -15,8 +15,8 @@ import java.util.logging.Level;
  */
 public class ArtifactChecker extends AbstractCheck {
 
-    public ArtifactChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public ArtifactChecker() {
+        super();
         this.setDescription("When setting Jenkins Jobs with Archive Artifact post build you should either set which artifacts or remove this unused publisher phase.<br/>Otherwise the archive artifact phase may not match what you expect.");
         this.setSeverity("Low");
     }

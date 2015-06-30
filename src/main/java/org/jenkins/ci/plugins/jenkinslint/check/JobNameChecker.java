@@ -8,8 +8,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class JobNameChecker extends AbstractCheck{
 
-    public JobNameChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public JobNameChecker() {
+        super();
         this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
         this.setSeverity("High");
     }

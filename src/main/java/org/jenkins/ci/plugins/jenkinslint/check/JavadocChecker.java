@@ -13,8 +13,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class JavadocChecker extends AbstractCheck{
 
-    public JavadocChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public JavadocChecker() {
+        super();
         this.setDescription("When setting Jenkins Jobs with Javadoc post build you should either set which javadocs or remove this unused publisher phase.<br/>Otherwise the archive artifact phase may not match what you expect.");
         this.setSeverity("Low");
     }

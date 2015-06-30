@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class JobNameCheckerTestCase {
-    private JobNameChecker checker = new JobNameChecker(false, false);
+    private JobNameChecker checker = new JobNameChecker();
 
     @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
@@ -37,9 +37,8 @@ public class JobNameCheckerTestCase {
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.isIgnored());
+        assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
-        checker.setIgnored(project.getDescription());
-        assertTrue(checker.isIgnored());
+        assertTrue(checker.isIgnored(project.getDescription()));
     }
 }

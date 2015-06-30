@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class JobDescriptionChecker extends AbstractCheck{
 
-    public JobDescriptionChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public JobDescriptionChecker() {
+        super();
         this.setDescription("In order to comply with the style guide, Jenkins project description might help you to know what it does and further details..");
         this.setSeverity("Medium");
     }

@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class CleanupWorkspaceCheckerTestCase {
-    private CleanupWorkspaceChecker checker = new CleanupWorkspaceChecker(false, false);
+    private CleanupWorkspaceChecker checker = new CleanupWorkspaceChecker();
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
@@ -42,9 +42,7 @@ public class CleanupWorkspaceCheckerTestCase {
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.isIgnored());
+        assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
-        checker.setIgnored(project.getDescription());
-        assertTrue(checker.isIgnored());
     }
 }

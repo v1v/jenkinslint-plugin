@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class MavenJobTypeCheckerTestCase {
-    private MavenJobTypeChecker checker = new MavenJobTypeChecker(false, false);
+    private MavenJobTypeChecker checker = new MavenJobTypeChecker();
 
     @Rule public JenkinsRule j = new JenkinsRule();
 
@@ -33,9 +33,8 @@ public class MavenJobTypeCheckerTestCase {
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.isIgnored());
+        assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
-        checker.setIgnored(project.getDescription());
-        assertTrue(checker.isIgnored());
+        assertTrue(checker.isIgnored(project.getDescription()));
     }
 }

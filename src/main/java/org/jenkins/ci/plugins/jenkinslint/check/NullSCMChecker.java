@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class NullSCMChecker extends AbstractCheck {
 
-    public NullSCMChecker(final boolean found, final boolean ignored) {
-        super(found, ignored);
+    public NullSCMChecker() {
+        super();
         this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
         this.setSeverity("Low");
     }

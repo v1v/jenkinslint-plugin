@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class JavadocCheckerTestCase {
-    private JavadocChecker checker = new JavadocChecker(false, false);
+    private JavadocChecker checker = new JavadocChecker();
 
     @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testEmptyJob() throws Exception {
@@ -40,9 +40,8 @@ public class JavadocCheckerTestCase {
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.isIgnored());
+        assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
-        checker.setIgnored(project.getDescription());
-        assertTrue(checker.isIgnored());
+        assertTrue(checker.isIgnored(project.getDescription()));
     }
 }
