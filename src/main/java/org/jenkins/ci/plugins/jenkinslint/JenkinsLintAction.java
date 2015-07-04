@@ -38,6 +38,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new NullSCMChecker());
         checkList.add(new PollingSCMTriggerChecker( ));
         checkList.add(new GitShallowChecker());
+        checkList.add(new MultibranchJobTypeChecker());
 
         for (AbstractProject item : Jenkins.getInstance().getAllItems(AbstractProject.class)) {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
