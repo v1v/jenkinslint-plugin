@@ -1,13 +1,13 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.Extension;
-import hudson.model.Project;
+import hudson.model.AbstractProject;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.check.*;
-import org.jenkins.ci.plugins.jenkinslint.model.Lint;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.Job;
+import org.jenkins.ci.plugins.jenkinslint.model.Lint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new PollingSCMTriggerChecker( ));
         checkList.add(new GitShallowChecker());
 
-        for (Project item : Jenkins.getInstance().getAllItems(Project.class)) {
+        for (AbstractProject item : Jenkins.getInstance().getAllItems(AbstractProject.class)) {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
             Job newJob = new Job(item.getName(), item.getUrl());
             for (InterfaceCheck checker : checkList) {
