@@ -33,6 +33,7 @@ List available Checks
 * Git Shallow clone check
 * Javadoc Publisher check
 * Job Assigned Label check
+* Master Assigned Label check
 * Job Description check
 * Job Log Rotator check
 * Job Name check
