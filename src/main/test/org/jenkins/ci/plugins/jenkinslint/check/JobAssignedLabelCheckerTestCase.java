@@ -27,7 +27,10 @@ public class JobAssignedLabelCheckerTestCase {
     }
     @Test public void testWithAssignedLabel() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        // TODO: create label
+        j.createSlave("test",null);
+        project.setAssignedLabel(j.jenkins.getLabel("test"));
+        project.save();
+        assertFalse(checker.executeCheck(project));
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
