@@ -30,6 +30,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new JobNameChecker());
         checkList.add(new JobDescriptionChecker());
         checkList.add(new JobAssignedLabelChecker());
+        checkList.add(new MasterLabelChecker());
         checkList.add(new JobLogRotatorChecker());
         checkList.add(new MavenJobTypeChecker());
         checkList.add(new CleanupWorkspaceChecker());
