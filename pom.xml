@@ -9,7 +9,7 @@
     <version>1.554.1</version>
   </parent>
 
-  <artifactId>jenkins-lint-plugin</artifactId>
+  <artifactId>jenkins-lint</artifactId>
   <version>0.0.1</version>
   <packaging>hpi</packaging>
 
