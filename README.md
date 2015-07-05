@@ -32,6 +32,7 @@ TODO
 - Show graphs
 - Configure Checks (enabled, disabled, change severity)
 - Load checks dynamically.
+- Jobs action to show those jenkins lints.
 
 
 List available Checks
