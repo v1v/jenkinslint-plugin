@@ -12,7 +12,9 @@ public class PollingSCMTriggerChecker extends AbstractCheck {
 
     public PollingSCMTriggerChecker() {
         super();
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("Polling a repository from Jenkins is inefficient; it adds delay on the order of minutes " +
+                            "before a build starts after a commit is pushed, and it adds additional loads.<br/>" +
+                            "It is much better instead to do push-notification from the repository.");
         this.setSeverity("High");
     }
 

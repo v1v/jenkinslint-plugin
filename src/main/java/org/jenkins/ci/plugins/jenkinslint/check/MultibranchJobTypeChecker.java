@@ -10,7 +10,9 @@ public class MultibranchJobTypeChecker extends AbstractCheck{
 
     public MultibranchJobTypeChecker() {
         super();
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("Polling in Jenkins is inefficient, MultibranchJobProject polls for new branches and also " +
+                            "every branch polls for new changes.<br/>It's strongly recommended to use another approach, " +
+                            "such as: webhooks, Configuration as Code, ...");
         this.setSeverity("High");
     }
 

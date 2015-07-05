@@ -16,7 +16,8 @@ public class GitShallowChecker extends AbstractCheck {
 
     public GitShallowChecker() {
         super();
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("When setting Jenkins Jobs with Git SCM Artifact you might speed up the cloning time if " +
+                            "you use shallow cloning.");
         this.setSeverity("Medium");
     }
 

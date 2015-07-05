@@ -11,7 +11,7 @@ public class JobAssignedLabelChecker extends AbstractCheck{
 
     public JobAssignedLabelChecker() {
         super();
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("When setting Jenkins Jobs you should set where those Jobs can run.");
         this.setSeverity("Medium");
     }
 

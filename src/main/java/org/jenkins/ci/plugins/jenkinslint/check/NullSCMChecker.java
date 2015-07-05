@@ -11,7 +11,8 @@ public class NullSCMChecker extends AbstractCheck {
 
     public NullSCMChecker() {
         super();
-        this.setDescription("In order to comply with the style guide, Jenkins projects must avoid whitespace.");
+        this.setDescription("Jenkins works fine with cron/batch tasks, It's strongly recommended to use any " +
+                            "SCM tool and therefore to have in that repo whatever script you need to run.");
         this.setSeverity("Low");
     }
 
