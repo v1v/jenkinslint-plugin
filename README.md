@@ -28,17 +28,18 @@ a hundred other projects is where it gets difficult and tedious. This provides a
 List available Checks
 =====================
 
-* Artifact Publisher check  -
-* CleanUp Workspace check   -
-* Git Shallow clone check   -
-* Javadoc Publisher check   -
-* Job Assigned Label check  -
-* Job Description check     -
-* Job Log Rotator check     -
-* Job Name check            -
-* Maven Job Type check      -
-* Null SCM check            -
-* Polling SCM Trigger check -
+* Artifact Publisher check
+* CleanUp Workspace check
+* Git Shallow clone check
+* Javadoc Publisher check
+* Job Assigned Label check
+* Job Description check
+* Job Log Rotator check
+* Job Name check
+* Maven Job Type check
+* Null SCM check
+* Polling SCM Trigger check
+* Multibranch Job Type check
 
 
 Development
@@ -81,7 +82,8 @@ Victor Martinez
 References
 ==========
 
-1. https://github.com/mcandre/linters
+1. [Linters list](https://github.com/mcandre/linters)
+2. [Jenkins Performance Hints](http://soldering-iron.blogspot.com.es/2014/01/jenkins-performance-hints.html)
 
 License
 =======
