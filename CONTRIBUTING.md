@@ -10,13 +10,14 @@ We are always happy for folk to help us out on this project.  Here are some ways
 ### New Features
 * Feature Requests - "New Feature" issue on the [Jenkins JIRA](https://issues.jenkins-ci.org/secure/Dashboard.jspa). Remember to add the `jenkins-lint-plugin` component.
 * Feature Implementations - Even better than this is an implementation. Simply fork this repo, create a branch (named after the JIRA "New Feature" you created earlier), implement it yourself and submit a Pull Request. Get started with the _Git Protocol_ section below
+* Feature Implementations - Even better than this is an implementation. Simply fork this repo, create a branch (named after the JIRA "New Feature" you created earlier), implement it yourself and submit a Pull Request. Get started with the _Git Protocol_ section below
 
 ### Bugs
 * New "Bug" issue on the [Jenkins JIRA](https://issues.jenkins-ci.org/secure/Dashboard.jspa). Remember to add the `jenkins-lint-plugin` component.
 * Bug Fixes - Even better than this is a fix. Simply fork our repo, create a branch (named after the JIRA "Bug" you created earlier), implement it yourself and submit a Pull Request. Remember to follow the _Git Protocol_ section below.
 
 ## Git Protocol
-If you want to make a change to the code on `jenkinsci/job-dsl-plugin`, here's the protocol we follow (you need a Github account in order to do this):
+If you want to make a change to the code on `jenkinsci/jenkins-lint-plugin`, here's the protocol we follow (you need a Github account in order to do this):
 
 1. Fork the `v1v/jenkins-lint-plugin` repository to your account.
 2. On your local machine, clone your copy of the `jenkins-lint-plugin` repo.
@@ -31,7 +32,7 @@ even delay the merge until someone finds time to review a huge change. Only impl
 leave room so that the remaining options can be added when needed.
 
 ## Our Basic Design Decisions / Conventions
-1. We write tests using [JenkinsRule](JenkinsRule), so if (for example) you add a new Check (e.g. `ScmCheck`), then add a corresponding ScmCheckTestCase in the tests directory tree.
+1. We write tests using [JenkinsRule](https://wiki.jenkins-ci.org/display/JENKINS/Unit+Test#UnitTest-Example), so if (for example) you add a new Check (e.g. `ScmCheck`), then add a corresponding ScmCheckTestCase in the tests directory tree.
 
 ## Code Style
 * Indentation: use 4 spaces, no tabs.
