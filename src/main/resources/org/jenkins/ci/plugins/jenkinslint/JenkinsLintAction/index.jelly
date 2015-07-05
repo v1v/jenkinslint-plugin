@@ -5,12 +5,8 @@
     <l:side-panel>
       <l:tasks>
           <l:task icon="images/24x24/up.gif" href="${rootURL}/" title="${%Back to Dashboard}" />
-          <l:task icon="plugin/jenkins-lint-plugin/images/48x48/directory.png" href="${rootURL}/jenkins-lint" title="${%Jenkins Lint}" />
-          <!-- TODO: Pending to develop graphs -->
-          <l:task icon="plugin/jobConfigHistory/img/filter.png" href="?filter=graph" title="${%    |--- Show Graphs}" />
-          <l:task icon="plugin/jobConfigHistory/img/filter.png" href="?filter=description" title="${%    |--- Show Checks}" />
-          <!-- TODO: Pending to develop checks configuration -->
-          <l:task icon="images/24x24/setting.png" href="?filter=configuration" title="${%    |--- Configure Jenkins Lint}" />
+          <l:task icon="images/32x32/graph.png" href="${rootURL}/jenkins-lint" title="${%Jenkins Lint}" />
+          <l:task icon="plugin/jenkins-lint-plugin/images/32x32/filter.png" href="?filter=description" title="${%    |--- Show Checks}" />
       </l:tasks>
     </l:side-panel>
     <l:main-panel>
