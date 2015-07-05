@@ -25,6 +25,15 @@ Manually reviewing those jobs wouldn't be too hard, but doing the same thing all
 a hundred other projects is where it gets difficult and tedious. This provides a much more powerful way of analyzing them.
 
 
+TODO
+=====================
+
+- Load checks dynamically via Reflection
+- Show graphs
+- Configure Checks (enabled, disabled, change severity)
+- Load checks dynamically.
+
+
 List available Checks
 =====================
 
