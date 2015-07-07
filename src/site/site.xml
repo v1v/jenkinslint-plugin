@@ -22,9 +22,9 @@
     </head>
 
     <links>
-      <item name="Plugin Wiki" href="http://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Lint+Plugin" />
+      <item name="Plugin Wiki" href="http://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin" />
       <item name="Plugin Issues" href="https://issues.jenkins-ci.org/browse/JENKINS/component/" />
-      <item name="Plugin SCM" href="https://github.com/jenkinsci/jenkins-lint-plugin" />
+      <item name="Plugin SCM" href="https://github.com/jenkinsci/jenkinslint-plugin" />
       <item name="Jenkins" href="http://jenkins-ci.org/" />
     </links>
 
