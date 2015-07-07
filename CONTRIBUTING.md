@@ -1,4 +1,4 @@
-# Contributing to the Jenkins Lint plugin Project
+# Contributing to the JenkinsLint plugin Project
 
 ## Ways To Help
 We are always happy for folk to help us out on this project.  Here are some ways how:
@@ -8,19 +8,19 @@ We are always happy for folk to help us out on this project.  Here are some ways
 * Small Changes (fixes to spelling, inaccuracies, errors) - just do it.
 
 ### New Features
-* Feature Requests - "New Feature" issue on the [Jenkins JIRA](https://issues.jenkins-ci.org/secure/Dashboard.jspa). Remember to add the `jenkins-lint-plugin` component.
+* Feature Requests - "New Feature" issue on the [Jenkins JIRA](https://issues.jenkins-ci.org/secure/Dashboard.jspa). Remember to add the `jenkinslint-plugin` component.
 * Feature Implementations - Even better than this is an implementation. Simply fork this repo, create a branch (named after the JIRA "New Feature" you created earlier), implement it yourself and submit a Pull Request. Get started with the _Git Protocol_ section below
 * Feature Implementations - Even better than this is an implementation. Simply fork this repo, create a branch (named after the JIRA "New Feature" you created earlier), implement it yourself and submit a Pull Request. Get started with the _Git Protocol_ section below
 
 ### Bugs
-* New "Bug" issue on the [Jenkins JIRA](https://issues.jenkins-ci.org/secure/Dashboard.jspa). Remember to add the `jenkins-lint-plugin` component.
+* New "Bug" issue on the [Jenkins JIRA](https://issues.jenkins-ci.org/secure/Dashboard.jspa). Remember to add the `jenkinslint-plugin` component.
 * Bug Fixes - Even better than this is a fix. Simply fork our repo, create a branch (named after the JIRA "Bug" you created earlier), implement it yourself and submit a Pull Request. Remember to follow the _Git Protocol_ section below.
 
 ## Git Protocol
-If you want to make a change to the code on `jenkinsci/jenkins-lint-plugin`, here's the protocol we follow (you need a Github account in order to do this):
+If you want to make a change to the code on `jenkinsci/jenkinslint-plugin`, here's the protocol we follow (you need a Github account in order to do this):
 
-1. Fork the `v1v/jenkins-lint-plugin` repository to your account.
-2. On your local machine, clone your copy of the `jenkins-lint-plugin` repo.
+1. Fork the `v1v/jenkinslint-plugin` repository to your account.
+2. On your local machine, clone your copy of the `jenkinslint-plugin` repo.
 3. Again on your local machine, create a branch, ideally named after a JIRA issue you've created for the work.
 4. Switch to the local branch and make your changes. Commit them as you go, and when you're happy, push them to your repo branch.
 5. Also update the documentation, see below.

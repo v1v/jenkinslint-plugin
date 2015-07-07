@@ -9,20 +9,20 @@
     <version>1.554.1</version>
   </parent>
 
-  <artifactId>jenkins-lint</artifactId>
+  <artifactId>jenkinslint</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
-  <name>Jenkins Lint Plugin</name>
+  <name>JenkinsLint Plugin</name>
   <description>
     Checks Jenkins Jobs for practices and behaviour that could potentially be improved.
   </description>
-  <url>http://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Lint+Plugin</url>
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin</url>
 
   <licenses>
     <license>
       <name>The MIT license</name>
-      <url>https://github.com/jenkinsci/jenkins-lint-plugin/raw/master/LICENSE.txt</url>
+      <url>https://github.com/jenkinsci/jenkinslint-plugin/raw/master/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -36,9 +36,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/jenkinsci/jenkins-lint-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/jenkins-lint-plugin.git</developerConnection>
-    <url>https://github.com/jenkinsci/jenkins-lint-plugin</url>
+    <connection>scm:git:git://github.com/jenkinsci/jenkinslint-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/jenkinslint-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/jenkinslint-plugin</url>
   </scm>
 
   <repositories>
