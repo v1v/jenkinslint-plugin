@@ -18,7 +18,7 @@ developers, testers, automation, build engineers, release engineers, scrum maste
 the number of jobs grows, maintaining them becomes tedious, and the paradigm of no using a predefined set of best practices
 falls apart.
 
-The Jenkins jenkinslint-plugin attempts to solve this problem by allowing jobs to be evaluated with some predefined
+The jenkinslint plugin attempts to solve this problem by allowing jobs to be evaluated with some predefined
 best practices. The goal is for your team to be able to define those best practices to be related to their project.
 
 Manually reviewing those jobs wouldn't be too hard, but doing the same thing all over again for every new job or for
