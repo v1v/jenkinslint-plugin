@@ -32,7 +32,7 @@ public class MultibranchJobTypeCheckerTestCase {
     @Test public void testControlComment() throws Exception {
         FreeStyleMultiBranchProject project = new FreeStyleMultiBranchProject(j.jenkins,"test");
         assertFalse(checker.isIgnored(project.getDescription()));
-        project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
+        project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
     }
 }

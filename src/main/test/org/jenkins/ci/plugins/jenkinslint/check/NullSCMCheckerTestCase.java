@@ -30,7 +30,7 @@ public class NullSCMCheckerTestCase {
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.isIgnored(project.getDescription()));
-        project.setDescription("#lint:ignored:" + checker.getClass().getSimpleName());
+        project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
     }
 }

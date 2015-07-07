@@ -75,7 +75,7 @@
                             <td><b>Severity:</b> ${checker.getSeverity()}</td>
                         </tr>
                         <tr>
-                            <td><b>Control Comment:</b> To disable this checker you can add <code>lint:ignored::${checker.getName()}</code> to your Jenkins project.</td>
+                            <td><b>Control Comment:</b> To disable this checker you can add <code>lint:ignore:${checker.getName()}</code> to your Jenkins project.</td>
                         </tr>
                     </tbody>
                 </table>

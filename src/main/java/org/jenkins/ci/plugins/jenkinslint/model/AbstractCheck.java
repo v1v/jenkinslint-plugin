@@ -54,7 +54,7 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, Interf
     }
 
     public boolean isIgnored(String jobDescription) {
-        return jobDescription != null && jobDescription.contains("lint:ignored:" + this.getName());
+        return jobDescription != null && jobDescription.contains("lint:ignore:" + this.getName());
     }
 
     @Override
