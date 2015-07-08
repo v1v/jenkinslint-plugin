@@ -72,6 +72,15 @@
     </plugins>
   </build>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/jenkinslint-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/jenkinslint-plugin.git</developerConnection>
