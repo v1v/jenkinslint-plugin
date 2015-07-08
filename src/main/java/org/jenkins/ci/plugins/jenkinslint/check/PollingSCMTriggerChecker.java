@@ -1,7 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.model.AbstractProject;
 import hudson.model.Item;
-import hudson.model.Project;
 import hudson.triggers.SCMTrigger;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
@@ -19,8 +19,8 @@ public class PollingSCMTriggerChecker extends AbstractCheck {
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof Project) {
-            return (((Project) item).getTrigger(SCMTrigger.class) != null);
+        if (item instanceof AbstractProject) {
+            return (((AbstractProject) item).getTrigger(SCMTrigger.class) != null);
         }
         return false;
     }
