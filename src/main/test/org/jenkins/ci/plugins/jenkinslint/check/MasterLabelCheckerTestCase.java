@@ -1,6 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
+import hudson.model.Label;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -19,10 +20,13 @@ public class MasterLabelCheckerTestCase {
     @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertFalse(checker.executeCheck(project));
+        assertTrue(checker.executeCheck(project));
     }
-    @Test public void testEmptyAssignedLabel() throws Exception {
-        FreeStyleProject project = j.createFreeStyleProject("");
+    @Test public void testNonDefaultJob() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        j.createSlave("abc", null);
+        project.setAssignedLabel(j.jenkins.getLabel("abc"));
+        project.save();
         assertFalse(checker.executeCheck(project));
     }
     @Test public void testWithAssignedLabel() throws Exception {
