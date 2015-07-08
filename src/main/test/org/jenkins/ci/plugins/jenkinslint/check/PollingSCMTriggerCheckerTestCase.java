@@ -21,12 +21,12 @@ public class PollingSCMTriggerCheckerTestCase {
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertTrue(checker.executeCheck(project));
+        assertFalse(checker.executeCheck(project));
     }
     @Test public void testTriggerSCMJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         project.addTrigger(new SCMTrigger("", true));
-        assertFalse(checker.executeCheck(project));
+        assertTrue(checker.executeCheck(project));
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
