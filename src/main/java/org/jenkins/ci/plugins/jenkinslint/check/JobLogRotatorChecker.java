@@ -1,10 +1,10 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Item;
-import hudson.model.Project;
+import hudson.model.Job;
+import hudson.tasks.LogRotator;
 import jenkins.model.BuildDiscarder;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
-import hudson.tasks.LogRotator;
 
 /**
  * @author Victor Martinez
@@ -21,9 +21,9 @@ public class JobLogRotatorChecker extends AbstractCheck{
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof Project) {
-            Project project = (Project) item;
-            if ( project.getBuildDiscarder() != null ||
+        if (item instanceof Job) {
+            Job project = (Job) item;
+            if ( project.getBuildDiscarder() != null &&
                  isLogRotatorOkConfigured(project.getBuildDiscarder())) {
                 return false;
             } else {
