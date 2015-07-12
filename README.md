@@ -7,7 +7,7 @@ This plugin has mainly two goals:
 
 See [JenkinsLint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin) for more information.
 
-[![Build Status](https://buildhive.cloudbees.com/job/jenkinsci/job/jenkinslint-plugin/badge/icon)](https://buildhive.cloudbees.com/job/jenkinsci/job/jenkinslint-plugin/)
+[![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/jenkinslint-plugin)](https://jenkins.ci.cloudbees.com/job/plugins/job/jenkinslint-plugin/)
 
 
 Motivation
