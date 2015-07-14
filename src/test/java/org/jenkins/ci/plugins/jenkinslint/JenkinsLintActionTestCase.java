@@ -2,9 +2,9 @@ package org.jenkins.ci.plugins.jenkinslint;
 
 import com.gargoylesoftware.htmlunit.WebAssert;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import hudson.model.FreeStyleProject;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.*;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.*;
@@ -25,6 +25,7 @@ public class JenkinsLintActionTestCase {
         WebAssert.assertTextPresent(page, "JenkinsLint");
         assertTrue(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
     }
+    //Issue("JENKINS-29418")
     @Test
     public void testJob() throws Exception {
         String jobName = "JOB";
