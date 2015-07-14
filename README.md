@@ -52,7 +52,7 @@ List available Checks
 * Null SCM check
 * Polling SCM Trigger check
 * Multibranch Job Type check
-* Harcoded Script check
+* Hardcoded Script check
 
 
 Development

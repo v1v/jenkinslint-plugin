@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class HarcodedScriptCheckerTestCase {
+public class HardcodedScriptCheckerTestCase {
     private HardcodedScriptChecker checker = new HardcodedScriptChecker();
 
     @Rule public JenkinsRule j = new JenkinsRule();
