@@ -33,6 +33,7 @@ TODO
 - Configure Checks (enabled, disabled, change severity)
 - Load checks dynamically.
 - Jobs action to show those Jenkins lints.
+- UI Tests.
 
 
 List available Checks
