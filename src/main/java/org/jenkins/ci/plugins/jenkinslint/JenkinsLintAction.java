@@ -7,6 +7,7 @@ import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.check.ArtifactChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.CleanupWorkspaceChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.GitShallowChecker;
+import org.jenkins.ci.plugins.jenkinslint.check.HardcodedScriptChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JavadocChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JobAssignedLabelChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JobDescriptionChecker;
@@ -52,6 +53,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new PollingSCMTriggerChecker( ));
         checkList.add(new GitShallowChecker());
         checkList.add(new MultibranchJobTypeChecker());
+        checkList.add(new HardcodedScriptChecker());
 
         for (AbstractProject item : Jenkins.getInstance().getAllItems(AbstractProject.class)) {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
