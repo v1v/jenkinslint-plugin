@@ -3,6 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.model.Descriptor;
 import hudson.model.Item;
 import hudson.model.Project;
+import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 /**
@@ -19,6 +20,11 @@ public class CleanupWorkspaceChecker extends AbstractCheck{
     }
 
     public boolean executeCheck(Item item) {
-        return item instanceof Project && ((Project) item).getPublisher(Descriptor.find(hudson.plugins.ws_cleanup.WsCleanup.DescriptorImpl.class.getName())) == null;
+        if (Jenkins.getInstance().pluginManager.getPlugin("ws-cleanup")!=null) {
+            return item instanceof Project && ((Project) item).getPublisher(Descriptor.find(hudson.plugins.ws_cleanup.WsCleanup.DescriptorImpl.class.getName())) == null;
+        } else {
+            // If ws-cleanup hasn't been installed yet
+            return true;
+        }
     }
 }
