@@ -13,7 +13,7 @@ import java.util.logging.Level;
  */
 public class HardcodedScriptChecker extends AbstractCheck {
 
-    public final static int THRESHOLD = 5;
+    public final static int THRESHOLD = 2;
 
     public HardcodedScriptChecker() {
         super();
