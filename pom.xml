@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>jenkinslint</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.1.2</version>
   <packaging>hpi</packaging>
 
   <name>JenkinsLint Plugin</name>
