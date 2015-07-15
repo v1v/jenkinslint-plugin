@@ -1,5 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import org.junit.Rule;
@@ -28,6 +29,11 @@ public class HardcodedScriptCheckerTestCase {
     }
     @Test public void testMavenJobName() throws Exception {
         MavenModuleSet project = j.createMavenProject();
+        assertFalse(checker.executeCheck(project));
+    }
+    //@Issue("JENKINS-29444")
+    @Test public void testMatrixProject() throws Exception {
+        MatrixProject project = j.createMatrixProject();
         assertFalse(checker.executeCheck(project));
     }
     @Test public void testJobWithHardcodedScript() throws Exception {
