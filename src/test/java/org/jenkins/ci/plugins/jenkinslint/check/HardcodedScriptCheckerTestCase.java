@@ -53,4 +53,15 @@ public class HardcodedScriptCheckerTestCase {
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
     }
+    //JIRA
+    @Test public void testAnotherBuilders() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject("MsBuildBuilder");
+        project.getBuildersList().add(new hudson.plugins.msbuild.MsBuildBuilder("", "", "", true, true, true));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("Ant");
+        project.getBuildersList().add(new hudson.tasks.Ant("","","","",""));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+    }
 }
