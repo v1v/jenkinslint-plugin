@@ -36,6 +36,23 @@ public class HardcodedScriptCheckerTestCase {
         MatrixProject project = j.createMatrixProject();
         assertFalse(checker.executeCheck(project));
     }
+    @Test public void testMatrixProjectWithHardcodedScript() throws Exception {
+        MatrixProject project = j.createMatrixProject("Bash_Single_Line");
+        project.getBuildersList().add(new hudson.tasks.Shell("#!/bin/bash #single line"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("Bash_Multiple_Line");
+        project.getBuildersList().add(new hudson.tasks.Shell("#!/bin/bash\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("Batch_Single_Line");
+        project.getBuildersList().add(new hudson.tasks.BatchFile("echo first"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("Batch_Multiple_Line");
+        project.getBuildersList().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertTrue(checker.executeCheck(project));
+    }
     @Test public void testJobWithHardcodedScript() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject("Bash_Single_Line");
         project.getBuildersList().add(new hudson.tasks.Shell("#!/bin/bash #single line"));
