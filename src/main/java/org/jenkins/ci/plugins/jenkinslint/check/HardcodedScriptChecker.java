@@ -46,6 +46,22 @@ public class HardcodedScriptChecker extends AbstractCheck {
         return found;
     }
 
+    private boolean isBuilderHarcoded (List<Builder> builders) {
+        boolean found = false;
+        if (builders != null && builders.size() > 0 ) {
+            for (Builder builder : builders) {
+                if (builder instanceof hudson.tasks.Shell || builder instanceof hudson.tasks.BatchFile) {
+                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), THRESHOLD)) {
+                        found = true;
+                    }
+                }
+            }
+        } else {
+            found = false;
+        }
+        return found;
+    }
+
     private boolean isHarcoded (String content, int threshold) {
         if (content != null) {
             return content.split("\r\n|\r|\n").length > threshold;
