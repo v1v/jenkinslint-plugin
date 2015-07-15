@@ -32,8 +32,8 @@ public class JenkinsLintActionTestCase {
         String jobName = "JOB";
         FreeStyleProject project = j.createFreeStyleProject(jobName);
         HtmlPage page = j.createWebClient().goTo(URL);
-        //System.out.println(page.getWebResponse().getContentAsString());
-        //System.out.println("URL " + j.getURL().toString() + project.getUrl());
+        System.out.println(page.getWebResponse().getContentAsString());
+        System.out.println("URL " + j.getURL().toString() + project.getUrl());
         WebAssert.assertTextPresent(page, "JenkinsLint");
         assertFalse(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
         assertTrue(page.getWebResponse().getContentAsString().contains(jobTable(j.getURL().toString() + project.getUrl(), jobName)));
