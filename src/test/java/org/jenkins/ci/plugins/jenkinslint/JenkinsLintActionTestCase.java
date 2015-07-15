@@ -36,10 +36,6 @@ public class JenkinsLintActionTestCase {
         //System.out.println("URL " + j.getURL().toString() + project.getUrl());
         WebAssert.assertTextPresent(page, "JenkinsLint");
         assertFalse(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
-        assertTrue(page.getWebResponse().getContentAsString().contains(jobTable(j.getURL().toString() + project.getUrl(), jobName)));
-    }
-
-    private String jobTable (String url, String jobName){
-        return "<tbody id=\"jenkinsLintTableBody\"><tr><td><a href=\""+ url +"\" target=\"_blank\">"+jobName+"</a></td>";
+        assertTrue(page.getWebResponse().getContentAsString().contains(j.getURL().toString() + project.getUrl()));
     }
 }
