@@ -1,5 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -30,17 +31,11 @@ public class HardcodedScriptChecker extends AbstractCheck {
         if (item instanceof hudson.maven.MavenModuleSet) {
             found = false;
         } else {
-            Project project = (Project) item;
-            if (project.getBuilders() != null && project.getBuilders().size() > 0 ) {
-                for (Builder builder : (List<Builder>) project.getBuilders()) {
-                    if (builder instanceof hudson.tasks.Shell || builder instanceof hudson.tasks.BatchFile) {
-                        if (isHarcoded(((CommandInterpreter) builder).getCommand(), THRESHOLD)) {
-                            found = true;
-                        }
-                    }
-                }
-            } else {
-                found = false;
+            if (item instanceof Project) {
+                found = isBuilderHarcoded (((Project)item).getBuilders());
+            }
+            if (item instanceof MatrixProject) {
+                found = isBuilderHarcoded (((MatrixProject)item).getBuilders());
             }
         }
         return found;
