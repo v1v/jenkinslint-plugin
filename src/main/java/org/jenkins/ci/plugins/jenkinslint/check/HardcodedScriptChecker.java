@@ -2,6 +2,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Item;
 import hudson.model.Project;
+import hudson.tasks.Builder;
 import hudson.tasks.CommandInterpreter;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
@@ -31,9 +32,9 @@ public class HardcodedScriptChecker extends AbstractCheck {
         } else {
             Project project = (Project) item;
             if (project.getBuilders() != null && project.getBuilders().size() > 0 ) {
-                for (CommandInterpreter builder : (List<CommandInterpreter>) project.getBuilders()) {
+                for (Builder builder : (List<Builder>) project.getBuilders()) {
                     if (builder instanceof hudson.tasks.Shell || builder instanceof hudson.tasks.BatchFile) {
-                        if (isHarcoded (builder.getCommand(), THRESHOLD)) {
+                        if (isHarcoded(((CommandInterpreter) builder).getCommand(), THRESHOLD)) {
                             found = true;
                         }
                     }
