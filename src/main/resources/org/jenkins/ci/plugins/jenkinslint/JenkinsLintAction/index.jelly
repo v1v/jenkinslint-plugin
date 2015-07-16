@@ -25,14 +25,16 @@
             <h4>${%Jenkins.Lint.Description}</h4>
             ${%Jenkins.Lint.Description.1}
             ${%Jenkins.Lint.Description.2}
+            <br/>
             <table class="sortable pane bigtable" id="jenkinsLintTable">
             <thead>
               <tr>
-                <th class="pane-header">Job Name</th>
+                  <th class="pane-header">Job Name</th>
                   <j:forEach var="checker" items="${it.checkList}">
                       <j:set var="index" value="${index+1}"/>
                       <th tooltip="${checker.getName()}" class="pane-header">${checker.getId()}${index}</th>
                   </j:forEach>
+                  <th tooltip="Weather report showing aggregated status of found lints" class="pane-header">W</th>
               </tr>
             </thead>
             <tbody id="jenkinsLintTableBody">
@@ -52,6 +54,7 @@
                             </j:if>
                         </j:if>
                     </j:forEach>
+                    <td><img src="${rootURL}${job.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${job.getLintHealthReport().getDescription()}"/></td>
                     </tr>
                 </j:forEach>
            </tbody>

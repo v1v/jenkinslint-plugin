@@ -1,5 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
+import hudson.model.HealthReport;
+import org.jenkins.ci.plugins.jenkinslint.Messages;
 import java.util.ArrayList;
 
 /**
@@ -71,5 +73,21 @@ public final class Job implements Comparable<Job> {
         return new StringBuilder().append("Job: ").append(name).
                     append(", ").append(url).
                     append(", ").append(lintList).toString();
+    }
+
+    public HealthReport getLintHealthReport() {
+        if (lintList != null && lintList.size() > 0) {
+            int ok = 0;
+            for (Lint lint : lintList) {
+                if (!lint.isIgnored()) {
+                    if (! lint.isFound()) { ok++; }
+                } else {
+                    ok++;
+                }
+            }
+            int score = (int) (100.0 * ok / lintList.size());
+            return new HealthReport(score, Messages._Job_LintStability(score + "%"));
+        }
+        return null;
     }
 }
