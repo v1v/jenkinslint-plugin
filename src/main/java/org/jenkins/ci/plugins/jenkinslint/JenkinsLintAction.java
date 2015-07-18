@@ -4,27 +4,16 @@ import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
-import org.jenkins.ci.plugins.jenkinslint.check.ArtifactChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.CleanupWorkspaceChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.GitShallowChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.HardcodedScriptChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JavadocChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobAssignedLabelChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobDescriptionChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobLogRotatorChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobNameChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.MasterLabelChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.MavenJobTypeChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.MultibranchJobTypeChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.NullSCMChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.PollingSCMTriggerChecker;
+import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.Job;
 import org.jenkins.ci.plugins.jenkinslint.model.Lint;
+import org.reflections.Reflections;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,20 +29,17 @@ public final class JenkinsLintAction implements RootAction {
         jobSet.clear();
         checkList.clear();
 
-        checkList.add(new JobNameChecker());
-        checkList.add(new JobDescriptionChecker());
-        checkList.add(new JobAssignedLabelChecker());
-        checkList.add(new MasterLabelChecker());
-        checkList.add(new JobLogRotatorChecker());
-        checkList.add(new MavenJobTypeChecker());
-        checkList.add(new CleanupWorkspaceChecker());
-        checkList.add(new JavadocChecker());
-        checkList.add(new ArtifactChecker());
-        checkList.add(new NullSCMChecker());
-        checkList.add(new PollingSCMTriggerChecker( ));
-        checkList.add(new GitShallowChecker());
-        checkList.add(new MultibranchJobTypeChecker());
-        checkList.add(new HardcodedScriptChecker());
+        Reflections reflections = new Reflections("org.jenkins.ci.plugins.jenkinslint.check");
+        Set<Class<? extends AbstractCheck>> classes = reflections.getSubTypesOf(AbstractCheck.class);
+        for (Class<? extends AbstractCheck> reflectionClass : classes) {
+            try {
+                checkList.add(reflectionClass.newInstance());
+            } catch (InstantiationException e) {
+                LOG.log(Level.WARNING, "InstantiationException when running Reflection", e.getCause());
+            } catch (IllegalAccessException e) {
+                LOG.log(Level.WARNING, "IllegalAccessException when running Reflection", e.getCause());
+            }
+        }
 
         for (AbstractProject item : Jenkins.getInstance().getAllItems(AbstractProject.class)) {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());

@@ -98,6 +98,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.10</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.github.mjdetullio.jenkins.plugins</groupId>
       <artifactId>multi-branch-project-plugin</artifactId>
       <version>0.2.2</version>
