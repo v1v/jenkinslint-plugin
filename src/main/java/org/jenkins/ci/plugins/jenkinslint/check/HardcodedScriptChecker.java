@@ -28,7 +28,7 @@ public class HardcodedScriptChecker extends AbstractCheck {
     public boolean executeCheck(Item item) {
         LOG.log(Level.FINE, "executeCheck " + item);
         boolean found = false;
-        if (item instanceof hudson.maven.MavenModuleSet) {
+        if (item.getClass().getName().endsWith("hudson.maven.MavenModuleSet")) {
             found = false;
         } else {
             if (item instanceof Project) {

@@ -18,6 +18,6 @@ public class MavenJobTypeChecker extends AbstractCheck{
     }
 
     public boolean executeCheck(Item item) {
-        return item instanceof hudson.maven.MavenModuleSet;
+        return item.getClass().getName().endsWith("hudson.maven.MavenModuleSet");
     }
 }
