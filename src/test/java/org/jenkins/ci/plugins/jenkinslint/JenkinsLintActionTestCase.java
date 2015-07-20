@@ -25,6 +25,7 @@ public class JenkinsLintActionTestCase {
         HtmlPage page = j.createWebClient().goTo(URL);
         WebAssert.assertTextPresent(page, "JenkinsLint");
         assertTrue(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
+        WebAssert.assertTextPresent(page, "JL-1");
     }
     //Issue("JENKINS-29418")
     @Test
@@ -37,5 +38,6 @@ public class JenkinsLintActionTestCase {
         WebAssert.assertTextPresent(page, "JenkinsLint");
         assertFalse(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
         assertTrue(page.getWebResponse().getContentAsString().contains(j.getURL().toString() + project.getUrl()));
+        WebAssert.assertTextPresent(page, "JL-1");
     }
 }
