@@ -21,9 +21,8 @@ public class CleanupWorkspaceChecker extends AbstractCheck{
 
     public boolean executeCheck(Item item) {
         if (Jenkins.getInstance().pluginManager.getPlugin("ws-cleanup")!=null) {
-            return item instanceof Project && ((Project) item).getPublisher(Descriptor.find(hudson.plugins.ws_cleanup.WsCleanup.DescriptorImpl.class.getName())) == null;
+            return item instanceof Project && ((Project) item).getPublisher(Descriptor.find("hudson.plugins.ws_cleanup.WsCleanup")) == null;
         } else {
-            // If ws-cleanup hasn't been installed yet
             return true;
         }
     }
