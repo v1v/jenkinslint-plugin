@@ -49,6 +49,9 @@ public class GitShallowCheckerTestCase {
         extensions.add(new CleanCheckout());
         project.setScm(new hudson.plugins.git.GitSCM(null, null, false, null, null, "", extensions));
         assertTrue(checker.executeCheck(project));
+        extensions.add(new CloneOption(false, "", 0));
+        project.setScm(new hudson.plugins.git.GitSCM(null, null, false, null, null, "", extensions));
+        assertTrue(checker.executeCheck(project));
     }
     @Test public void testGitSCMWithCloneOptionExtensionNoShallowJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
