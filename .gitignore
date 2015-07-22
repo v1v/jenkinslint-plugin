@@ -6,3 +6,5 @@ work*/
 jenkins.war
 .idea/
 *.iml
+*.ipr
+*.iws
