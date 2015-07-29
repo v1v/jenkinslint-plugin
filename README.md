@@ -52,6 +52,7 @@ List available Checks
 * Polling SCM Trigger check
 * Multibranch Job Type check
 * Hardcoded Script check
+* Gradle Wrapper check
 
 
 Development
