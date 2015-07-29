@@ -4,6 +4,7 @@ import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
+import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 import java.util.List;
@@ -17,26 +18,26 @@ public class GradleWrapperChecker extends AbstractCheck {
     public GradleWrapperChecker() {
         super();
         this.setDescription("By distributing the wrapper with your project, anyone can work with it without needing to " +
-                            "install Gradle beforehand.<br/> Even better, users of the build are guaranteed to use the " +
-                            "version of Gradle that the build was designed to work with.<br/>" +
-                            "<a href=https://docs.gradle.org/current/userguide/gradle_wrapper.html>The Gradle Wrapper</a>");
+                            "install Gradle beforehand. Even better, users of the build <br/> are guaranteed to use the " +
+                            "version of Gradle that the build was designed to work with. Further details: " +
+                            "<a href=https://docs.gradle.org/current/userguide/gradle_wrapper.html> Gradle Wrapper docs</a>.");
         this.setSeverity("Medium");
     }
 
     public boolean executeCheck(Item item) {
         boolean found = false;
-        //if (Jenkins.getInstance().pluginManager.getPlugin("gradle") != null) {
-        if (item.getClass().getName().endsWith("hudson.maven.MavenModuleSet")) {
-            found = false;
-        } else {
-            if (item instanceof Project) {
-                found = isGradlew(((Project) item).getBuilders());
-            }
-            if (item instanceof MatrixProject) {
-                found = isGradlew(((MatrixProject) item).getBuilders());
+        if (Jenkins.getInstance().pluginManager.getPlugin("gradle") != null) {
+            if (item.getClass().getName().endsWith("hudson.maven.MavenModuleSet")) {
+                found = false;
+            } else {
+                if (item instanceof Project) {
+                    found = isGradlew(((Project) item).getBuilders());
+                }
+                if (item instanceof MatrixProject) {
+                    found = isGradlew(((MatrixProject) item).getBuilders());
+                }
             }
         }
-        //}
         return found;
     }
 
