@@ -7,6 +7,8 @@
           <l:task icon="images/24x24/up.gif" href="${rootURL}/" title="${%Back to Dashboard}" />
           <l:task icon="images/32x32/graph.png" href="${rootURL}/jenkinslint" title="${%Jenkins Lint}" />
           <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=description" title="${%    |--- Show Checks}" />
+          <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=job" title="${%    |--- Filter Job Check}" />
+          <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=slave" title="${%    |--- Filter Slave Check}" />
       </l:tasks>
     </l:side-panel>
     <l:main-panel>
@@ -21,44 +23,45 @@
         <j:set var="index" value="0"/>
         <j:set var="data" value="${it.data}"/>
         <h1>${%Jenkins.Lint.Title}</h1>
-        <j:if test="${(filter == null)}">
+        <j:if test="${(filter == null) or (filter == 'job')}">
             <h4>${%Jenkins.Lint.Description}</h4>
             ${%Jenkins.Lint.Description.1}
             ${%Jenkins.Lint.Description.2}
             <br/>
             <table class="sortable pane bigtable" id="jenkinsLintTable">
-            <thead>
-              <tr>
-                  <th class="pane-header">Job Name</th>
-                  <j:forEach var="checker" items="${it.checkList}">
-                      <j:set var="index" value="${index+1}"/>
-                      <th tooltip="${checker.getName()}" class="pane-header">${checker.getId()}${index}</th>
-                  </j:forEach>
-                  <th tooltip="Weather report showing aggregated status of found lints" class="pane-header">W</th>
-              </tr>
-            </thead>
-            <tbody id="jenkinsLintTableBody">
-                <j:forEach var="job" items="${it.jobSet.elements()}">
-                    <tr>
-                    <td><a href="${app.rootUrl}${job.url}" target="_blank">${job.name}</a></td>
-                    <j:forEach var="lint" items="${job.lintList}">
-                        <j:if test="${lint.ignored}">
-                            <td tooltip="ignored" style="background-color: #f0f0f0;"/>
-                        </j:if>
-                        <j:if test="${!lint.ignored}">
-                            <j:if test="${lint.found}">
-                                <td tooltip="found" style="background-color: #FF8566;"/>
+                <thead>
+                  <tr>
+                      <th class="pane-header">Job Name</th>
+                      <j:forEach var="checker" items="${it.checkList}">
+                          <j:set var="index" value="${index+1}"/>
+                          <th tooltip="${checker.getName()}" class="pane-header">${checker.getId()}${index}</th>
+                      </j:forEach>
+                      <th tooltip="Weather report showing aggregated status of found lints" class="pane-header">W</th>
+                  </tr>
+                </thead>
+                <tbody id="jenkinsLintTableBody">
+                    <j:forEach var="job" items="${it.jobSet.elements()}">
+                        <tr>
+                        <td><a href="${app.rootUrl}${job.url}" target="_blank">${job.name}</a></td>
+                        <j:forEach var="lint" items="${job.lintList}">
+                            <j:if test="${lint.ignored}">
+                                <td tooltip="ignored" style="background-color: #f0f0f0;"/>
                             </j:if>
-                            <j:if test="${!lint.found}">
-                                <td tooltip="notFound" style="background-color: #B8EEB8;"/>
+                            <j:if test="${!lint.ignored}">
+                                <j:if test="${lint.found}">
+                                    <td tooltip="found" style="background-color: #FF8566;"/>
+                                </j:if>
+                                <j:if test="${!lint.found}">
+                                    <td tooltip="notFound" style="background-color: #B8EEB8;"/>
+                                </j:if>
                             </j:if>
-                        </j:if>
+                        </j:forEach>
+                        <td><img src="${rootURL}${job.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${job.getLintHealthReport().getDescription()}"/></td>
+                        </tr>
                     </j:forEach>
-                    <td><img src="${rootURL}${job.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${job.getLintHealthReport().getDescription()}"/></td>
-                    </tr>
-                </j:forEach>
-           </tbody>
-         </table>
+               </tbody>
+            </table>
+            <br/>
         </j:if>
         <j:if test="${(filter != null) and (filter == 'description')}">
             <j:set var="index" value="0"/>
@@ -84,6 +87,69 @@
                 </table>
                 <br/>
             </j:forEach>
+            <j:forEach var="check" items="${it.slaveCheckList}">
+                <j:set var="index" value="${index+1}"/>
+                <table class="pane bigtable" id="jenkinsLintDescriptionTable">
+                    <thead>
+                        <tr>
+                            <th class="pane-header">${check.getId()}${index}: ${check.getName()}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jenkinsLintDescriptionTableBody">
+                        <tr>
+                            <td><b>Description:</b> ${check.getDescription()}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Severity:</b> ${check.getSeverity()}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Control Comment:</b> To disable this checker you can add <code>lint:ignore:${check.getName()}</code> to your Jenkins project.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br/>
+            </j:forEach>
+        </j:if>
+        <j:if test="${(filter == null) or (filter == 'slave')}">
+            <j:if test="${(filter == 'slave')}">
+                <h4>${%Jenkins.Lint.Description}</h4>
+                ${%Jenkins.Lint.Description.1}
+                ${%Jenkins.Lint.Description.2}
+                <br/>
+            </j:if>
+            <table class="sortable pane bigtable" id="jenkinsSlaveTable">
+                <thead>
+                    <tr>
+                        <th class="pane-header">Slave Name</th>
+                        <j:forEach var="check" items="${it.slaveCheckList}">
+                            <j:set var="index" value="${index+1}"/>
+                            <th tooltip="${check.getName()}" class="pane-header">${check.getId()}${index}</th>
+                        </j:forEach>
+                        <th tooltip="Weather report showing aggregated status of found lints" class="pane-header">W</th>
+                    </tr>
+                </thead>
+                <tbody id="jenkinsSlaveTableBody">
+                    <j:forEach var="slave" items="${it.slaveSet.elements()}">
+                        <tr>
+                            <td><a href="${app.rootUrl}${slave.url}" target="_blank">${slave.name}</a></td>
+                            <j:forEach var="lint" items="${slave.lintList}">
+                                <j:if test="${lint.ignored}">
+                                    <td tooltip="ignored" style="background-color: #f0f0f0;"/>
+                                </j:if>
+                                <j:if test="${!lint.ignored}">
+                                    <j:if test="${lint.found}">
+                                        <td tooltip="found" style="background-color: #FF8566;"/>
+                                    </j:if>
+                                    <j:if test="${!lint.found}">
+                                        <td tooltip="notFound" style="background-color: #B8EEB8;"/>
+                                    </j:if>
+                                </j:if>
+                            </j:forEach>
+                            <td><img src="${rootURL}${slave.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${slave.getLintHealthReport().getDescription()}"/></td>
+                        </tr>
+                    </j:forEach>
+                </tbody>
+            </table>
         </j:if>
     </l:main-panel>
  </l:layout>
