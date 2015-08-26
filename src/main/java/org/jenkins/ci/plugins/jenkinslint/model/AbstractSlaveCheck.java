@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveCheck>, InterfaceSlaveCheck {
     private String name;
     private String description;
-    private String id = "SL-";
+    private String id = "JL-";
     private String severity;
     protected static final Logger LOG = Logger.getLogger(AbstractSlaveCheck.class.getName());
 

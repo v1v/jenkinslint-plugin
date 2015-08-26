@@ -117,6 +117,7 @@
                 ${%Jenkins.Lint.Description.2}
                 <br/>
             </j:if>
+            <j:set var="index" value="${it.checkList.size()}"/>
             <table class="sortable pane bigtable" id="jenkinsSlaveTable">
                 <thead>
                     <tr>
