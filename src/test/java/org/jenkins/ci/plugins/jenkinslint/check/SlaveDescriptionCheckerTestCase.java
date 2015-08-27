@@ -12,8 +12,8 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * SlaveDescriptionChecker Test Case.
@@ -26,12 +26,10 @@ public class SlaveDescriptionCheckerTestCase {
     @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultSlave() throws Exception {
         Slave slave = createSlave("default", "");
-        System.out.println (slave.getNodeDescription());
         assertTrue(checker.executeCheck(slave));
     }
     @Test public void testSlaveDescription() throws Exception {
         Slave slave = createSlave("default", "somedescription");
-        System.out.println (slave.getNodeDescription());
         assertFalse(checker.executeCheck(slave));
     }
 
