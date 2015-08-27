@@ -53,8 +53,8 @@ public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveChec
         return getName().compareTo(other.getName());
     }
 
-    public boolean isIgnored(String jobDescription) {
-        return jobDescription != null && jobDescription.contains("lint:ignore:" + this.getName());
+    public boolean isIgnored(String description) {
+        return description != null && description.contains("lint:ignore:" + this.getName());
     }
 
     @Override
