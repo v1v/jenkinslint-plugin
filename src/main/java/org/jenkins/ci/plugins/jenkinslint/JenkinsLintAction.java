@@ -23,6 +23,7 @@ import org.jenkins.ci.plugins.jenkinslint.check.PollingSCMTriggerChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.SlaveDescriptionChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.SlaveLabelChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.SlaveVersionChecker;
+import org.jenkins.ci.plugins.jenkinslint.check.TimeoutChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.WindowsSlaveLaunchChecker;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceSlaveCheck;
@@ -67,6 +68,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new MultibranchJobTypeChecker());
         checkList.add(new HardcodedScriptChecker());
         checkList.add(new GradleWrapperChecker());
+        checkList.add(new TimeoutChecker());
 
         slaveCheckList.add(new SlaveDescriptionChecker());
         slaveCheckList.add(new SlaveVersionChecker());
