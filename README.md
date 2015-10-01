@@ -53,6 +53,7 @@ List available Checks
 * Multibranch Job Type check
 * Hardcoded Script check
 * Gradle Wrapper check
+* Build timeout check
 * Slave description check
 * Slave label check
 * Slave version check
