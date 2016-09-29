@@ -33,7 +33,8 @@ TODO
 - Configure Checks (enabled, disabled, change severity)
 - Load checks dynamically.
 - Jobs action to show those Jenkins lints.
-
+- System.exit in system admin groovy scripts (prebuilder, builders, publishers and parameters)
+- Support pipeline
 
 List available Checks
 =====================
