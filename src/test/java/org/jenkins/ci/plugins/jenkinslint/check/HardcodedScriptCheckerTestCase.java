@@ -75,6 +75,10 @@ public class HardcodedScriptCheckerTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+        MavenModuleSet mavenProject = j.createMavenProject();
+        assertFalse(checker.isIgnored(mavenProject.getDescription()));
+        mavenProject.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
+        assertTrue(checker.isIgnored(mavenProject.getDescription()));
     }
     //@Issue("JENKINS-29427")
     @Test public void testAnotherBuilders() throws Exception {
@@ -86,5 +90,28 @@ public class HardcodedScriptCheckerTestCase {
         project.getBuildersList().add(new hudson.tasks.Ant("","","","",""));
         assertFalse(checker.executeCheck(project));
         project.delete();
+    }
+    //@Issue("JENKINS-38616")
+    @Test public void testMavenModuleJob() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        assertFalse(checker.executeCheck(project));
+    }
+    //@Issue("JENKINS-38616")
+    @Test public void testMavenModuleJobbWithHardcodedScript() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        project.getPrebuilders().add(new hudson.tasks.Shell("#!/bin/bash #single line"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("Bash_Multiple_Line");
+        project.getPrebuilders().add(new hudson.tasks.Shell("#!/bin/bash\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("Batch_Single_Line");
+        project.getPrebuilders().add(new hudson.tasks.BatchFile("echo first"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("Batch_Multiple_Line");
+        project.getPrebuilders().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertTrue(checker.executeCheck(project));
     }
 }
