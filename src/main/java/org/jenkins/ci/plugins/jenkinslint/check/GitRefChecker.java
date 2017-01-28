@@ -8,6 +8,7 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 import java.lang.reflect.Method;
 import java.util.AbstractList;
 import java.util.logging.Level;
+import hudson.PluginWrapper;
 
 /**
  * @author Victor Martinez
@@ -23,7 +24,8 @@ public class GitRefChecker extends AbstractCheck {
 
     public boolean executeCheck(Item item) {
         if (item instanceof Project) {
-            if (Jenkins.getInstance().pluginManager.getPlugin("git")!=null) {
+            PluginWrapper plugin = Jenkins.getInstance().pluginManager.getPlugin("git");
+            if (plugin!=null && !plugin.getVersionNumber().isOlderThan(new hudson.util.VersionNumber("2.0"))) {
                 if (((Project) item).getScm().getClass().getName().endsWith("GitSCM")) {
                     boolean status = true;
                     try {
@@ -45,6 +47,9 @@ public class GitRefChecker extends AbstractCheck {
                     } finally {
                         return status;
                     }
+                } else {
+                    LOG.log(Level.FINE, "Plugin GIT hasn't been configured in this project");
+                    status = false;
                 }
             } else {
                 LOG.log(Level.FINE, "Plugin GIT doesn't exist");
