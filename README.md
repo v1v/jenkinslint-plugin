@@ -35,6 +35,7 @@ TODO
 - Jobs action to show those Jenkins lints.
 - System.exit in system admin groovy scripts (prebuilder, builders, publishers and parameters)
 - Support pipeline
+- Exposed API
 
 List available Checks
 =====================
@@ -42,6 +43,7 @@ List available Checks
 * Artifact Publisher check
 * CleanUp Workspace check
 * Git Shallow clone check
+* Git Ref repo check
 * Javadoc Publisher check
 * Job Assigned Label check
 * Master Assigned Label check

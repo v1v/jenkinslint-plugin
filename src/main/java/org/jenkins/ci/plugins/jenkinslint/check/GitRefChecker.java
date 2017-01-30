@@ -34,7 +34,7 @@ public class GitRefChecker extends AbstractCheck {
                         if (extensionsList instanceof AbstractList) {
                             for (Object extension : ((AbstractList) extensionsList) ) {
                                 if (extension.getClass().getName().endsWith("CloneOption")) {
-                                    Object reference = extension.getClass().getMethod("reference", null).invoke(extension);
+                                    Object reference = extension.getClass().getMethod("getReference", null).invoke(extension);
                                     if (reference instanceof String) {
                                         status = ((String) reference).isEmpty();
                                     }
@@ -49,7 +49,7 @@ public class GitRefChecker extends AbstractCheck {
                     }
                 } else {
                     LOG.log(Level.FINE, "Plugin GIT hasn't been configured in this project");
-                    status = false;
+                    return false;
                 }
             } else {
                 LOG.log(Level.FINE, "Plugin GIT doesn't exist");
