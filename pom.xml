@@ -98,6 +98,13 @@
 
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>groovy</artifactId>
+      <version>1.10</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>ws-cleanup</artifactId>
       <version>0.26</version>
       <scope>test</scope>
