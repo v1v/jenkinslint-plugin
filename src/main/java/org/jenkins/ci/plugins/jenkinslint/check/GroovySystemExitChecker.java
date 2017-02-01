@@ -4,7 +4,6 @@ import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.Item;
 import hudson.model.Project;
-import hudson.plugins.groovy.StringScriptSource;
 import hudson.tasks.Builder;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
@@ -51,19 +50,25 @@ public class GroovySystemExitChecker extends AbstractCheck {
         boolean status = false;
         if (builders != null && builders.size() > 0 ) {
             for (Builder builder : builders) {
-                // TODO: Reflection to decouple groovy plugin classs dependencies
-
-                if (builder instanceof hudson.plugins.groovy.SystemGroovy) {
-                    hudson.plugins.groovy.SystemGroovy builder1 = (hudson.plugins.groovy.SystemGroovy) builder;
-                    String command = ((hudson.plugins.groovy.StringScriptSource) builder1.getScriptSource()).getCommand();
-                    LOG.log(Level.INFO, "groovy " + command);
-                    // TODO: Parse to search for non comments, otherwise some false positives!
-                    if (command != null && command.toLowerCase().contains("system.exit") ) {
-                        status = true;
+                if (builder.getClass().getName().endsWith("SystemGroovy")) {
+                    try {
+                        Object scriptSource = builder.getClass().getMethod("getScriptSource",null).invoke(builder);
+                        if (scriptSource.getClass().getName().endsWith("StringScriptSource")) {
+                            Object command = scriptSource.getClass().getMethod("getCommand",null).invoke(scriptSource);
+                            if (command instanceof String) {
+                                // TODO: Parse to search for non comments, otherwise some false positives!
+                                status = (command != null && ((String) command).toLowerCase().contains("system.exit"));
+                                LOG.log(Level.FINE, "isSystemExit " + status);
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                        status = false;
                     }
                 }
             }
         }
         return status;
     }
+
 }
