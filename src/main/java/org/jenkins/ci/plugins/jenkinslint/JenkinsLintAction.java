@@ -9,6 +9,7 @@ import org.jenkins.ci.plugins.jenkinslint.check.ArtifactChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.CleanupWorkspaceChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.GitShallowChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.GradleWrapperChecker;
+import org.jenkins.ci.plugins.jenkinslint.check.GroovySystemExitChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.HardcodedScriptChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JavadocChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JobAssignedLabelChecker;
@@ -69,6 +70,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new HardcodedScriptChecker());
         checkList.add(new GradleWrapperChecker());
         checkList.add(new TimeoutChecker());
+        checkList.add(new GroovySystemExitChecker());
 
         slaveCheckList.add(new SlaveDescriptionChecker());
         slaveCheckList.add(new SlaveVersionChecker());

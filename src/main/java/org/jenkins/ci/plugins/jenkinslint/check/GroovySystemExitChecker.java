@@ -19,10 +19,9 @@ public class GroovySystemExitChecker extends AbstractCheck {
 
     public GroovySystemExitChecker() {
         super();
-        this.setDescription("By distributing the wrapper with your project, anyone can work with it without needing to " +
-                            "install Gradle beforehand. Even better, users of the build <br/> are guaranteed to use the " +
-                            "version of Gradle that the build was designed to work with. Further details: " +
-                            "<a href=https://docs.gradle.org/current/userguide/gradle_wrapper.html> Gradle Wrapper docs</a>.");
+        this.setDescription("System groovy scripts run in same JVM as Jenkins master, so there's no surprise that System.exit() kills your Jenkins master. " +
+                            "Throwing an exception is definitely better approach how to announce some problem in the script. Further details: " +
+                            "<a href=https://issues.jenkins-ci.org/browse/JENKINS-14023>JENKINS-14023</a>.");
         this.setSeverity("High");
     }
 
@@ -42,6 +41,8 @@ public class GroovySystemExitChecker extends AbstractCheck {
                 found = isSystemExit(((MatrixProject) item).getBuilders());
             }
 
+        } else {
+            LOG.log(Level.INFO, "Groovy is not installed");
         }
         return found;
     }
@@ -50,8 +51,14 @@ public class GroovySystemExitChecker extends AbstractCheck {
         boolean status = false;
         if (builders != null && builders.size() > 0 ) {
             for (Builder builder : builders) {
+                // TODO: Reflection to decouple groovy plugin classs dependencies
+
                 if (builder instanceof hudson.plugins.groovy.SystemGroovy) {
-                    if ((( hudson.plugins.groovy.SystemGroovy) builder).getCommand().toLowerCase().contains("system.exit") ) {
+                    hudson.plugins.groovy.SystemGroovy builder1 = (hudson.plugins.groovy.SystemGroovy) builder;
+                    String command = ((hudson.plugins.groovy.StringScriptSource) builder1.getScriptSource()).getCommand();
+                    LOG.log(Level.INFO, "groovy " + command);
+                    // TODO: Parse to search for non comments, otherwise some false positives!
+                    if (command != null && command.toLowerCase().contains("system.exit") ) {
                         status = true;
                     }
                 }
