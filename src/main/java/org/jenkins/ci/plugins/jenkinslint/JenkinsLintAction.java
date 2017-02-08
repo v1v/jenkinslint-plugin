@@ -7,6 +7,7 @@ import hudson.model.RootAction;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.check.ArtifactChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.CleanupWorkspaceChecker;
+import org.jenkins.ci.plugins.jenkinslint.check.GitRefChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.GitShallowChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.GradleWrapperChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.GroovySystemExitChecker;
@@ -71,6 +72,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new GradleWrapperChecker());
         checkList.add(new TimeoutChecker());
         checkList.add(new GroovySystemExitChecker());
+        checkList.add(new GitRefChecker());
 
         slaveCheckList.add(new SlaveDescriptionChecker());
         slaveCheckList.add(new SlaveVersionChecker());
