@@ -19,7 +19,7 @@ public class GroovySystemExitChecker extends AbstractCheck {
     public GroovySystemExitChecker() {
         super();
         this.setDescription("System groovy scripts run in same JVM as Jenkins master, so there's no surprise that System.exit() kills your Jenkins master. " +
-                            "Throwing an exception is definitely better approach how to announce some problem in the script. Further details: " +
+                            "<br/> Throwing an exception is definitely better approach how to announce some problem in the script. Further details: " +
                             "<a href=https://issues.jenkins-ci.org/browse/JENKINS-14023>JENKINS-14023</a>.");
         this.setSeverity("High");
     }

@@ -21,7 +21,7 @@ public class TimeoutChecker extends AbstractCheck {
     public TimeoutChecker() {
         super();
         this.setDescription("There are some builds which might hang forever and cause inaction in the build queue and slaves. " +
-                "It's recommended to control those time based on the <a href=https://wiki.jenkins-ci.org/display/JENKINS/Build-timeout+Plugin>>build timeout plugin</a>.");
+                "It's recommended to control those time based on the <a href=https://wiki.jenkins-ci.org/display/JENKINS/Build-timeout+Plugin>build timeout plugin</a>.");
         this.setSeverity("Medium");
     }
 
