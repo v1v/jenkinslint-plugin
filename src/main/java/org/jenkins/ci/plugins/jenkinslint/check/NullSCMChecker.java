@@ -11,9 +11,8 @@ public class NullSCMChecker extends AbstractCheck {
 
     public NullSCMChecker() {
         super();
-        this.setDescription("Jenkins works fine with cron/batch tasks, It's strongly recommended to use any " +
-                            "SCM tool and therefore to have in that repo whatever script you need to run.");
-        this.setSeverity("Low");
+        this.setDescription(Messages.NullSCMCheckerDesc());
+        this.setSeverity(Messages.NullSCMCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
