@@ -17,9 +17,8 @@ public class GitRefChecker extends AbstractCheck {
 
     public GitRefChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs with Git SCM you might speed up the cloning time if " +
-                            "you use git ref repos when cloning.");
-        this.setSeverity("Low");
+        this.setDescription(Messages.GitRefCheckerDesc());
+        this.setSeverity(Messages.GitRefCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
