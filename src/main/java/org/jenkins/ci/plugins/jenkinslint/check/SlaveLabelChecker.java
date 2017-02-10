@@ -12,8 +12,8 @@ public class SlaveLabelChecker extends AbstractSlaveCheck {
 
     public SlaveLabelChecker() {
         super();
-        this.setDescription("When setting Jenkins Slaves you should set their labels in order to tie those Jobs.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.SlaveLabelCheckerDesc());
+        this.setSeverity(Messages.SlaveLabelCheckerSeverity());
     }
 
     public boolean executeCheck(Node item) {
