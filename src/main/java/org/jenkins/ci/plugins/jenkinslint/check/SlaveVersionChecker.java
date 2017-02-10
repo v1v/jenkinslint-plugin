@@ -17,8 +17,8 @@ public class SlaveVersionChecker extends AbstractSlaveCheck {
 
     public SlaveVersionChecker() {
         super();
-        this.setDescription("Jenkins slave description might help you to know what it does and further details.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.SlaveVersionCheckerDesc());
+        this.setSeverity(Messages.SlaveVersionCheckerSeverity());
     }
 
     public boolean executeCheck(Node item) {
