@@ -13,8 +13,8 @@ public class CleanupWorkspaceChecker extends AbstractCheck{
 
     public CleanupWorkspaceChecker() {
         super();
-        this.setDescription(Messages.CleanupCheckerDesc());
-        this.setSeverity(Messages.CleanupCheckerSeverity());
+        this.setDescription(Messages.CleanupWorkspaceCheckerDesc());
+        this.setSeverity(Messages.CleanupWorkspaceCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
