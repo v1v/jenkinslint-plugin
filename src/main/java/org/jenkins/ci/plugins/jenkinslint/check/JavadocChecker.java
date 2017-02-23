@@ -15,10 +15,8 @@ public class JavadocChecker extends AbstractCheck{
 
     public JavadocChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs with Javadoc post build you should either set which javadocs " +
-                            "or remove this unused publisher phase.<br/>" +
-                            "Otherwise the archive artifact phase may not match what you expect.");
-        this.setSeverity("Low");
+        this.setDescription(Messages.JavadocCheckerDesc());
+        this.setSeverity(Messages.JavadocCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

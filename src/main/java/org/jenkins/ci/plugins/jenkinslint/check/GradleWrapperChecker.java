@@ -18,11 +18,8 @@ public class GradleWrapperChecker extends AbstractCheck {
 
     public GradleWrapperChecker() {
         super();
-        this.setDescription("By distributing the wrapper with your project, anyone can work with it without needing to " +
-                            "install Gradle beforehand. Even better, users of the build <br/> are guaranteed to use the " +
-                            "version of Gradle that the build was designed to work with. Further details: " +
-                            "<a href=https://docs.gradle.org/current/userguide/gradle_wrapper.html> Gradle Wrapper docs</a>.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.GradleWrapperCheckerDesc());
+        this.setSeverity(Messages.GradleWrapperCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

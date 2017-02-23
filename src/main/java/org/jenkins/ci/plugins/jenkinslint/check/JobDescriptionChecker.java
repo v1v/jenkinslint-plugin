@@ -11,8 +11,8 @@ public class JobDescriptionChecker extends AbstractCheck{
 
     public JobDescriptionChecker() {
         super();
-        this.setDescription("Jenkins project description might help you to know what it does and further details.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.JobDescriptionCheckerDesc());
+        this.setSeverity(Messages.JobDescriptionCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

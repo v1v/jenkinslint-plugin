@@ -16,9 +16,8 @@ public class GitShallowChecker extends AbstractCheck {
 
     public GitShallowChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs with Git SCM Artifact you might speed up the cloning time if " +
-                            "you use shallow cloning.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.GitShallowCheckerDesc());
+        this.setSeverity(Messages.GitShallowCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

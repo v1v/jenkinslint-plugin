@@ -13,10 +13,8 @@ public class CleanupWorkspaceChecker extends AbstractCheck{
 
     public CleanupWorkspaceChecker() {
         super();
-        this.setDescription("There are some builds which demand a lot of disc space. Some builds might run " +
-                            "out of space during the build itself and cause build errors.<br/>" +
-                            "It's recommended to wipe out those workspaces after building.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.CleanupWorkspaceCheckerDesc());
+        this.setSeverity(Messages.CleanupWorkspaceCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

@@ -11,8 +11,8 @@ public class JobAssignedLabelChecker extends AbstractCheck{
 
     public JobAssignedLabelChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs you should set where those Jobs can run.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.JobAssignedLabelCheckerDesc());
+        this.setSeverity(Messages.JobAssignedLabelCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

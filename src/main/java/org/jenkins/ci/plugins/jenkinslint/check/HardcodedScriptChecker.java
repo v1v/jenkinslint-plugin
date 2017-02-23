@@ -21,10 +21,9 @@ public class HardcodedScriptChecker extends AbstractCheck {
 
     public HardcodedScriptChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs with Shell/Batch builds you shouldn't hardcoded the script "+
-                            "it's recommended to track them in your SCM tool instead.<br/>" +
-                            "Otherwise you won't be able to reproduce your CI environment easily.");
-        this.setSeverity("Medium");
+
+        this.setDescription(Messages.HardcodedScriptCheckerDesc());
+        this.setSeverity(Messages.HardcodedScriptCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
