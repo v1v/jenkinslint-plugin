@@ -17,6 +17,7 @@ import org.jenkins.ci.plugins.jenkinslint.check.JobAssignedLabelChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JobDescriptionChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JobLogRotatorChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.JobNameChecker;
+import org.jenkins.ci.plugins.jenkinslint.check.TimerTriggerChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.MasterLabelChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.MavenJobTypeChecker;
 import org.jenkins.ci.plugins.jenkinslint.check.MultibranchJobTypeChecker;
@@ -73,6 +74,7 @@ public final class JenkinsLintAction implements RootAction {
         checkList.add(new TimeoutChecker());
         checkList.add(new GroovySystemExitChecker());
         checkList.add(new GitRefChecker());
+        checkList.add(new TimerTriggerChecker());
 
         slaveCheckList.add(new SlaveDescriptionChecker());
         slaveCheckList.add(new SlaveVersionChecker());
