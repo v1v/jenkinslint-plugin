@@ -19,6 +19,7 @@ public class TimerTriggerCheckerTestCase {
 
     private static final String TIMER_WITHOUT_H = "20 * * * *";
     private static final String TIMER_WITH_H = "H/15 * * * *";
+    private static final String TIMER_WITH_COMMENT = " # H 15 1 * * *";
 
 
     @Rule public JenkinsRule j = new JenkinsRule();
@@ -56,14 +57,19 @@ public class TimerTriggerCheckerTestCase {
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n" + TIMER_WITH_H +  "\n" + TIMER_WITH_H);
         project.addTrigger(newTrigger);
         project.save();
-        assertFalse(checker.executeCheck(project));
+        assertTrue(checker.executeCheck(project));
     }
     @Test public void testCommentedTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n#" + TIMER_WITH_H);
         project.addTrigger(newTrigger);
         project.save();
+        project.delete();
         assertTrue(checker.executeCheck(project));
+        newTrigger = new TimerTrigger(TIMER_WITH_COMMENT);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertFalse(checker.executeCheck(project));
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
