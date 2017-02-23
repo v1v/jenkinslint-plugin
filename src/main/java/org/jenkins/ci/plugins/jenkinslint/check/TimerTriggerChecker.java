@@ -12,9 +12,8 @@ public class TimerTriggerChecker extends AbstractCheck{
 
     public TimerTriggerChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs with some Timer trigger configuration use the symbol H (for “hash”) wherever possible \n" +
-                            "to allow periodically scheduled tasks to produce even load on the system.");
-        this.setSeverity("Low");
+        this.setDescription(Messages.TimerTriggerCheckerDesc());
+        this.setSeverity(Messages.TimerTriggerCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
