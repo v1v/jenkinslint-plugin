@@ -8,9 +8,9 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 /**
  * @author Victor Martinez
  */
-public class JobTimerTriggerChecker extends AbstractCheck{
+public class TimerTriggerChecker extends AbstractCheck{
 
-    public JobTimerTriggerChecker() {
+    public TimerTriggerChecker() {
         super();
         this.setDescription("When setting Jenkins Jobs with some Timer trigger configuration use the symbol H (for “hash”) wherever possible \n" +
                             "to allow periodically scheduled tasks to produce even load on the system.");

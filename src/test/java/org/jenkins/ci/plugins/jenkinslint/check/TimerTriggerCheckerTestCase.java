@@ -2,7 +2,6 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
 import hudson.triggers.TimerTrigger;
-import hudson.triggers.Trigger;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -11,12 +10,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * JobTimerTriggerCheckerTestCase Test Case.
+ * TimerTriggerCheckerTestCase Test Case.
  *
  * @author Victor Martinez
  */
-public class JobTimerTriggerCheckerTestCase {
-    private  JobTimerTriggerChecker checker = new  JobTimerTriggerChecker();
+public class TimerTriggerCheckerTestCase {
+    private TimerTriggerChecker checker = new TimerTriggerChecker();
 
     private static final String TIMER_WITHOUT_H = "20 * * * *";
     private static final String TIMER_WITH_H = "H/15 * * * *";
