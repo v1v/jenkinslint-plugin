@@ -49,6 +49,7 @@ public class JobDescriptionCheckerTestCase {
         MatrixProject project = j.createMatrixProject();
         assertTrue(checker.executeCheck(project));
     }
+    @Issue("JENKINS-42310")
     @Test public void testMatrixProjectDescription() throws Exception {
         MatrixProject project = j.createMatrixProject("WithoutSystem");
         project.setDescription("Some Description");
