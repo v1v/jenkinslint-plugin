@@ -1,9 +1,13 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.matrix.MatrixProject;
+import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+import hudson.plugins.ws_cleanup.WsCleanup;
 import hudson.triggers.TimerTrigger;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
@@ -67,6 +71,44 @@ public class TimerTriggerCheckerTestCase {
         project.delete();
         assertTrue(checker.executeCheck(project));
         newTrigger = new TimerTrigger(TIMER_WITH_COMMENT);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMavenModuleJob() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMavenTimerTrigger() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject();
+        newTrigger = new TimerTrigger(TIMER_WITH_H);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMatrixProject() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMatrixTimerTrigger() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject();
+        newTrigger = new TimerTrigger(TIMER_WITH_H);
         project.addTrigger(newTrigger);
         project.save();
         assertFalse(checker.executeCheck(project));
