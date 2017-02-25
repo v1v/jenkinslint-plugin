@@ -11,6 +11,7 @@ import hudson.plugins.build_timeout.impl.LikelyStuckTimeOutStrategy;
 import hudson.plugins.build_timeout.impl.NoActivityTimeOutStrategy;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
@@ -33,7 +34,7 @@ public class TimeoutCheckerTestCase {
         MavenModuleSet project = j.createMavenProject();
         assertTrue(checker.executeCheck(project));
     }
-    //@Issue("JENKINS-29444")
+    @Issue("JENKINS-38616")
     @Test public void testMatrixProject() throws Exception {
         MatrixProject project = j.createMatrixProject();
         assertTrue(checker.executeCheck(project));
@@ -86,7 +87,7 @@ public class TimeoutCheckerTestCase {
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
     }
-    //@Issue("JENKINS-29427")
+    @Issue("JENKINS-38616")
     @Test public void testAnotherBuilders() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject("MsBuildBuilder");
         project.getBuildersList().add(new hudson.plugins.msbuild.MsBuildBuilder("", "", "", true, true, true));
