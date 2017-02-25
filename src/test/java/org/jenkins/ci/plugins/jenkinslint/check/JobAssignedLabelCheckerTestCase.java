@@ -41,8 +41,8 @@ public class JobAssignedLabelCheckerTestCase {
         assertTrue(checker.executeCheck(project));
     }
     @Issue("JENKINS-42310")
-    @Test public void testMavenDescription() throws Exception {
-        MavenModuleSet project = j.createMavenProject("WithoutSystem");
+    @Test public void testMavenWithAssignedLabel() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
         j.createSlave("test",null);
         project.setAssignedLabel(j.jenkins.getLabel("test"));
         project.save();
@@ -54,8 +54,8 @@ public class JobAssignedLabelCheckerTestCase {
         assertTrue(checker.executeCheck(project));
     }
     @Issue("JENKINS-42310")
-    @Test public void testMatrixProjectDescription() throws Exception {
-        MatrixProject project = j.createMatrixProject("WithoutSystem");
+    @Test public void testMatrixProjectWithAssignedLabel() throws Exception {
+        MatrixProject project = j.createMatrixProject();
         j.createSlave("test",null);
         project.setAssignedLabel(j.jenkins.getLabel("test"));
         project.save();
