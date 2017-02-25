@@ -1,7 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Item;
-import hudson.model.Project;
+import hudson.model.AbstractProject;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 /**
@@ -16,8 +16,8 @@ public class NullSCMChecker extends AbstractCheck {
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof Project) {
-            return (((Project) item).getScm() instanceof hudson.scm.NullSCM);
+        if (item instanceof AbstractProject) {
+            return (((AbstractProject) item).getScm() instanceof hudson.scm.NullSCM);
         }
         return false;
     }
