@@ -1,8 +1,11 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.matrix.MatrixProject;
+import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
@@ -24,6 +27,35 @@ public class NullSCMCheckerTestCase {
     }
     @Test public void testGitSCMJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
+        project.setScm(new hudson.plugins.git.GitSCM(""));
+        assertFalse(checker.executeCheck(project));
+    }
+
+    @Issue("JENKINS-42310")
+    @Test public void testMavenModuleJob() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        assertTrue(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMavenGitSCM() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject();
+        project.setScm(new hudson.plugins.git.GitSCM(""));
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMatrixProject() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        assertTrue(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMatrixGitSCM() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject();
         project.setScm(new hudson.plugins.git.GitSCM(""));
         assertFalse(checker.executeCheck(project));
     }
