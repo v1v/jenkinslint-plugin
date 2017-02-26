@@ -1,8 +1,8 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
-import hudson.model.Project;
 import hudson.tasks.JavadocArchiver;
 import hudson.tasks.Publisher;
 import hudson.util.DescribableList;
@@ -20,8 +20,8 @@ public class JavadocChecker extends AbstractCheck{
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof Project) {
-            DescribableList<Publisher, Descriptor<Publisher>> publishersList = ((Project) item).getPublishersList();
+        if (item instanceof AbstractProject) {
+            DescribableList<Publisher, Descriptor<Publisher>> publishersList = ((AbstractProject) item).getPublishersList();
             for (Publisher publisher : publishersList) {
                 if (publisher instanceof hudson.tasks.JavadocArchiver) {
                     return ( ((JavadocArchiver) publisher).getJavadocDir() == null ||

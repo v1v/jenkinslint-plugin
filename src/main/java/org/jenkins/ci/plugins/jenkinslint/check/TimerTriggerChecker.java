@@ -1,7 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Item;
-import hudson.model.Project;
+import hudson.model.AbstractProject;
 import hudson.triggers.TimerTrigger;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
@@ -21,8 +21,8 @@ public class TimerTriggerChecker extends AbstractCheck{
 
     public boolean executeCheck(Item item) {
         boolean found = false;
-        if (item instanceof Project && ((Project) item).getTrigger(TimerTrigger.class) != null ) {
-            String spec = ((Project) item).getTrigger(TimerTrigger.class).getSpec().toLowerCase();
+        if (item instanceof AbstractProject && ((AbstractProject) item).getTrigger(TimerTrigger.class) != null ) {
+            String spec = ((AbstractProject) item).getTrigger(TimerTrigger.class).getSpec().toLowerCase();
             if (spec.contains("h")) {
                 String[] myData = spec.split("\n");
                 for (String line: myData) {

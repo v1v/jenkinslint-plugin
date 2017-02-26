@@ -5,6 +5,7 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
@@ -31,7 +32,7 @@ public class GradleWrapperCheckerTestCase {
         MavenModuleSet project = j.createMavenProject();
         assertFalse(checker.executeCheck(project));
     }
-    //@Issue("JENKINS-29444")
+    @Issue("JENKINS-38616")
     @Test public void testMatrixProject() throws Exception {
         MatrixProject project = j.createMatrixProject();
         assertFalse(checker.executeCheck(project));
@@ -76,7 +77,7 @@ public class GradleWrapperCheckerTestCase {
         mavenProject.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(mavenProject.getDescription()));
     }
-    //@Issue("JENKINS-29427")
+    @Issue("JENKINS-38616")
     @Test public void testAnotherBuilders() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject("MsBuildBuilder");
         project.getBuildersList().add(new hudson.plugins.msbuild.MsBuildBuilder("", "", "", true, true, true));
@@ -87,12 +88,12 @@ public class GradleWrapperCheckerTestCase {
         assertFalse(checker.executeCheck(project));
         project.delete();
     }
-    //@Issue("JENKINS-38616")
+    @Issue("JENKINS-38616")
     @Test public void testMavenModuleJob() throws Exception {
         MavenModuleSet project = j.createMavenProject();
         assertFalse(checker.executeCheck(project));
     }
-    //@Issue("JENKINS-38616")
+    @Issue("JENKINS-38616")
     @Test public void testMavenModuleJobbWithHardcodedScript() throws Exception {
         MavenModuleSet project = j.createMavenProject();
         project.getPrebuilders().add(new hudson.tasks.Shell("#!/bin/bash #single line"));
