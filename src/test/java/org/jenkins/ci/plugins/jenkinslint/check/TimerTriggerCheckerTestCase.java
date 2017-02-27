@@ -35,6 +35,19 @@ public class TimerTriggerCheckerTestCase {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));
     }
+    @Issue("JENKINS-42337")
+    @Test public void testWithAtTimerTrigger() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        TimerTrigger newTrigger = new TimerTrigger("@daily");
+        project.addTrigger(newTrigger);
+        project.save();
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n" +"@daily");
+        project.addTrigger(newTrigger);
+        project.save();
+        assertTrue(checker.executeCheck(project));
+    }
     @Test public void testWithTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H);

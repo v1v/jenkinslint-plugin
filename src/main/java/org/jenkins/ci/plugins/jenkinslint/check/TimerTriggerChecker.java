@@ -23,15 +23,11 @@ public class TimerTriggerChecker extends AbstractCheck{
         boolean found = false;
         if (item instanceof AbstractProject && ((AbstractProject) item).getTrigger(TimerTrigger.class) != null ) {
             String spec = ((AbstractProject) item).getTrigger(TimerTrigger.class).getSpec().toLowerCase();
-            if (spec.contains("h")) {
-                String[] myData = spec.split("\n");
-                for (String line: myData) {
-                    if (!isH(line) && !isComment(line)) {
-                        found = true;
-                    }
+            String[] myData = spec.split("\n");
+            for (String line: myData) {
+                if (!isH(line) && !isComment(line) && !isAt(line)) {
+                    found = true;
                 }
-            } else {
-                found = true;
             }
         } else {
             found = false;
@@ -50,6 +46,14 @@ public class TimerTriggerChecker extends AbstractCheck{
     private boolean isH (String line) {
         boolean found = false;
         Pattern p = Pattern.compile("^\\s*h.*");
+        Matcher m = p.matcher(line);
+        found = m.matches();
+        return found;
+    }
+
+    private boolean isAt (String line) {
+        boolean found = false;
+        Pattern p = Pattern.compile("^\\s*@.*");
         Matcher m = p.matcher(line);
         found = m.matches();
         return found;
