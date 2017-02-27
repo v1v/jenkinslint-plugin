@@ -33,13 +33,18 @@ import org.jenkins.ci.plugins.jenkinslint.model.InterfaceSlaveCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.Job;
 import org.jenkins.ci.plugins.jenkinslint.model.Lint;
 import org.jenkins.ci.plugins.jenkinslint.model.Slave;
+import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.export.ExportedBean;
+import hudson.model.Api;
 
+@ExportedBean
 @Extension
 public final class JenkinsLintAction implements RootAction {
 
@@ -48,6 +53,15 @@ public final class JenkinsLintAction implements RootAction {
     private ArrayList<InterfaceCheck> checkList = new ArrayList<InterfaceCheck>();
     private Hashtable<String, Slave> slaveSet = new Hashtable<String, Slave>();
     private ArrayList<InterfaceSlaveCheck> slaveCheckList = new ArrayList<InterfaceSlaveCheck>();
+
+    public Api getApi() {
+        try {
+            this.getData();
+        } catch (IOException ioe) {
+            LOG.log(Level.INFO, "Failing when getting the JenkinsLint data through the API");
+        }
+        return new Api(this);
+    }
 
     public void getData() throws IOException {
         LOG.log(Level.FINE, "getData()");
@@ -85,8 +99,8 @@ public final class JenkinsLintAction implements RootAction {
             LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
             Job newJob = new Job(item.getName(), item.getUrl());
             for (InterfaceCheck checker : checkList) {
-                LOG.log(Level.FINER, checker.getClass().getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                newJob.addLint(new Lint(checker.getClass().getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription())));
+                LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
+                newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription())));
             }
             jobSet.put(item.getName(),newJob);
             LOG.log(Level.FINER, newJob.toString());
@@ -99,8 +113,8 @@ public final class JenkinsLintAction implements RootAction {
             Slave newSlave = new Slave(node.getNodeName(), node.getSearchUrl());
             for (InterfaceSlaveCheck checker : slaveCheckList) {
                 boolean status = checker.executeCheck(node);
-                LOG.log(Level.FINER, checker.getClass().getName() + " " + node.getDisplayName() + " " + status);
-                newSlave.addLint(new Lint(checker.getClass().getName(), status, checker.isIgnored(node.getNodeDescription())));
+                LOG.log(Level.FINER, checker.getName() + " " + node.getDisplayName() + " " + status);
+                newSlave.addLint(new Lint(checker.getName(), status, checker.isIgnored(node.getNodeDescription())));
             }
             slaveSet.put(newSlave.getName(), newSlave);
             LOG.log(Level.FINER, newSlave.toString());
@@ -120,6 +134,7 @@ public final class JenkinsLintAction implements RootAction {
         return Messages.UrlName();
     }
 
+    @Exported
     public Hashtable<String, Job> getJobSet() {
         return jobSet;
     }
@@ -128,11 +143,30 @@ public final class JenkinsLintAction implements RootAction {
         return checkList;
     }
 
+    @Exported
+    public Hashtable<String, InterfaceCheck> getCheckSet() {
+        Hashtable<String, InterfaceCheck> temp = new Hashtable<String, InterfaceCheck>();
+        for (InterfaceCheck check : checkList) {
+          temp.put(check.getName(), check);
+        }
+        return temp;
+    }
+
+    @Exported
     public Hashtable<String, Slave> getSlaveSet() {
         return slaveSet;
     }
 
     public ArrayList<InterfaceSlaveCheck> getSlaveCheckList() {
         return slaveCheckList;
+    }
+
+    @Exported
+    public Hashtable<String, InterfaceSlaveCheck> getSlaveCheckSet() {
+        Hashtable<String, InterfaceSlaveCheck> temp = new Hashtable<String, InterfaceSlaveCheck>();
+        for (InterfaceSlaveCheck check : slaveCheckList) {
+          temp.put(check.getName(), check);
+        }
+        return temp;
     }
 }

@@ -1,11 +1,14 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
 import java.util.logging.Logger;
+import org.kohsuke.stapler.export.ExportedBean;
+import org.kohsuke.stapler.export.Exported;
 
 /**
  * AbstractCheck class.
  * @author Victor Martinez
  */
+ @ExportedBean
 public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveCheck>, InterfaceSlaveCheck {
     private String name;
     private String description;
@@ -18,6 +21,7 @@ public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveChec
         this.setName(this.getClass().getSimpleName());
     }
 
+    @Exported
     public String getName() {
         return name;
     }
@@ -30,6 +34,7 @@ public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveChec
         return id;
     }
 
+    @Exported
     public String getDescription() {
         return description;
     }
@@ -38,6 +43,7 @@ public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveChec
         this.description = description;
     }
 
+    @Exported
     public String getSeverity() {
         return severity;
     }

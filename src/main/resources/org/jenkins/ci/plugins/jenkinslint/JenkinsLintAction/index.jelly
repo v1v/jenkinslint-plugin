@@ -49,10 +49,10 @@
                             </j:if>
                             <j:if test="${!lint.ignored}">
                                 <j:if test="${lint.found}">
-                                    <td tooltip="found" style="background-color: #FF8566;"/>
+                                    <td tooltip="${lint.name} found" style="background-color: #FF8566;"/>
                                 </j:if>
                                 <j:if test="${!lint.found}">
-                                    <td tooltip="notFound" style="background-color: #B8EEB8;"/>
+                                    <td tooltip="${lint.name} notFound" style="background-color: #B8EEB8;"/>
                                 </j:if>
                             </j:if>
                         </j:forEach>
@@ -139,10 +139,10 @@
                                 </j:if>
                                 <j:if test="${!lint.ignored}">
                                     <j:if test="${lint.found}">
-                                        <td tooltip="found" style="background-color: #FF8566;"/>
+                                        <td tooltip="${lint.name} found" style="background-color: #FF8566;"/>
                                     </j:if>
                                     <j:if test="${!lint.found}">
-                                        <td tooltip="notFound" style="background-color: #B8EEB8;"/>
+                                        <td tooltip="${lint.name} notFound" style="background-color: #B8EEB8;"/>
                                     </j:if>
                                 </j:if>
                             </j:forEach>

@@ -1,9 +1,13 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
+import org.kohsuke.stapler.export.ExportedBean;
+import org.kohsuke.stapler.export.Exported;
+
 /**
  * Check class.
  * @author Victor Martinez
  */
+@ExportedBean
 public final class Lint implements Comparable<Lint> {
     private String name;
     private boolean found = false;
@@ -16,6 +20,7 @@ public final class Lint implements Comparable<Lint> {
         this.setIgnored(ignored);
     }
 
+    @Exported
     public String getName() {
         return name;
     }
@@ -31,6 +36,7 @@ public final class Lint implements Comparable<Lint> {
         return getName().compareTo(other.getName());
     }
 
+    @Exported
     public boolean isFound() {
         return found;
     }
@@ -39,6 +45,7 @@ public final class Lint implements Comparable<Lint> {
         this.found = found;
     }
 
+    @Exported
     public boolean isIgnored() {
         return ignored;
     }
