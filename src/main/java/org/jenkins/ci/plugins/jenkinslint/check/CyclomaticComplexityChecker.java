@@ -6,7 +6,6 @@ import hudson.model.Project;
 import hudson.tasks.Builder;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
-
 import java.util.List;
 import java.util.logging.Level;
 
@@ -15,12 +14,22 @@ import java.util.logging.Level;
  */
 public class CyclomaticComplexityChecker extends AbstractCheck {
 
-    private final int THRESHOLD = 4;
+    private static final String SYS_PROPERTY_NAME  = CyclomaticComplexityChecker.class.getName() + ".threshold";
+    private int threshold = 4;
+
 
     public CyclomaticComplexityChecker() {
         super();
         this.setDescription(Messages.CyclometicComplexityCheckerDesc());
         this.setSeverity(Messages.CyclometicComplexityCheckerSeverity());
+        String limit = System.getProperty(SYS_PROPERTY_NAME);
+        if (limit != null) {
+            try {
+                threshold = Integer.valueOf(limit);
+            } catch (NumberFormatException e) {
+                LOG.warning("Ignoring invalid " + SYS_PROPERTY_NAME + "=" + limit);
+            }
+        }
     }
 
     public boolean executeCheck(Item item) {
@@ -33,18 +42,18 @@ public class CyclomaticComplexityChecker extends AbstractCheck {
                     Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
                     if (getPrebuilders instanceof List) {
                         cyclomatic = totalCyclomatic(((List)getPrebuilders));
-                        found = cyclomatic > THRESHOLD;                    }
+                        found = cyclomatic > threshold;                    }
                 }catch (Exception e) {
                     LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
             if (item instanceof Project) {
                 cyclomatic = totalCyclomatic(((Project) item).getBuilders());
-                found = cyclomatic > THRESHOLD;
+                found = cyclomatic > threshold;
             }
             if (item instanceof MatrixProject) {
                 cyclomatic = totalCyclomatic(((MatrixProject) item).getBuilders());
-                found = cyclomatic > THRESHOLD;
+                found = cyclomatic > threshold;
             }
 
             LOG.log(Level.INFO, "Cyclomatic complexity of " + item.getName() + " is " + cyclomatic);
@@ -105,6 +114,4 @@ public class CyclomaticComplexityChecker extends AbstractCheck {
         }
         return cyclomatic;
     }
-
-
 }
