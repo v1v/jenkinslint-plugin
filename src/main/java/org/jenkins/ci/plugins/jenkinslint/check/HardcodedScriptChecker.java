@@ -4,7 +4,6 @@ import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
-import hudson.maven.MavenModuleSet;
 import hudson.tasks.CommandInterpreter;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
@@ -29,9 +28,14 @@ public class HardcodedScriptChecker extends AbstractCheck {
     public boolean executeCheck(Item item) {
         LOG.log(Level.FINE, "executeCheck " + item);
         boolean found = false;
-        if (Jenkins.getInstance().pluginManager.getPlugin("maven-plugin")!=null) {
-            if (item instanceof MavenModuleSet) {
-                found = isBuilderHarcoded(((MavenModuleSet) item).getPrebuilders());
+        if (item.getClass().getSimpleName().equals("MavenModuleSet")) {
+            try {
+                Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                if (getPrebuilders instanceof List) {
+                    found = isBuilderHarcoded((List) getPrebuilders);
+                }
+            }catch (Exception e) {
+                LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
             }
         }
         if (item instanceof Project) {

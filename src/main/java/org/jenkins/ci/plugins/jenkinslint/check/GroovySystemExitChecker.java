@@ -1,7 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.matrix.MatrixProject;
-import hudson.maven.MavenModuleSet;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -26,9 +25,14 @@ public class GroovySystemExitChecker extends AbstractCheck {
         boolean found = false;
         if (Jenkins.getInstance().pluginManager.getPlugin("groovy") != null) {
 
-            if (Jenkins.getInstance().pluginManager.getPlugin("maven-plugin")!=null) {
-                if (item instanceof MavenModuleSet) {
-                    found = isSystemExit(((MavenModuleSet) item).getPrebuilders());
+            if (item.getClass().getSimpleName().equals("MavenModuleSet")) {
+                try {
+                    Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                    if (getPrebuilders instanceof List) {
+                        found = isSystemExit((List) getPrebuilders);
+                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
             if (item instanceof Project) {

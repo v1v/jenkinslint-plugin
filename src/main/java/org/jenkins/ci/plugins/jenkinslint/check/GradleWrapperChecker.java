@@ -1,7 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.matrix.MatrixProject;
-import hudson.maven.MavenModuleSet;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -25,10 +24,14 @@ public class GradleWrapperChecker extends AbstractCheck {
     public boolean executeCheck(Item item) {
         boolean found = false;
         if (Jenkins.getInstance().pluginManager.getPlugin("gradle") != null) {
-
-            if (Jenkins.getInstance().pluginManager.getPlugin("maven-plugin")!=null) {
-                if (item instanceof MavenModuleSet) {
-                    found = isGradlew(((MavenModuleSet) item).getPrebuilders());
+            if (item.getClass().getSimpleName().equals("MavenModuleSet")) {
+                try {
+                    Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                    if (getPrebuilders instanceof List) {
+                        found = isGradlew((List) getPrebuilders);
+                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
             if (item instanceof Project) {
