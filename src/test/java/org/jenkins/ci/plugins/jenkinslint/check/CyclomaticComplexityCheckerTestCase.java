@@ -84,4 +84,5 @@ public class CyclomaticComplexityCheckerTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
     }
+    // https://github.com/jenkinsci/jenkins/blob/1868c8486bdb7a39a7beec0787bb40e15b80de48/core/src/test/java/hudson/slaves/ChannelPingerTest.java
 }
