@@ -1,7 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.matrix.MatrixProject;
-import hudson.maven.MavenModuleSet;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -29,10 +28,14 @@ public class CyclomaticComplexityChecker extends AbstractCheck {
         if (Jenkins.getInstance().pluginManager.getPlugin("conditional-buildstep") != null) {
 
             int cyclomatic = 0;
-            if (Jenkins.getInstance().pluginManager.getPlugin("maven-plugin") != null) {
-                if (item instanceof MavenModuleSet) {
-                    cyclomatic = totalCyclomatic(((MavenModuleSet) item).getPrebuilders());
-                    found = cyclomatic > THRESHOLD;
+            if (item.getClass().getSimpleName().equals("MavenModuleSet")) {
+                try {
+                    Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                    if (getPrebuilders instanceof List) {
+                        cyclomatic = totalCyclomatic(((List)getPrebuilders));
+                        found = cyclomatic > THRESHOLD;                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
             if (item instanceof Project) {
