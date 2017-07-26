@@ -19,9 +19,11 @@ public class WindowsSlaveLaunchChecker extends AbstractSlaveCheck {
 
     public boolean executeCheck(Node item) {
         try {
-            LOG.log(Level.INFO, "slave " + item.getDisplayName() + " service " +  ( (Slave) item).getComputer().getLauncher().toString());
+            LOG.log(Level.FINER, "slave " + item.getDisplayName() + " service " +  ( (Slave) item).getComputer().getLauncher().toString());
             return ((Slave) item).getComputer().getLauncher().toString().contains("ManagedWindowsServiceLauncher");
         } catch (NullPointerException npe) {
+            return false;
+        } catch (java.lang.ClassCastException cce) {
             return false;
         }
     }

@@ -50,4 +50,8 @@ public class WindowsSlaveLaunchCheckerTestCase {
         return new DumbSlave(name, description, "/wherever", "1", Node.Mode.NORMAL, label, new ManagedWindowsServiceLauncher("user", "pass"), RetentionStrategy.NOOP, Collections.<NodeProperty<?>>emptyList());
     }
 
+    @Test public void testMaster() throws Exception {
+        assertFalse(checker.executeCheck(j.hudson));
+    }
+
 }
