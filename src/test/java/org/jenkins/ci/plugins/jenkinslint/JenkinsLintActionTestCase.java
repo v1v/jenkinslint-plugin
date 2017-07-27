@@ -2,14 +2,12 @@ package org.jenkins.ci.plugins.jenkinslint;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebAssert;
-import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
 import hudson.model.FreeStyleProject;
 import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.*;
 import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -32,7 +30,6 @@ public class JenkinsLintActionTestCase {
         assertTrue(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
         WebAssert.assertTextPresent(page, "JL-1");
     }
-    //Issue("JENKINS-29418")
     @Test
     public void testJob() throws Exception {
         String jobName = "JOB";
@@ -45,7 +42,6 @@ public class JenkinsLintActionTestCase {
         Page page = j.createWebClient().goTo("jenkinslint/api/xml", "application/xml");
         assertThat(page.getWebResponse().getContentAsString(), containsString(jobName));
     }
-
     @Test
     public void testAPI() throws Exception {
         Page page = j.createWebClient().goTo("jenkinslint/api/xml", "application/xml");
@@ -59,5 +55,37 @@ public class JenkinsLintActionTestCase {
         assertEquals("jobSet", p.getFirstChild().getChildNodes().get(1).getNodeName());
         assertEquals("slaveCheckSet", p.getFirstChild().getChildNodes().get(2).getNodeName());
         assertEquals("slaveSet", p.getFirstChild().getChildNodes().get(3).getNodeName());
+    }
+    @Test
+    public void testUITable() throws Exception {
+        String jobName = "JOB";
+        FreeStyleProject project = j.createFreeStyleProject(jobName);
+        HtmlPage page = j.createWebClient().goTo(URL);
+        assertFalse(page.getWebResponse().getContentAsString().contains(EMPTY_TABLE));
+        String content = page.getWebResponse().getContentAsString();
+        assertTrue(content.contains(j.getURL().toString() + project.getUrl()));
+        assertTrue(content.contains(htmlLint("JobNameChecker", "JL-1")));
+        assertTrue(content.contains(htmlLint("JobDescriptionChecker", "JL-2")));
+        assertTrue(content.contains(htmlLint("JobAssignedLabelChecker", "JL-3")));
+        assertTrue(content.contains(htmlLint("MasterLabelChecker", "JL-4")));
+        assertTrue(content.contains(htmlLint("JobLogRotatorChecker", "JL-5")));
+        assertTrue(content.contains(htmlLint("MavenJobTypeChecker", "JL-6")));
+        assertTrue(content.contains(htmlLint("CleanupWorkspaceChecker", "JL-7")));
+        assertTrue(content.contains(htmlLint("JavadocChecker", "JL-8")));
+        assertTrue(content.contains(htmlLint("ArtifactChecker", "JL-9")));
+        assertTrue(content.contains(htmlLint("NullSCMChecker", "JL-10")));
+        assertTrue(content.contains(htmlLint("PollingSCMTriggerChecker", "JL-11")));
+        assertTrue(content.contains(htmlLint("GitShallowChecker", "JL-12")));
+        assertTrue(content.contains(htmlLint("MultibranchJobTypeChecker", "JL-13")));
+        assertTrue(content.contains(htmlLint("HardcodedScriptChecker", "JL-14")));
+        assertTrue(content.contains(htmlLint("GradleWrapperChecker", "JL-15")));
+        assertTrue(content.contains(htmlLint("TimeoutChecker", "JL-16")));
+        assertTrue(content.contains(htmlLint("GroovySystemExitChecker", "JL-17")));
+        assertTrue(content.contains(htmlLint("GitRefChecker", "JL-18")));
+        assertTrue(content.contains(htmlLint("TimerTriggerChecker", "JL-19")));
+    }
+
+    private String htmlLint (String name, String id) {
+        return "<th tooltip=\"" +  name + "\" class=\"pane-header\">" + id + "</th>";
     }
 }

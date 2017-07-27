@@ -31,7 +31,6 @@ a hundred other projects is where it gets difficult and tedious. This provides a
 - Jobs action to show those Jenkins lints.
 - System.exit in system admin groovy scripts (publishers and parameters)
 - Support pipeline
-- Exposed API
 - BFA check
 - Cyclomatic complexity check when using conditional steps plugin
 - Git Submodule Ref cache repo check
