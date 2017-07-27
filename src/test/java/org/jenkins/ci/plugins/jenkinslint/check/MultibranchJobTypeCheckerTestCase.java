@@ -1,11 +1,8 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import com.github.mjdetullio.jenkins.plugins.multibranch.FreeStyleMultiBranchProject;
-import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,10 +12,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class MultibranchJobTypeCheckerTestCase {
+public class MultibranchJobTypeCheckerTestCase extends AbstractCheckerTestCase {
     private MultibranchJobTypeChecker checker = new MultibranchJobTypeChecker();
-
-    @Rule public JenkinsRule j = new JenkinsRule();
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

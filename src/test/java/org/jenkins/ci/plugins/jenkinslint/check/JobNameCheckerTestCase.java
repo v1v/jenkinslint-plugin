@@ -1,9 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,10 +11,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class JobNameCheckerTestCase {
+public class JobNameCheckerTestCase extends AbstractCheckerTestCase {
     private JobNameChecker checker = new JobNameChecker();
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));

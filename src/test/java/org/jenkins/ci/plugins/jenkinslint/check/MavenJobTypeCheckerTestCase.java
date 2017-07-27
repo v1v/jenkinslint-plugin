@@ -14,10 +14,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class MavenJobTypeCheckerTestCase {
+public class MavenJobTypeCheckerTestCase extends AbstractCheckerTestCase {
     private MavenJobTypeChecker checker = new MavenJobTypeChecker();
-
-    @Rule public JenkinsRule j = new JenkinsRule();
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

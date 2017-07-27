@@ -6,12 +6,10 @@ import hudson.model.FreeStyleProject;
 import hudson.plugins.git.extensions.GitSCMExtension;
 import hudson.plugins.git.extensions.impl.CleanCheckout;
 import hudson.plugins.git.extensions.impl.CloneOption;
-import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
-import org.jvnet.hudson.test.JenkinsRule;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -21,10 +19,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class GitShallowCheckerTestCase {
+public class GitShallowCheckerTestCase extends AbstractCheckerTestCase {
     private GitShallowChecker checker = new GitShallowChecker();
-
-    @Rule public JenkinsRule j = new JenkinsRule();
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

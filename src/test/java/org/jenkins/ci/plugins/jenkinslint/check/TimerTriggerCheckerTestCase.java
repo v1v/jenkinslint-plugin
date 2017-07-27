@@ -3,12 +3,9 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
-import hudson.plugins.ws_cleanup.WsCleanup;
 import hudson.triggers.TimerTrigger;
-import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,15 +15,13 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class TimerTriggerCheckerTestCase {
+public class TimerTriggerCheckerTestCase extends AbstractCheckerTestCase {
     private TimerTriggerChecker checker = new TimerTriggerChecker();
 
     private static final String TIMER_WITHOUT_H = "20 * * * *";
     private static final String TIMER_WITH_H = "H/15 * * * *";
     private static final String TIMER_WITH_COMMENT = " # H 15 1 * * *";
 
-
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));

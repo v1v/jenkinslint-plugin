@@ -5,10 +5,8 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.tasks.ArtifactArchiver;
 import hudson.tasks.JavadocArchiver;
-import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,10 +16,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class ArtifactCheckerTestCase {
+public class ArtifactCheckerTestCase extends AbstractCheckerTestCase {
     private ArtifactChecker checker = new ArtifactChecker();
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));

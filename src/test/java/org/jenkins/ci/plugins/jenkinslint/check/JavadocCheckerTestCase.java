@@ -3,13 +3,10 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
-import hudson.plugins.ws_cleanup.WsCleanup;
 import hudson.tasks.ArtifactArchiver;
 import hudson.tasks.JavadocArchiver;
-import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -19,10 +16,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class JavadocCheckerTestCase {
+public class JavadocCheckerTestCase extends AbstractCheckerTestCase {
     private JavadocChecker checker = new JavadocChecker();
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));

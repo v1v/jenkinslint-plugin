@@ -4,15 +4,9 @@ import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.plugins.build_timeout.BuildTimeoutWrapper;
-import hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy;
-import hudson.plugins.build_timeout.impl.DeadlineTimeOutStrategy;
-import hudson.plugins.build_timeout.impl.ElasticTimeOutStrategy;
-import hudson.plugins.build_timeout.impl.LikelyStuckTimeOutStrategy;
-import hudson.plugins.build_timeout.impl.NoActivityTimeOutStrategy;
-import org.junit.Rule;
+import hudson.plugins.build_timeout.impl.*;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,10 +16,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class TimeoutCheckerTestCase {
+public class TimeoutCheckerTestCase extends AbstractCheckerTestCase {
     private TimeoutChecker checker = new TimeoutChecker();
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertTrue(checker.executeCheck(project));

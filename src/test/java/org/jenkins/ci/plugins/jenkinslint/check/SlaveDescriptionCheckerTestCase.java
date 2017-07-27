@@ -6,9 +6,7 @@ import hudson.slaves.DumbSlave;
 import hudson.slaves.JNLPLauncher;
 import hudson.slaves.NodeProperty;
 import hudson.slaves.RetentionStrategy;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.Collections;
 
@@ -20,10 +18,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class SlaveDescriptionCheckerTestCase {
+public class SlaveDescriptionCheckerTestCase extends AbstractCheckerTestCase {
     private SlaveDescriptionChecker checker = new SlaveDescriptionChecker();
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultSlave() throws Exception {
         Slave slave = createSlave("default", "");
         assertTrue(checker.executeCheck(slave));
