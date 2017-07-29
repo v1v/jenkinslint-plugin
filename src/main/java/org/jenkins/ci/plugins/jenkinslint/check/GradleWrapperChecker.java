@@ -1,6 +1,5 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -37,10 +36,16 @@ public class GradleWrapperChecker extends AbstractCheck {
             if (item instanceof Project) {
                 found = isGradlew(((Project) item).getBuilders());
             }
-            if (item instanceof MatrixProject) {
-                found = isGradlew(((MatrixProject) item).getBuilders());
+            if (item.getClass().getSimpleName().equals("MatrixProject")) {
+                try {
+                    Object getBuilders = item.getClass().getMethod("getBuilders", null).invoke(item);
+                    if (getBuilders instanceof List) {
+                        found = isGradlew((List) getBuilders);
+                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                }
             }
-
         }
         return found;
     }

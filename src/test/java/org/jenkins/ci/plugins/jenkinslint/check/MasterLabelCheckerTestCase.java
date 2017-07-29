@@ -16,7 +16,7 @@ public class MasterLabelCheckerTestCase extends AbstractCheckerTestCase {
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertTrue(checker.executeCheck(project));
+        assertFalse(checker.executeCheck(project));
     }
     @Test public void testNonDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

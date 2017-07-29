@@ -1,6 +1,5 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
 import hudson.model.Project;
@@ -8,7 +7,6 @@ import hudson.tasks.BuildWrapper;
 import hudson.util.DescribableList;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,8 +38,15 @@ public class TimeoutChecker extends AbstractCheck {
             if (item instanceof Project) {
                 notfound = !isTimeout(((Project) item).getBuildWrappersList());
             }
-            if (item instanceof MatrixProject) {
-                notfound = !isTimeout(((MatrixProject) item).getBuildWrappersList());
+            if (item.getClass().getSimpleName().equals("MatrixProject")) {
+                try {
+                    Object getBuildWrappersList = item.getClass().getMethod("getBuildWrappersList", null).invoke(item);
+                    if (getBuildWrappersList instanceof List) {
+                        notfound = !isTimeout((List) getBuildWrappersList);
+                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                }
             }
         }
         return notfound;

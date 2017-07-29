@@ -1,6 +1,5 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -38,10 +37,16 @@ public class GroovySystemExitChecker extends AbstractCheck {
             if (item instanceof Project) {
                 found = isSystemExit(((Project) item).getBuilders());
             }
-            if (item instanceof MatrixProject) {
-                found = isSystemExit(((MatrixProject) item).getBuilders());
+            if (item.getClass().getSimpleName().equals("MatrixProject")) {
+                try {
+                    Object getBuilders = item.getClass().getMethod("getBuilders", null).invoke(item);
+                    if (getBuilders instanceof List) {
+                        found = isSystemExit((List) getBuilders);
+                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                }
             }
-
         } else {
             LOG.log(Level.INFO, "Groovy is not installed");
         }

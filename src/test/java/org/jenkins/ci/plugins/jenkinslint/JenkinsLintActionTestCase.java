@@ -83,6 +83,7 @@ public class JenkinsLintActionTestCase {
         assertTrue(content.contains(htmlLint("GroovySystemExitChecker", "JL-17")));
         assertTrue(content.contains(htmlLint("GitRefChecker", "JL-18")));
         assertTrue(content.contains(htmlLint("TimerTriggerChecker", "JL-19")));
+        assertTrue(content.contains(htmlLint("GitRefSubmoduleChecker", "JL-20")));
     }
 
     private String htmlLint (String name, String id) {
