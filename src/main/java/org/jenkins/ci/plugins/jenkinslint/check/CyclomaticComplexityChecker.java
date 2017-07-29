@@ -1,6 +1,5 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
@@ -51,15 +50,20 @@ public class CyclomaticComplexityChecker extends AbstractCheck {
                 cyclomatic = totalCyclomatic(((Project) item).getBuilders());
                 found = cyclomatic > threshold;
             }
-            if (item instanceof MatrixProject) {
-                cyclomatic = totalCyclomatic(((MatrixProject) item).getBuilders());
-                found = cyclomatic > threshold;
+            if (item.getClass().getSimpleName().equals("MatrixProject")) {
+                try {
+                    Object getBuilders = item.getClass().getMethod("getBuilders", null).invoke(item);
+                    if (getBuilders instanceof List) {
+                        cyclomatic = totalCyclomatic(((List)getBuilders));
+                        found = cyclomatic > threshold;                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                }
             }
-
-            LOG.log(Level.INFO, "Cyclomatic complexity of " + item.getName() + " is " + cyclomatic);
+            LOG.log(Level.FINE, "Cyclomatic complexity of " + item.getName() + " is " + cyclomatic);
 
         } else {
-            LOG.log(Level.INFO, "Conditional BuildStep plugin is not installed");
+            LOG.log(Level.FINE, "Conditional BuildStep plugin is not installed");
         }
         return found;
     }
