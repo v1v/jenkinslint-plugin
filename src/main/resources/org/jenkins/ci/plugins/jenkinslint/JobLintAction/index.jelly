@@ -17,7 +17,7 @@
         ${%Jenkins.Lint.Description.1}
         ${%Jenkins.Lint.Description.2}
         <br/>
-        <table class="pane bigtable" id="jenkinsLintDescriptionTable">
+        <table class="sortable pane bigtable" id="jenkinsLintDescriptionTable">
             <thead>
                 <tr>
                     <th class="pane-header">Status</th>

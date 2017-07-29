@@ -1,7 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.model.Action;
-import hudson.model.Api;
 import hudson.model.Computer;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractAction;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceSlaveCheck;

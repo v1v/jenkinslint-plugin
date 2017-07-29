@@ -5,19 +5,13 @@ import hudson.model.AbstractProject;
 import hudson.model.Node;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
-import org.jenkins.ci.plugins.jenkinslint.model.AbstractAction;
-import org.jenkins.ci.plugins.jenkinslint.model.InterfaceCheck;
-import org.jenkins.ci.plugins.jenkinslint.model.InterfaceSlaveCheck;
-import org.jenkins.ci.plugins.jenkinslint.model.Job;
-import org.jenkins.ci.plugins.jenkinslint.model.Lint;
-import org.jenkins.ci.plugins.jenkinslint.model.Slave;
-
+import org.jenkins.ci.plugins.jenkinslint.model.*;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.export.ExportedBean;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean
 @Extension

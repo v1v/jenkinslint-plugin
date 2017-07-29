@@ -1,5 +1,5 @@
-<?jelly escape-by-default='false'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
   <j:getStatic var="permission" className="hudson.model.Item" field="CREATE"/>
   <l:layout norefresh="true" permission="${permission}" title="${%Jenkins.Lint.Title}">
     <l:side-panel>
@@ -75,7 +75,7 @@
                     </thead>
                     <tbody id="jenkinsLintDescriptionTableBody">
                         <tr>
-                            <td><b>Description:</b> ${checker.getDescription()}</td>
+                            <td><b>Description:</b> <j:out value="${checker.getDescription()}"/></td>
                         </tr>
                         <tr>
                             <td><b>Severity:</b> ${checker.getSeverity()}</td>
@@ -97,7 +97,7 @@
                     </thead>
                     <tbody id="jenkinsLintDescriptionTableBody">
                         <tr>
-                            <td><b>Description:</b> ${check.getDescription()}</td>
+                            <td><b>Description:</b> <j:out value="${check.getDescription()}"/></td>
                         </tr>
                         <tr>
                             <td><b>Severity:</b> ${check.getSeverity()}</td>

@@ -36,7 +36,7 @@ public class GitRefSubmoduleChecker extends AbstractCheck {
                                     if (extension.getClass().getName().endsWith("SubmoduleOption")) {
                                         Object reference = extension.getClass().getMethod("getReference",null).invoke(extension);
                                         if (reference instanceof String) {
-                                            LOG.log(Level.WARNING, "foundXXX " + reference);
+                                            LOG.log(Level.FINEST, "Reference has been found: " + reference);
                                             status = ((String) reference).isEmpty();
                                         }
                                     }

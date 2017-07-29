@@ -76,6 +76,7 @@ public abstract class AbstractAction {
         checkList.add(new GitRefChecker());
         checkList.add(new TimerTriggerChecker());
         checkList.add(new GitRefSubmoduleChecker());
+        checkList.add(new BFAChecker());
     }
 
     protected void reloadSlaveCheckList() {
