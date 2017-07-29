@@ -6,7 +6,6 @@ import hudson.model.FreeStyleProject;
 import hudson.tasks.BuildStep;
 import hudson.tasks.Shell;
 import org.jenkins_ci.plugins.run_condition.core.AlwaysRun;
-import org.jenkins_ci.plugins.run_condition.core.NeverRun;
 import org.jenkins_ci.plugins.run_condition.core.StringsMatchCondition;
 import org.jenkins_ci.plugins.run_condition.logic.ConditionContainer;
 import org.jenkins_ci.plugins.run_condition.logic.Or;
@@ -14,9 +13,7 @@ import org.jenkinsci.plugins.conditionalbuildstep.ConditionalBuilder;
 import org.jenkins_ci.plugins.run_condition.BuildStepRunner;
 import org.jenkins_ci.plugins.run_condition.core.BooleanCondition;
 import org.jenkins_ci.plugins.run_condition.logic.And;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.ArrayList;
 
@@ -28,10 +25,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class CyclomaticComplexityCheckerTestCase {
+public class CyclomaticComplexityCheckerTestCase extends AbstractCheckerTestCase {
     private CyclomaticComplexityChecker checker = new CyclomaticComplexityChecker();
-
-    @Rule public JenkinsRule j = new JenkinsRule();
 
     private ConditionalBuilder booleanCondition() {
         ArrayList<BuildStep> list = new ArrayList<BuildStep>();
