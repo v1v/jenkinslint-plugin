@@ -1,0 +1,52 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout" xmlns:p="/lib/hudson/project">
+    <l:layout title="Agent Lint Details" xmlns:local="local"  norefresh="true">
+        <p:projectActionFloatingBox />
+        <st:include it="${it.computer}" page="sidepanel.jelly"/>
+        <l:main-panel>
+        <style>
+            code {
+            color: #C7254E;
+            background-color: #F9F2F4;
+            border-radius: 4px;
+            }
+        </style>
+        <j:set var="index" value="0"/>
+        <j:set var="data" value="${it.data}"/>
+        <h1>${%Jenkins.Lint.Title}: ${%Computer} ${it.computer.name}</h1>
+        <h4>${%Jenkins.Lint.Description}</h4>
+        ${%Jenkins.Lint.Description.1}
+        ${%Jenkins.Lint.Description.2}
+        <br/>
+        <table class="sortable pane bigtable" id="jenkinsLintDescriptionTable">
+            <thead>
+                <tr>
+                    <th class="pane-header">Status</th>
+                    <th class="pane-header">Defect</th>
+                    <th class="pane-header">Description</th>
+                </tr>
+            </thead>
+            <tbody id="jenkinsLintDescriptionTableBody">
+                <j:forEach var="lint" items="${it.slave.lintList}">
+                    <tr>
+                        <j:if test="${lint.ignored}">
+                            <td tooltip="ignored" style="background-color: #f0f0f0;"/>
+                        </j:if>
+                        <j:if test="${!lint.ignored}">
+                            <j:if test="${lint.found}">
+                                <td style="background-color: #FF8566;"/>
+                            </j:if>
+                            <j:if test="${!lint.found}">
+                                <td style="background-color: #B8EEB8;"/>
+                            </j:if>
+                        </j:if>
+                        <td>${lint.name}</td>
+                        <td><j:out value="${it.slaveCheckList.get(0+index).getDescription()}"/></td>
+                        <j:set var="index" value="${index+1}"/>
+                    </tr>
+                </j:forEach>
+            </tbody>
+        </table>
+    </l:main-panel>
+</l:layout>
+</j:jelly>

@@ -8,16 +8,16 @@ import java.util.logging.Level;
 /**
  * @author Victor Martinez
  */
-public class SlaveLabelChecker extends AbstractSlaveCheck {
+public class    SlaveLabelChecker extends AbstractSlaveCheck {
 
     public SlaveLabelChecker() {
         super();
-        this.setDescription("When setting Jenkins Slaves you should set their labels in order to tie those Jobs.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.SlaveLabelCheckerDesc());
+        this.setSeverity(Messages.SlaveLabelCheckerSeverity());
     }
 
     public boolean executeCheck(Node item) {
-        LOG.log(Level.INFO, "slave " + item.getDisplayName() + " labels " + item.getLabelString());
+        LOG.log(Level.FINER, "slave " + item.getDisplayName() + " labels " + item.getLabelString());
         return ( item.getLabelString() == null || item.getLabelString().equals("") );
     }
 }

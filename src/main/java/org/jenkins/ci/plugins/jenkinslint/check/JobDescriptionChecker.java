@@ -1,7 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.model.AbstractItem;
 import hudson.model.Item;
-import hudson.model.Project;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 /**
@@ -11,14 +11,14 @@ public class JobDescriptionChecker extends AbstractCheck{
 
     public JobDescriptionChecker() {
         super();
-        this.setDescription("Jenkins project description might help you to know what it does and further details.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.JobDescriptionCheckerDesc());
+        this.setSeverity(Messages.JobDescriptionCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof hudson.model.Project) {
-            return (((Project) item).getDescription() == null
-                    ||  ((Project) item).getDescription().length() == 0);
+        if (item instanceof AbstractItem) {
+            return (((AbstractItem) item).getDescription() == null
+                    ||  ((AbstractItem) item).getDescription().length() == 0);
         }
         return false;
     }

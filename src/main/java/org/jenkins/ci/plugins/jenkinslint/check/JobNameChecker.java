@@ -10,9 +10,8 @@ public class JobNameChecker extends AbstractCheck{
 
     public JobNameChecker() {
         super();
-        this.setDescription("When creating Jenkins Jobs you must avoid whitespace. In order to comply with the style " +
-                            "guide");
-        this.setSeverity("High");
+        this.setDescription(Messages.JobNameCheckerDesc());
+        this.setSeverity(Messages.JobNameCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

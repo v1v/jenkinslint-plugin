@@ -1,6 +1,5 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
 import hudson.model.Project;
@@ -8,7 +7,6 @@ import hudson.tasks.BuildWrapper;
 import hudson.util.DescribableList;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,9 +18,8 @@ public class TimeoutChecker extends AbstractCheck {
 
     public TimeoutChecker() {
         super();
-        this.setDescription("There are some builds which might hang forever and cause inaction in the build queue and slaves. " +
-                "It's recommended to control those time based on the <a href=https://wiki.jenkins-ci.org/display/JENKINS/Build-timeout+Plugin>>build timeout plugin</a>.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.TimeoutCheckerDesc());
+        this.setSeverity(Messages.TimeoutCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
@@ -41,8 +38,15 @@ public class TimeoutChecker extends AbstractCheck {
             if (item instanceof Project) {
                 notfound = !isTimeout(((Project) item).getBuildWrappersList());
             }
-            if (item instanceof MatrixProject) {
-                notfound = !isTimeout(((MatrixProject) item).getBuildWrappersList());
+            if (item.getClass().getSimpleName().equals("MatrixProject")) {
+                try {
+                    Object getBuildWrappersList = item.getClass().getMethod("getBuildWrappersList", null).invoke(item);
+                    if (getBuildWrappersList instanceof List) {
+                        notfound = !isTimeout((List) getBuildWrappersList);
+                    }
+                }catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                }
             }
         }
         return notfound;

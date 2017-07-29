@@ -11,9 +11,8 @@ public class MasterLabelChecker extends AbstractCheck{
 
     public MasterLabelChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs you should set where those Jobs can run. and " +
-                            "avoid master label.<br/>Jenkins master shouldn't consume any CPU for building jobs.");
-        this.setSeverity("Medium");
+        this.setDescription(Messages.MasterLabelCheckerDesc());
+        this.setSeverity(Messages.MasterLabelCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

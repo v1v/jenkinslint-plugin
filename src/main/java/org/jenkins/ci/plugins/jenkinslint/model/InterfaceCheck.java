@@ -7,7 +7,7 @@ import hudson.model.Item;
  * @author Victor Martinez
  */
 public interface InterfaceCheck {
-
+    public String getName();
     boolean executeCheck(Item item);
     boolean isIgnored(String jobDescription);
 }

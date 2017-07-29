@@ -1,11 +1,12 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.matrix.MatrixProject;
+import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.tasks.ArtifactArchiver;
 import hudson.tasks.JavadocArchiver;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.Issue;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,10 +16,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class ArtifactCheckerTestCase {
+public class ArtifactCheckerTestCase extends AbstractCheckerTestCase {
     private ArtifactChecker checker = new ArtifactChecker();
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));
@@ -35,6 +35,40 @@ public class ArtifactCheckerTestCase {
     }
     @Test public void testArtifactPublisher() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
+        project.getPublishersList().add(new ArtifactArchiver("something","",false));
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMavenModuleJob() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMavenArtifact() throws Exception {
+        MavenModuleSet project = j.createMavenProject();
+        project.getPublishersList().add(new JavadocArchiver("",false));
+        assertFalse(checker.executeCheck(project));
+        project.getPublishersList().add(new ArtifactArchiver("","",false));
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject();
+        project.getPublishersList().add(new ArtifactArchiver("something","",false));
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMatrixProject() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-42310")
+    @Test public void testMatrixProjectArtifact() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        project.getPublishersList().add(new JavadocArchiver("",false));
+        assertFalse(checker.executeCheck(project));
+        project.getPublishersList().add(new ArtifactArchiver("","",false));
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject();
         project.getPublishersList().add(new ArtifactArchiver("something","",false));
         assertFalse(checker.executeCheck(project));
     }

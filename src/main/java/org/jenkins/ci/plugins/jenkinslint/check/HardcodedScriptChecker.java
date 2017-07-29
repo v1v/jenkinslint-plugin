@@ -1,12 +1,9 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
-import hudson.maven.MavenModuleSet;
 import hudson.tasks.CommandInterpreter;
-import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 import java.util.List;
@@ -21,25 +18,36 @@ public class HardcodedScriptChecker extends AbstractCheck {
 
     public HardcodedScriptChecker() {
         super();
-        this.setDescription("When setting Jenkins Jobs with Shell/Batch builds you shouldn't hardcoded the script "+
-                            "it's recommended to track them in your SCM tool instead.<br/>" +
-                            "Otherwise you won't be able to reproduce your CI environment easily.");
-        this.setSeverity("Medium");
+
+        this.setDescription(Messages.HardcodedScriptCheckerDesc());
+        this.setSeverity(Messages.HardcodedScriptCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
         LOG.log(Level.FINE, "executeCheck " + item);
         boolean found = false;
-        if (Jenkins.getInstance().pluginManager.getPlugin("maven-plugin")!=null) {
-            if (item instanceof MavenModuleSet) {
-                found = isBuilderHarcoded(((MavenModuleSet) item).getPrebuilders());
+        if (item.getClass().getSimpleName().equals("MavenModuleSet")) {
+            try {
+                Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                if (getPrebuilders instanceof List) {
+                    found = isBuilderHarcoded((List) getPrebuilders);
+                }
+            }catch (Exception e) {
+                LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
             }
         }
         if (item instanceof Project) {
             found = isBuilderHarcoded (((Project)item).getBuilders());
         }
-        if (item instanceof MatrixProject) {
-            found = isBuilderHarcoded (((MatrixProject)item).getBuilders());
+        if (item.getClass().getSimpleName().equals("MatrixProject")) {
+            try {
+                Object getBuilders = item.getClass().getMethod("getBuilders", null).invoke(item);
+                if (getBuilders instanceof List) {
+                    found = isBuilderHarcoded((List) getBuilders);
+                }
+            }catch (Exception e) {
+                LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+            }
         }
         return found;
     }
