@@ -34,7 +34,9 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
             Job newJob = new Job(item.getName(), item.getUrl());
             for (InterfaceCheck checker : this.getCheckList()) {
                 LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription())));
+                // Lint is disabled when is ignored or globally disabled
+                newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
+
             }
             jobSet.put(item.getName(),newJob);
             LOG.log(Level.FINER, newJob.toString());
@@ -47,7 +49,7 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
             for (InterfaceSlaveCheck checker : this.getSlaveCheckList()) {
                 boolean status = checker.executeCheck(node);
                 LOG.log(Level.FINER, checker.getName() + " " + node.getDisplayName() + " " + status);
-                newSlave.addLint(new Lint(checker.getName(), status, checker.isIgnored(node.getNodeDescription())));
+                newSlave.addLint(new Lint(checker.getName(), status, checker.isIgnored(node.getNodeDescription()), checker.isEnabled()));
             }
             slaveSet.put(newSlave.getName(), newSlave);
             LOG.log(Level.FINER, newSlave.toString());

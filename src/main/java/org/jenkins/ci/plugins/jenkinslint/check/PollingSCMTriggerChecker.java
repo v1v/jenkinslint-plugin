@@ -10,8 +10,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class PollingSCMTriggerChecker extends AbstractCheck {
 
-    public PollingSCMTriggerChecker() {
-        super();
+    public PollingSCMTriggerChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.PollingSCMTriggerCheckerDesc());
         this.setSeverity(Messages.PollingSCMTriggerCheckerSeverity());
     }

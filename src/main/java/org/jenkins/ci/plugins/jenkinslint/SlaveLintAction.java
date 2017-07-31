@@ -39,7 +39,7 @@ public class SlaveLintAction extends AbstractAction implements Action {
 		for (InterfaceSlaveCheck checker : this.getSlaveCheckList()) {
 			boolean status = checker.executeCheck(this.computer.getNode());
 			LOG.log(Level.FINER, checker.getName() + " " + this.computer.getDisplayName() + " " + status);
-			this.slave.addLint(new Lint(checker.getName(), status, checker.isIgnored(this.computer.getNode().getNodeDescription())));
+			this.slave.addLint(new Lint(checker.getName(), status, checker.isIgnored(this.computer.getNode().getNodeDescription()), checker.isEnabled()));
 		}
 	}
 

@@ -29,10 +29,17 @@
             <tbody id="jenkinsLintDescriptionTableBody">
                 <j:forEach var="lint" items="${it.slave.lintList}">
                     <tr>
-                        <j:if test="${lint.ignored}">
-                            <td tooltip="ignored" style="background-color: #f0f0f0;"/>
+                        <j:if test="${!lint.isActive()}">
+                            <j:if test="${!lint.isEnabled()}">
+                                <td tooltip="disabled" style="background-color: #f0f0f0;"/>
+                            </j:if>
+                            <j:if test="${lint.isEnabled()}">
+                                <j:if test="${lint.isIgnored()}">
+                                    <td tooltip="ignored" style="background-color: #f9ef9e;"/>
+                                </j:if>
+                            </j:if>
                         </j:if>
-                        <j:if test="${!lint.ignored}">
+                        <j:if test="${lint.isActive()}">
                             <j:if test="${lint.found}">
                                 <td style="background-color: #FF8566;"/>
                             </j:if>

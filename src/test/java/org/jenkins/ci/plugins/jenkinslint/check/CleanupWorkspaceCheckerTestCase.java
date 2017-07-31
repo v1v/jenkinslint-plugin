@@ -6,6 +6,7 @@ import hudson.model.FreeStyleProject;
 import hudson.plugins.ws_cleanup.PreBuildCleanup;
 import hudson.plugins.ws_cleanup.WsCleanup;
 import hudson.tasks.ArtifactArchiver;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -17,8 +18,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class CleanupWorkspaceCheckerTestCase extends AbstractCheckerTestCase {
-    private CleanupWorkspaceChecker checker = new CleanupWorkspaceChecker();
+public class CleanupWorkspaceCheckerTestCase extends AbstractTestCase {
+    private CleanupWorkspaceChecker checker = new CleanupWorkspaceChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

@@ -5,6 +5,7 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.tasks.ArtifactArchiver;
 import hudson.tasks.JavadocArchiver;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -16,8 +17,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class ArtifactCheckerTestCase extends AbstractCheckerTestCase {
-    private ArtifactChecker checker = new ArtifactChecker();
+public class ArtifactCheckerTestCase extends AbstractTestCase {
+    private ArtifactChecker checker = new ArtifactChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class MasterLabelChecker extends AbstractCheck{
 
-    public MasterLabelChecker() {
-        super();
+    public MasterLabelChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.MasterLabelCheckerDesc());
         this.setSeverity(Messages.MasterLabelCheckerSeverity());
     }

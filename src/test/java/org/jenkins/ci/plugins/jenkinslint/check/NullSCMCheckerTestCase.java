@@ -3,6 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -14,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class NullSCMCheckerTestCase extends AbstractCheckerTestCase {
-    private NullSCMChecker checker = new NullSCMChecker();
+public class NullSCMCheckerTestCase extends AbstractTestCase {
+    private NullSCMChecker checker = new NullSCMChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

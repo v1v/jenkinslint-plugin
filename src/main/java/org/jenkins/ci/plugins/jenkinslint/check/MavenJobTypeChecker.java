@@ -8,8 +8,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class MavenJobTypeChecker extends AbstractCheck{
 
-    public MavenJobTypeChecker() {
-        super();
+    public MavenJobTypeChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.MavenJobTypeCheckerDesc());
         this.setSeverity(Messages.MavenJobTypeCheckerSeverity());
     }

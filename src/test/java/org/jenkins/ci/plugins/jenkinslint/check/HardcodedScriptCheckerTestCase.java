@@ -3,6 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -14,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class HardcodedScriptCheckerTestCase extends AbstractCheckerTestCase {
-    private HardcodedScriptChecker checker = new HardcodedScriptChecker();
+public class HardcodedScriptCheckerTestCase extends AbstractTestCase {
+    private HardcodedScriptChecker checker = new HardcodedScriptChecker(true, HardcodedScriptChecker.THRESHOLD);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -50,6 +51,13 @@ public class HardcodedScriptCheckerTestCase extends AbstractCheckerTestCase {
         project = j.createMatrixProject("Batch_Multiple_Line");
         project.getBuildersList().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
         assertTrue(checker.executeCheck(project));
+        project.delete();
+        int threshold = checker.getThreshold();
+        checker.setThreshold(14);
+        project = j.createMatrixProject("Batch_Multiple_Line_2");
+        project.getBuildersList().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertFalse(checker.executeCheck(project));
+        checker.setThreshold(threshold);
     }
     @Test public void testJobWithHardcodedScript() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject("Bash_Single_Line");
@@ -67,6 +75,13 @@ public class HardcodedScriptCheckerTestCase extends AbstractCheckerTestCase {
         project = j.createFreeStyleProject("Batch_Multiple_Line");
         project.getBuildersList().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
         assertTrue(checker.executeCheck(project));
+        project.delete();
+        int threshold = checker.getThreshold();
+        checker.setThreshold(14);
+        project = j.createFreeStyleProject("Batch_Multiple_Line_2");
+        project.getBuildersList().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertFalse(checker.executeCheck(project));
+        checker.setThreshold(threshold);
     }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -111,5 +126,12 @@ public class HardcodedScriptCheckerTestCase extends AbstractCheckerTestCase {
         project = j.createMavenProject("Batch_Multiple_Line");
         project.getPrebuilders().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
         assertTrue(checker.executeCheck(project));
+        project.delete();
+        int threshold = checker.getThreshold();
+        checker.setThreshold(14);
+        project = j.createMavenProject("Batch_Multiple_Line_2");
+        project.getPrebuilders().add(new hudson.tasks.BatchFile("echo first\nline1\nline2\nline3\nline4\nline5\nline6"));
+        assertFalse(checker.executeCheck(project));
+        checker.setThreshold(threshold);
     }
 }

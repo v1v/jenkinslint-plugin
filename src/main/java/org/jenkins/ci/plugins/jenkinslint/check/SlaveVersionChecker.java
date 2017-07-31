@@ -15,8 +15,8 @@ public class SlaveVersionChecker extends AbstractSlaveCheck {
 
     private static final String masterVersion = Launcher.VERSION;
 
-    public SlaveVersionChecker() {
-        super();
+    public SlaveVersionChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.SlaveVersionCheckerDesc());
         this.setSeverity(Messages.SlaveVersionCheckerSeverity());
     }

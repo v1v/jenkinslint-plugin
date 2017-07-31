@@ -12,8 +12,8 @@ import java.util.logging.Level;
  */
 public class BFAChecker extends AbstractCheck {
 
-    public BFAChecker() {
-        super();
+    public BFAChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.BFACheckerDesc());
         this.setSeverity(Messages.BFACheckerSeverity());
     }

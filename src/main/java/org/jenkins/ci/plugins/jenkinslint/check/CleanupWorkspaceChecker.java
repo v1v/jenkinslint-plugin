@@ -11,8 +11,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class CleanupWorkspaceChecker extends AbstractCheck{
 
-    public CleanupWorkspaceChecker() {
-        super();
+    public CleanupWorkspaceChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.CleanupWorkspaceCheckerDesc());
         this.setSeverity(Messages.CleanupWorkspaceCheckerSeverity());
     }

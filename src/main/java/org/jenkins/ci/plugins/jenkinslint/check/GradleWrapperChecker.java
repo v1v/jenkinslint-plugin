@@ -14,8 +14,8 @@ import java.util.logging.Level;
  */
 public class GradleWrapperChecker extends AbstractCheck {
 
-    public GradleWrapperChecker() {
-        super();
+    public GradleWrapperChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.GradleWrapperCheckerDesc());
         this.setSeverity(Messages.GradleWrapperCheckerSeverity());
     }

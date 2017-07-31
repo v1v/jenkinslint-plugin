@@ -10,4 +10,5 @@ public interface InterfaceCheck {
     public String getName();
     boolean executeCheck(Item item);
     boolean isIgnored(String jobDescription);
+    public boolean isEnabled();
 }

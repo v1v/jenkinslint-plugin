@@ -20,10 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author victor.martinez.
  */
-public class JobLintActionTestCase {
-    
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+public class JobLintActionTestCase extends AbstractTestCase {
 
     @Test
     public void testJob() throws Exception {

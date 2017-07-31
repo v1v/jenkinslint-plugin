@@ -4,6 +4,7 @@ import com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -14,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class BFACheckerTestCase extends AbstractCheckerTestCase {
-    private BFAChecker checker = new BFAChecker();
+public class BFACheckerTestCase extends AbstractTestCase {
+    private BFAChecker checker = new BFAChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

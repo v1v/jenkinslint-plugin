@@ -15,8 +15,8 @@ import java.util.logging.Level;
  */
 public class ArtifactChecker extends AbstractCheck {
 
-    public ArtifactChecker() {
-        super();
+    public ArtifactChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.ArtifactCheckerDesc());
         this.setSeverity(Messages.ArtifactCheckerSeverity());
     }

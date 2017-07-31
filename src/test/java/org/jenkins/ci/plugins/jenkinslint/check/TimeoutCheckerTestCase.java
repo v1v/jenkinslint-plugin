@@ -5,6 +5,7 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.plugins.build_timeout.BuildTimeoutWrapper;
 import hudson.plugins.build_timeout.impl.*;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -16,8 +17,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class TimeoutCheckerTestCase extends AbstractCheckerTestCase {
-    private TimeoutChecker checker = new TimeoutChecker();
+public class TimeoutCheckerTestCase extends AbstractTestCase {
+    private TimeoutChecker checker = new TimeoutChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

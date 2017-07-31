@@ -21,7 +21,14 @@ public final class JobLintAction extends AbstractAction implements Action {
 	private Job job;
 
 	public static boolean isDisabled () {
-		return  Boolean.getBoolean(JobLintAction.class.getName() + ".disabled");
+		// DEPRECATED: Release 0.11.0
+		if (Boolean.getBoolean(JobLintAction.class.getName() + ".disabled")) {
+			LOG.warning("This system property is deprecated and it will be removed in the release 0.11.0. " +
+						"We encourage to use the Global Settings properties.");
+			return true;
+		} else {
+			return !JenkinsLintGlobalConfiguration.get().isJobActionEnabled();
+		}
 	}
 
 	public JobLintAction(AbstractProject<?, ?> project) {
@@ -42,7 +49,7 @@ public final class JobLintAction extends AbstractAction implements Action {
 		this.reloadCheckList();
 		this.job = new Job(this.project.getName(), this.project.getUrl());
 		for (InterfaceCheck checker : this.getCheckList()) {
-			this.job.addLint(new Lint(checker.getName(), checker.executeCheck(this.project), checker.isIgnored(this.project.getDescription())));
+			this.job.addLint(new Lint(checker.getName(), checker.executeCheck(this.project), checker.isIgnored(this.project.getDescription()), checker.isEnabled()) );
 		}
 		LOG.log(Level.FINE, this.job.getLintList().toString());
 	}

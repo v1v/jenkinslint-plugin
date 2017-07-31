@@ -4,6 +4,7 @@ import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.plugins.groovy.StringScriptSource;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -15,8 +16,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class GroovySystemExitCheckerTestCase extends AbstractCheckerTestCase {
-    private GroovySystemExitChecker checker = new GroovySystemExitChecker();
+public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
+    private GroovySystemExitChecker checker = new GroovySystemExitChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

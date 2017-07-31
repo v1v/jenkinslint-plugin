@@ -1,6 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
 import hudson.model.Api;
+import org.jenkins.ci.plugins.jenkinslint.JenkinsLintGlobalConfiguration;
 import org.jenkins.ci.plugins.jenkinslint.Messages;
 import org.jenkins.ci.plugins.jenkinslint.check.*;
 
@@ -56,38 +57,38 @@ public abstract class AbstractAction {
     protected void reloadCheckList() {
         checkList.clear();
 
-        checkList.add(new JobNameChecker());
-        checkList.add(new JobDescriptionChecker());
-        checkList.add(new JobAssignedLabelChecker());
-        checkList.add(new MasterLabelChecker());
-        checkList.add(new JobLogRotatorChecker());
-        checkList.add(new MavenJobTypeChecker());
-        checkList.add(new CleanupWorkspaceChecker());
-        checkList.add(new JavadocChecker());
-        checkList.add(new ArtifactChecker());
-        checkList.add(new NullSCMChecker());
-        checkList.add(new PollingSCMTriggerChecker( ));
-        checkList.add(new GitShallowChecker());
-        checkList.add(new MultibranchJobTypeChecker());
-        checkList.add(new HardcodedScriptChecker());
-        checkList.add(new GradleWrapperChecker());
-        checkList.add(new TimeoutChecker());
-        checkList.add(new GroovySystemExitChecker());
-        checkList.add(new GitRefChecker());
-        checkList.add(new TimerTriggerChecker());
-        checkList.add(new GitRefSubmoduleChecker());
-        checkList.add(new BFAChecker());
+        JenkinsLintGlobalConfiguration config = JenkinsLintGlobalConfiguration.get();
+        checkList.add(new JobNameChecker((config.isJobNameCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new JobDescriptionChecker((config.isJobDescriptionCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new JobAssignedLabelChecker((config.isJobAssignedLabelCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new MasterLabelChecker((config.isMasterLabelCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new JobLogRotatorChecker((config.isJobLogRotatorCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new MavenJobTypeChecker((config.isMavenJobTypeCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new CleanupWorkspaceChecker((config.isCleanupWorkspaceCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new JavadocChecker((config.isJavadocCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new ArtifactChecker((config.isArtifactCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new NullSCMChecker((config.isNullSCMCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new PollingSCMTriggerChecker((config.isPollingSCMTriggerCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new GitShallowChecker((config.isGitShallowCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new MultibranchJobTypeChecker((config.isMultibranchJobTypeCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new HardcodedScriptChecker((config.isHardcodedScriptCheckerEnabled() && config.isGlobalEnabled()),
+                                                    config.getHardcodedScriptThreshold()));
+        checkList.add(new GradleWrapperChecker((config.isGradleWrapperCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new TimeoutChecker((config.isTimeoutCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new GroovySystemExitChecker((config.isGroovySystemExitCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new GitRefChecker((config.isGitRefCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new TimerTriggerChecker((config.isTimerTriggerCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new GitRefSubmoduleChecker((config.isGitRefSubmoduleCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new BFAChecker((config.isBfaCheckerEnabled() && config.isGlobalEnabled())));
     }
 
     protected void reloadSlaveCheckList() {
         slaveCheckList.clear();
 
-        slaveCheckList.add(new SlaveDescriptionChecker());
-        slaveCheckList.add(new SlaveVersionChecker());
-        slaveCheckList.add(new SlaveLabelChecker());
-        slaveCheckList.add(new WindowsSlaveLaunchChecker());
+        JenkinsLintGlobalConfiguration config = JenkinsLintGlobalConfiguration.get();
+        slaveCheckList.add(new SlaveDescriptionChecker((config.isSlaveDescriptionCheckerEnabled() && config.isGlobalEnabled())));
+        slaveCheckList.add(new SlaveVersionChecker((config.isSlaveVersionCheckerEnabled() && config.isGlobalEnabled())));
+        slaveCheckList.add(new SlaveLabelChecker((config.isSlaveLabelCheckerEnabled() && config.isGlobalEnabled())));
+        slaveCheckList.add(new WindowsSlaveLaunchChecker((config.isWindowsSlaveLaunchCheckerEnabled() && config.isGlobalEnabled())));
     }
-
-
-
 }

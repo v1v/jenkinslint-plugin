@@ -4,6 +4,7 @@ import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.triggers.TimerTrigger;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -15,8 +16,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class TimerTriggerCheckerTestCase extends AbstractCheckerTestCase {
-    private TimerTriggerChecker checker = new TimerTriggerChecker();
+public class TimerTriggerCheckerTestCase extends AbstractTestCase {
+    private TimerTriggerChecker checker = new TimerTriggerChecker(true);
 
     private static final String TIMER_WITHOUT_H = "20 * * * *";
     private static final String TIMER_WITH_H = "H/15 * * * *";

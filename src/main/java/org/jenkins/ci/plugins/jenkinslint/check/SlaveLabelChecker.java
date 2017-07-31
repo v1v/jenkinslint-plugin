@@ -10,8 +10,8 @@ import java.util.logging.Level;
  */
 public class    SlaveLabelChecker extends AbstractSlaveCheck {
 
-    public SlaveLabelChecker() {
-        super();
+    public SlaveLabelChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.SlaveLabelCheckerDesc());
         this.setSeverity(Messages.SlaveLabelCheckerSeverity());
     }

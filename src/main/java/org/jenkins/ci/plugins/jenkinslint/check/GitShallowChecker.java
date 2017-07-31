@@ -14,8 +14,8 @@ import java.util.logging.Level;
  */
 public class GitShallowChecker extends AbstractCheck {
 
-    public GitShallowChecker() {
-        super();
+    public GitShallowChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.GitShallowCheckerDesc());
         this.setSeverity(Messages.GitShallowCheckerSeverity());
     }

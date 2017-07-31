@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class NullSCMChecker extends AbstractCheck {
 
-    public NullSCMChecker() {
-        super();
+    public NullSCMChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.NullSCMCheckerDesc());
         this.setSeverity(Messages.NullSCMCheckerSeverity());
     }

@@ -6,6 +6,7 @@ import hudson.model.FreeStyleProject;
 import hudson.plugins.git.extensions.GitSCMExtension;
 import hudson.plugins.git.extensions.impl.CleanCheckout;
 import hudson.plugins.git.extensions.impl.CloneOption;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -19,8 +20,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class GitShallowCheckerTestCase extends AbstractCheckerTestCase {
-    private GitShallowChecker checker = new GitShallowChecker();
+public class GitShallowCheckerTestCase extends AbstractTestCase {
+    private GitShallowChecker checker = new GitShallowChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

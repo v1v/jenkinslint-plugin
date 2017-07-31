@@ -44,15 +44,22 @@
                         <tr>
                         <td><a href="${app.rootUrl}${job.url}" target="_blank">${job.name}</a></td>
                         <j:forEach var="lint" items="${job.lintList}">
-                            <j:if test="${lint.ignored}">
-                                <td tooltip="ignored" style="background-color: #f0f0f0;"/>
+                            <j:if test="${!lint.isActive()}">
+                                <j:if test="${!lint.isEnabled()}">
+                                    <td tooltip="disabled" style="background-color: #f0f0f0;"/>
+                                </j:if>
+                                <j:if test="${lint.isEnabled()}">
+                                    <j:if test="${lint.isIgnored()}">
+                                        <td tooltip="ignored" style="background-color: #f9ef9e;"/>
+                                    </j:if>
+                                </j:if>
                             </j:if>
-                            <j:if test="${!lint.ignored}">
+                            <j:if test="${lint.isActive()}">
                                 <j:if test="${lint.found}">
-                                    <td tooltip="${lint.name} found" style="background-color: #FF8566;"/>
+                                    <td style="background-color: #FF8566;"/>
                                 </j:if>
                                 <j:if test="${!lint.found}">
-                                    <td tooltip="${lint.name} notFound" style="background-color: #B8EEB8;"/>
+                                    <td style="background-color: #B8EEB8;"/>
                                 </j:if>
                             </j:if>
                         </j:forEach>
@@ -134,15 +141,22 @@
                         <tr>
                             <td><a href="${app.rootUrl}${slave.url}" target="_blank">${slave.name}</a></td>
                             <j:forEach var="lint" items="${slave.lintList}">
-                                <j:if test="${lint.ignored}">
-                                    <td tooltip="ignored" style="background-color: #f0f0f0;"/>
+                                <j:if test="${!lint.isActive()}">
+                                    <j:if test="${!lint.isEnabled()}">
+                                        <td tooltip="disabled" style="background-color: #f0f0f0;"/>
+                                    </j:if>
+                                    <j:if test="${lint.isEnabled()}">
+                                        <j:if test="${lint.isIgnored()}">
+                                            <td tooltip="ignored" style="background-color: #f9ef9e;"/>
+                                        </j:if>
+                                    </j:if>
                                 </j:if>
-                                <j:if test="${!lint.ignored}">
+                                <j:if test="${lint.isActive()}">
                                     <j:if test="${lint.found}">
-                                        <td tooltip="${lint.name} found" style="background-color: #FF8566;"/>
+                                        <td style="background-color: #FF8566;"/>
                                     </j:if>
                                     <j:if test="${!lint.found}">
-                                        <td tooltip="${lint.name} notFound" style="background-color: #B8EEB8;"/>
+                                        <td style="background-color: #B8EEB8;"/>
                                     </j:if>
                                 </j:if>
                             </j:forEach>

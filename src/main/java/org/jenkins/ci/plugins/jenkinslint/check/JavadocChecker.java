@@ -14,8 +14,8 @@ import java.util.logging.Level;
  */
 public class JavadocChecker extends AbstractCheck{
 
-    public JavadocChecker() {
-        super();
+    public JavadocChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.JavadocCheckerDesc());
         this.setSeverity(Messages.JavadocCheckerSeverity());
     }

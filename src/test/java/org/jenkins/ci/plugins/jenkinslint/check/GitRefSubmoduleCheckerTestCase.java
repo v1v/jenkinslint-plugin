@@ -4,6 +4,7 @@ import hudson.model.FreeStyleProject;
 import hudson.plugins.git.extensions.GitSCMExtension;
 import hudson.plugins.git.extensions.impl.CleanCheckout;
 import hudson.plugins.git.extensions.impl.SubmoduleOption;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class GitRefSubmoduleCheckerTestCase extends AbstractCheckerTestCase {
-    private GitRefSubmoduleChecker checker = new GitRefSubmoduleChecker();
+public class GitRefSubmoduleCheckerTestCase extends AbstractTestCase {
+    private GitRefSubmoduleChecker checker = new GitRefSubmoduleChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

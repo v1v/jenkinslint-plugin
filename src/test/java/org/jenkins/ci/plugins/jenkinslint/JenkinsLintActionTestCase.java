@@ -16,13 +16,11 @@ import static org.junit.Assert.*;
 /**
  * @author victor.martinez.
  */
-public class JenkinsLintActionTestCase {
+public class JenkinsLintActionTestCase extends AbstractTestCase{
 
     private static final String EMPTY_TABLE = "<tbody id=\"jenkinsLintTableBody\"></tbody></table>";
     private static final String URL = "jenkinslint";
 
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
     @Test
     public void testEmptyJob() throws Exception {
         HtmlPage page = j.createWebClient().goTo(URL);

@@ -11,8 +11,8 @@ import java.util.logging.Level;
  */
 public class WindowsSlaveLaunchChecker extends AbstractSlaveCheck {
 
-    public WindowsSlaveLaunchChecker() {
-        super();
+    public WindowsSlaveLaunchChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.WindowsSlaveLaunchCheckerDesc());
         this.setSeverity(Messages.WindowsSlaveLaunchCheckerSeverity());
     }

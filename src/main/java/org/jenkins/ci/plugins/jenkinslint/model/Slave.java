@@ -95,7 +95,7 @@ public final class Slave implements Comparable<Slave> {
         if (lintList != null && lintList.size() > 0) {
             int ok = 0;
             for (Lint lint : lintList) {
-                if (!lint.isIgnored()) {
+                if (!lint.isIgnored() && lint.isEnabled()) {
                     if (! lint.isFound()) { ok++; }
                 } else {
                     ok++;

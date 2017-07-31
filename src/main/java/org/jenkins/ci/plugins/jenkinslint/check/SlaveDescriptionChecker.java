@@ -8,8 +8,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractSlaveCheck;
  */
 public class SlaveDescriptionChecker extends AbstractSlaveCheck {
 
-    public SlaveDescriptionChecker() {
-        super();
+    public SlaveDescriptionChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.SlaveDescriptionCheckerDesc());
         this.setSeverity(Messages.SlaveDescriptionCheckerSeverity());
     }

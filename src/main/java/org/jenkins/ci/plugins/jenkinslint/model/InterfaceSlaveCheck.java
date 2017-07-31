@@ -10,4 +10,5 @@ public interface InterfaceSlaveCheck {
     public String getName();
     boolean executeCheck(Node item);
     boolean isIgnored(String jobDescription);
+    public boolean isEnabled();
 }

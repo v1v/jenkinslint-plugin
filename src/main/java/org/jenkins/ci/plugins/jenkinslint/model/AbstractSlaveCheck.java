@@ -14,7 +14,14 @@ public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveChec
     private String description;
     private String id = "JL-";
     private String severity;
+    private boolean enabled = true;
     protected static final Logger LOG = Logger.getLogger(AbstractSlaveCheck.class.getName());
+
+    public AbstractSlaveCheck(boolean enabled) {
+        super();
+        this.setName(this.getClass().getSimpleName());
+        this.setEnabled(enabled);
+    }
 
     public AbstractSlaveCheck() {
         super();
@@ -32,6 +39,14 @@ public abstract class AbstractSlaveCheck implements Comparable<AbstractSlaveChec
 
     public String getId() {
         return id;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Exported

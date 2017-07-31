@@ -14,8 +14,8 @@ import java.util.logging.Level;
  */
 public class GroovySystemExitChecker extends AbstractCheck {
 
-    public GroovySystemExitChecker() {
-        super();
+    public GroovySystemExitChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.GroovySystemExitCheckerDesc());
         this.setSeverity(Messages.GroovySystemExitCheckerSeverity());
     }

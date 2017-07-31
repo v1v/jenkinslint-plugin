@@ -2,9 +2,8 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
-import org.junit.Rule;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,8 +13,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class MavenJobTypeCheckerTestCase extends AbstractCheckerTestCase {
-    private MavenJobTypeChecker checker = new MavenJobTypeChecker();
+public class MavenJobTypeCheckerTestCase extends AbstractTestCase {
+    private MavenJobTypeChecker checker = new MavenJobTypeChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class JobDescriptionChecker extends AbstractCheck{
 
-    public JobDescriptionChecker() {
-        super();
+    public JobDescriptionChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.JobDescriptionCheckerDesc());
         this.setSeverity(Messages.JobDescriptionCheckerSeverity());
     }

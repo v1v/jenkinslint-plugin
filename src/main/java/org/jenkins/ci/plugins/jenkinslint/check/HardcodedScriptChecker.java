@@ -15,12 +15,13 @@ import java.util.logging.Level;
 public class HardcodedScriptChecker extends AbstractCheck {
 
     public final static int THRESHOLD = 2;
+    private int threshold;
 
-    public HardcodedScriptChecker() {
-        super();
-
+    public HardcodedScriptChecker(boolean enabled, int threshold) {
+        super(enabled);
         this.setDescription(Messages.HardcodedScriptCheckerDesc());
         this.setSeverity(Messages.HardcodedScriptCheckerSeverity());
+        this.setThreshold(threshold);
     }
 
     public boolean executeCheck(Item item) {
@@ -57,7 +58,7 @@ public class HardcodedScriptChecker extends AbstractCheck {
         if (builders != null && builders.size() > 0 ) {
             for (Builder builder : builders) {
                 if (builder instanceof hudson.tasks.Shell || builder instanceof hudson.tasks.BatchFile) {
-                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), THRESHOLD)) {
+                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), this.getThreshold())) {
                         found = true;
                     }
                 }
@@ -74,5 +75,14 @@ public class HardcodedScriptChecker extends AbstractCheck {
         } else {
             return false;
         }
+    }
+
+    public int getThreshold () {
+        return this.threshold;
+    }
+
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
     }
 }

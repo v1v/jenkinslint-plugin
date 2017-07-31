@@ -8,8 +8,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class MultibranchJobTypeChecker extends AbstractCheck{
 
-    public MultibranchJobTypeChecker() {
-        super();
+    public MultibranchJobTypeChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.MultibranchJobTypeCheckerDesc());
         this.setSeverity(Messages.MultibranchJobTypeCheckerSeverity());
     }

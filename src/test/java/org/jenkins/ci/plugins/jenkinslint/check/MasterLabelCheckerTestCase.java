@@ -1,6 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -11,8 +12,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class MasterLabelCheckerTestCase extends AbstractCheckerTestCase {
-    private MasterLabelChecker checker = new MasterLabelChecker();
+public class MasterLabelCheckerTestCase extends AbstractTestCase {
+    private MasterLabelChecker checker = new MasterLabelChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

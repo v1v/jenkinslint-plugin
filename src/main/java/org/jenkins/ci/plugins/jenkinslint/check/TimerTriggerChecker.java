@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
  */
 public class TimerTriggerChecker extends AbstractCheck{
 
-    public TimerTriggerChecker() {
-        super();
+    public TimerTriggerChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.TimerTriggerCheckerDesc());
         this.setSeverity(Messages.TimerTriggerCheckerSeverity());
     }

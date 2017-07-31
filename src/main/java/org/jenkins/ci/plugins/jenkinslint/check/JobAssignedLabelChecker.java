@@ -9,8 +9,8 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class JobAssignedLabelChecker extends AbstractCheck{
 
-    public JobAssignedLabelChecker() {
-        super();
+    public JobAssignedLabelChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.JobAssignedLabelCheckerDesc());
         this.setSeverity(Messages.JobAssignedLabelCheckerSeverity());
     }

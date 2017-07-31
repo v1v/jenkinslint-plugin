@@ -15,8 +15,8 @@ import java.util.logging.Level;
  */
 public class GitRefSubmoduleChecker extends AbstractCheck {
 
-    public GitRefSubmoduleChecker() {
-        super();
+    public GitRefSubmoduleChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.GitRefSubmoduleCheckerDesc());
         this.setSeverity(Messages.GitRefSubmoduleCheckerSeverity());
     }

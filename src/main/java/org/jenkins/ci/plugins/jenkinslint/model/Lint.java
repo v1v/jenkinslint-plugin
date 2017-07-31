@@ -12,12 +12,14 @@ public final class Lint implements Comparable<Lint> {
     private String name;
     private boolean found = false;
     private boolean ignored = false;
+    private boolean enabled = false;
 
-    public Lint(final String name, final boolean found, final boolean ignored) {
+    public Lint(final String name, final boolean found, final boolean ignored, final boolean enabled) {
         super();
         this.setName(name);
         this.setFound(found);
         this.setIgnored(ignored);
+        this.setEnabled(enabled);
     }
 
     @Exported
@@ -54,6 +56,19 @@ public final class Lint implements Comparable<Lint> {
         this.ignored = ignored;
     }
 
+    @Exported
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isActive() {
+        return isEnabled() && !isIgnored();
+    }
+
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -74,6 +89,6 @@ public final class Lint implements Comparable<Lint> {
 
     @Override
     public String toString() {
-        return "Lint: " + getName() + ", " + isFound() + ", " + isIgnored();
+        return "Lint: " + getName() + ", " + isFound() + ", " + isIgnored()+ ", " + isEnabled();
     }
 }

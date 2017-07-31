@@ -6,7 +6,7 @@ This plugin has mainly two goals:
 
 See [JenkinsLint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin) for more information.
 
-[![Build Status](https://ci.jenkins.io/job/Plugins/job/jenkinslint-plugin/job/master/badge/icon)](https://ci.jenkins.io/job/Plugins/job/jenkinslint-plugin/job/)
+[![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins/jenkinslint-plugin/master)](https://ci.jenkins.io/job/Plugins/jenkinslint-plugin/master)
 
 ## Motivation
 
@@ -27,13 +27,12 @@ a hundred other projects is where it gets difficult and tedious. This provides a
 - Load checks dynamically via Reflection
 - Show graphs
 - Configure Checks (enabled, disabled, change severity)
+- Example: Groovy script to configure globally.
+- Example: XML API to query
 - Load checks dynamically.
-- Jobs action to show those Jenkins lints.
 - System.exit in system admin groovy scripts (publishers and parameters)
 - Support pipeline
-- BFA check
 - Cyclomatic complexity check when using conditional steps plugin
-- Git Submodule Ref cache repo check
 - Fix Findbugs/Checkstyle defects
 - Integrate with Sonar or any other Linting defects tool
 
@@ -42,10 +41,12 @@ a hundred other projects is where it gets difficult and tedious. This provides a
 ### Jobs based
 
 * Artifact Publisher check
+* BFA check
 * Build timeout check
 * CleanUp Workspace check
 * Git Shallow clone check
 * Git Ref repo check
+* Git Ref Submodule repo check
 * Gradle Wrapper check
 * Hardcoded Script check
 * Javadoc Publisher check

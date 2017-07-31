@@ -1,0 +1,97 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <f:section title="${%Jenkins Lint}" name="jenkinslint">
+        <f:entry title="${%Enabled}"
+                 description="${%If Jobs should be scanned or not.}" field="globalEnabled">
+            <f:checkbox/>
+        </f:entry>
+        <f:entry title="${%Enable JobAction}"
+                 description="${%Whether to display JobAction floatingBox  or not.}" field="jobActionEnabled">
+            <f:checkbox/>
+        </f:entry>
+    </f:section>
+
+    <f:advanced>
+        <f:section title="${%Jenkins Lint Checkers}" name="jenkinslint-checkers">
+            <f:entry title="${%Artifact Checker}" field="artifactCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%BFA Checker}" field="bfaCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Cleanup Workspace Checker}" field="cleanupWorkspaceCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Git Ref Checker}" field="gitRefCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Git Ref Submodule Checker}" field="gitRefSubmoduleCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Git Shallow Checker}" field="gitShallowCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Gradle Wrapper Checker}" field="gradleWrapperCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Groovy System Exit Checker}" field="groovySystemExitCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Hardcoded Script Checker}" field="hardcodedScriptCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Hardcoded Script Checker - Threshold}" field="hardcodedScriptThreshold">
+                <f:textbox/>
+            </f:entry>
+            <f:entry title="${%Javadoc Checker}" field="javadocCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Job Assigned Label Checker}" field="jobAssignedLabelCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Job Description Checker}" field="jobDescriptionCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Job Log Rotator Checker}" field="jobLogRotatorCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%JobName Checker}" field="jobNameCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Master Label Checker}" field="masterLabelCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Maven JobType Checker}" field="mavenJobTypeCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Multibranch JobType Checker}" field="multibranchJobTypeCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Null SCM Checker}" field="nullSCMCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Polling SCM Trigger Checker}" field="pollingSCMTriggerCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Slave Description Checker}" field="slaveDescriptionCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Slave Label Checker}" field="slaveLabelCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Slave Version Checker}" field="slaveVersionCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Timeout Checker}" field="timeoutCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Timer Trigger Checker}" field="timerTriggerCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+            <f:entry title="${%Windows Slave Launch Checker}" field="windowsSlaveLaunchCheckerEnabled">
+                <f:checkbox/>
+            </f:entry>
+        </f:section>
+    </f:advanced>
+</j:jelly>

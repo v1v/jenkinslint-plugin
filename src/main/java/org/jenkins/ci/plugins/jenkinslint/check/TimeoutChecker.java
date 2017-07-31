@@ -16,8 +16,8 @@ import java.util.logging.Level;
  */
 public class TimeoutChecker extends AbstractCheck {
 
-    public TimeoutChecker() {
-        super();
+    public TimeoutChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.TimeoutCheckerDesc());
         this.setSeverity(Messages.TimeoutCheckerSeverity());
     }

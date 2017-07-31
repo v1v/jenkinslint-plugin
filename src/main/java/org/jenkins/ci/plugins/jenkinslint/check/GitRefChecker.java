@@ -15,8 +15,8 @@ import hudson.PluginWrapper;
  */
 public class GitRefChecker extends AbstractCheck {
 
-    public GitRefChecker() {
-        super();
+    public GitRefChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.GitRefCheckerDesc());
         this.setSeverity(Messages.GitRefCheckerSeverity());
     }

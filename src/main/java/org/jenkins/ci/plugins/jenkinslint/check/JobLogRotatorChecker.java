@@ -13,8 +13,8 @@ public class JobLogRotatorChecker extends AbstractCheck{
 
     private final int EMPTY = -1;
 
-    public JobLogRotatorChecker() {
-        super();
+    public JobLogRotatorChecker(boolean enabled) {
+        super(enabled);
         this.setDescription(Messages.JobLogRotatorCheckerDesc());
         this.setSeverity(Messages.JobLogRotatorCheckerSeverity());
     }

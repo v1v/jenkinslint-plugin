@@ -3,6 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -14,8 +15,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class GradleWrapperCheckerTestCase extends AbstractCheckerTestCase {
-    private GradleWrapperChecker checker = new GradleWrapperChecker();
+public class GradleWrapperCheckerTestCase extends AbstractTestCase {
+    private GradleWrapperChecker checker = new GradleWrapperChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

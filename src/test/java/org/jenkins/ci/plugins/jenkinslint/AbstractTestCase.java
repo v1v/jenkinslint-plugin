@@ -1,4 +1,4 @@
-package org.jenkins.ci.plugins.jenkinslint.check;
+package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.model.Item;
 import org.junit.Before;
@@ -8,11 +8,11 @@ import org.jvnet.hudson.test.JenkinsRule;
 import java.io.IOException;
 
 /**
- * AbstractCheckerTestCase to speed up Unit tests.
+ * AbstractTestCase to speed up Unit tests.
  *
  * @author Victor Martinez
  */
-public abstract class AbstractCheckerTestCase {
+public abstract class AbstractTestCase {
     @ClassRule
     public static JenkinsRule j = new JenkinsRule();
 

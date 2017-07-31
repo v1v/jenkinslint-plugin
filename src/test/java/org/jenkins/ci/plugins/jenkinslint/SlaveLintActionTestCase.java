@@ -26,10 +26,7 @@ import static org.junit.Assert.assertThat;
 /**
  * @author victor.martinez.
  */
-public class SlaveLintActionTestCase {
-
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+public class SlaveLintActionTestCase extends AbstractTestCase {
 
     @Test
     public void testSlave() throws Exception {
@@ -53,6 +50,5 @@ public class SlaveLintActionTestCase {
         assertEquals("slave", p.getFirstChild().getChildNodes().get(0).getNodeName());
         assertEquals("lintHealthReport", p.getFirstChild().getChildNodes().get(0).getChildNodes().get(0).getNodeName());
         assertEquals("lintSet", p.getFirstChild().getChildNodes().get(0).getChildNodes().get(1).getNodeName());
-
     }
 }

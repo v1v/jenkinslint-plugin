@@ -2,6 +2,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
 import hudson.tasks.LogRotator;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -12,8 +13,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class JobLogRotatorCheckerTestCase extends AbstractCheckerTestCase {
-    private JobLogRotatorChecker checker = new JobLogRotatorChecker();
+public class JobLogRotatorCheckerTestCase extends AbstractTestCase {
+    private JobLogRotatorChecker checker = new JobLogRotatorChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
