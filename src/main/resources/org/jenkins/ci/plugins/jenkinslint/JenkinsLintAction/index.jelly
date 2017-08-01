@@ -46,24 +46,24 @@
                         <j:forEach var="lint" items="${job.lintList}">
                             <j:if test="${!lint.isActive()}">
                                 <j:if test="${!lint.isEnabled()}">
-                                    <td tooltip="disabled" style="background-color: #f0f0f0;"/>
+                                    <td data="disabled" tooltip="disabled" style="background-color: #f0f0f0;"/>
                                 </j:if>
                                 <j:if test="${lint.isEnabled()}">
                                     <j:if test="${lint.isIgnored()}">
-                                        <td tooltip="ignored" style="background-color: #f9ef9e;"/>
+                                        <td data="ignored" tooltip="ignored" style="background-color: #f9ef9e;"/>
                                     </j:if>
                                 </j:if>
                             </j:if>
                             <j:if test="${lint.isActive()}">
                                 <j:if test="${lint.found}">
-                                    <td style="background-color: #FF8566;"/>
+                                    <td data="found" tooltip="found" style="background-color: #FF8566;"/>
                                 </j:if>
                                 <j:if test="${!lint.found}">
-                                    <td style="background-color: #B8EEB8;"/>
+                                    <td data="not_found" tooltip="not_found" style="background-color: #B8EEB8;"/>
                                 </j:if>
                             </j:if>
                         </j:forEach>
-                        <td><img src="${rootURL}${job.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${job.getLintHealthReport().getDescription()}"/></td>
+                        <td data="${job.getLintHealthReport().getScore()}"><img src="${rootURL}${job.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${job.getLintHealthReport().getDescription()}"/></td>
                         </tr>
                     </j:forEach>
                </tbody>
@@ -143,24 +143,24 @@
                             <j:forEach var="lint" items="${slave.lintList}">
                                 <j:if test="${!lint.isActive()}">
                                     <j:if test="${!lint.isEnabled()}">
-                                        <td tooltip="disabled" style="background-color: #f0f0f0;"/>
+                                        <td data="disabled" tooltip="disabled" style="background-color: #f0f0f0;"/>
                                     </j:if>
                                     <j:if test="${lint.isEnabled()}">
                                         <j:if test="${lint.isIgnored()}">
-                                            <td tooltip="ignored" style="background-color: #f9ef9e;"/>
+                                            <td data="ignored" tooltip="ignored" style="background-color: #f9ef9e;"/>
                                         </j:if>
                                     </j:if>
                                 </j:if>
                                 <j:if test="${lint.isActive()}">
                                     <j:if test="${lint.found}">
-                                        <td style="background-color: #FF8566;"/>
+                                        <td data="found" tooltip="found" style="background-color: #FF8566;"/>
                                     </j:if>
                                     <j:if test="${!lint.found}">
-                                        <td style="background-color: #B8EEB8;"/>
+                                        <td data="not_found" tooltip="not_found" style="background-color: #B8EEB8;"/>
                                     </j:if>
                                 </j:if>
                             </j:forEach>
-                            <td><img src="${rootURL}${slave.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${slave.getLintHealthReport().getDescription()}"/></td>
+                            <td data="${slave.getLintHealthReport().getScore()}"><img src="${rootURL}${slave.getLintHealthReport().getIconUrl('16x16')}" alt="" title="${slave.getLintHealthReport().getDescription()}"/></td>
                         </tr>
                     </j:forEach>
                 </tbody>
