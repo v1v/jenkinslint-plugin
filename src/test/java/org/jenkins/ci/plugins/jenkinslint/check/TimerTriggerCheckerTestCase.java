@@ -7,6 +7,7 @@ import hudson.triggers.TimerTrigger;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
+import org.jvnet.hudson.test.WithoutJenkins;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -43,6 +44,19 @@ public class TimerTriggerCheckerTestCase extends AbstractTestCase {
         project.addTrigger(newTrigger);
         project.save();
         assertTrue(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-45879")
+    @Test public void testWithAtTimerTriggerWithReturnCarries() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        TimerTrigger newTrigger = new TimerTrigger(TIMER_WITH_H + "\n\n" + TIMER_WITH_H);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        newTrigger = new TimerTrigger(TIMER_WITH_H + "\n\n    \n" + TIMER_WITH_H);
+        project.addTrigger(newTrigger);
+        project.save();
+        assertFalse(checker.executeCheck(project));
     }
     @Test public void testWithTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();

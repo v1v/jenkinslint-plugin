@@ -4,7 +4,7 @@ import hudson.model.Item;
 import hudson.model.AbstractProject;
 import hudson.triggers.TimerTrigger;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
-
+import org.jenkins.ci.plugins.jenkinslint.utils.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,37 +25,14 @@ public class TimerTriggerChecker extends AbstractCheck{
             String spec = ((AbstractProject) item).getTrigger(TimerTrigger.class).getSpec().toLowerCase();
             String[] myData = spec.split("\n");
             for (String line: myData) {
-                if (!isH(line) && !isComment(line) && !isAt(line)) {
+                if (!StringUtils.isH(line) && !StringUtils.isComment(line) &&
+                    !StringUtils.isAt(line) && !StringUtils.isEmptyOrBlank(line)) {
                     found = true;
                 }
             }
         } else {
             found = false;
         }
-        return found;
-    }
-
-    private boolean isComment (String line) {
-        boolean found = false;
-        Pattern p = Pattern.compile("^\\s*#\\s*.*");
-        Matcher m = p.matcher(line);
-        found = m.matches();
-        return found;
-    }
-
-    private boolean isH (String line) {
-        boolean found = false;
-        Pattern p = Pattern.compile("^\\s*h.*");
-        Matcher m = p.matcher(line);
-        found = m.matches();
-        return found;
-    }
-
-    private boolean isAt (String line) {
-        boolean found = false;
-        Pattern p = Pattern.compile("^\\s*@.*");
-        Matcher m = p.matcher(line);
-        found = m.matches();
         return found;
     }
 }
