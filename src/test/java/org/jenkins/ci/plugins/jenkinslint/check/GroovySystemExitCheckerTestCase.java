@@ -5,7 +5,9 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.plugins.groovy.StringScriptSource;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.junit.Test;
+import org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder;
 import org.jvnet.hudson.test.Issue;
 
 import static org.junit.Assert.assertFalse;
@@ -92,6 +94,39 @@ public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
         project.delete();
         project = j.createMavenProject("WithSystem");
         project.getPrebuilders().add(new hudson.plugins.groovy.SystemGroovy(new StringScriptSource("System.exit(0)"),null,null));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testJobWithPublisherGroovy() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject("WithoutSystem");
+        SecureGroovyScript without = new SecureGroovyScript("println 'hi'",false,null);
+        project.getPublishersList().add(new GroovyPostbuildRecorder(without, 0, false));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("WithSystem");
+        SecureGroovyScript with = new SecureGroovyScript("System.exit(0)",false,null);
+        project.getPublishersList().add(new GroovyPostbuildRecorder(with, 0, false));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMatrixProjecWithPublisherGroovy() throws Exception {
+        MatrixProject project = j.createMatrixProject("WithoutSystem");
+        SecureGroovyScript without = new SecureGroovyScript("println 'hi'",false,null);
+        project.getPublishersList().add(new GroovyPostbuildRecorder(without, 0, false));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("WithSystem");
+        SecureGroovyScript with = new SecureGroovyScript("System.exit(0)",false,null);
+        project.getPublishersList().add(new GroovyPostbuildRecorder(with, 0, false));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMavenModuleWithPublisherGroovy() throws Exception {
+        MavenModuleSet project = j.createMavenProject("WithoutSystem");
+        SecureGroovyScript without = new SecureGroovyScript("println 'hi'",false,null);
+        project.getPublishersList().add(new GroovyPostbuildRecorder(without, 0, false));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("WithSystem");
+        SecureGroovyScript with = new SecureGroovyScript("System.exit(0)",false,null);
+        project.getPublishersList().add(new GroovyPostbuildRecorder(with, 0, false));
         assertTrue(checker.executeCheck(project));
     }
 }
