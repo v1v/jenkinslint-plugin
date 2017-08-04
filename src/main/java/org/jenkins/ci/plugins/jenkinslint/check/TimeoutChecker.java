@@ -3,6 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.model.Descriptor;
 import hudson.model.Item;
 import hudson.model.Project;
+import hudson.tasks.Builder;
 import hudson.tasks.BuildWrapper;
 import hudson.util.DescribableList;
 import jenkins.model.Jenkins;
@@ -27,27 +28,46 @@ public class TimeoutChecker extends AbstractCheck {
         if (Jenkins.getInstance().pluginManager.getPlugin("build-timeout") != null) {
             if (item.getClass().getName().endsWith("hudson.maven.MavenModuleSet")) {
                 try {
+                    // Wrappers
                     Method method = item.getClass().getMethod("getBuildWrappersList");
                     DescribableList<BuildWrapper,Descriptor<BuildWrapper>> buildWrapperList = ((DescribableList<BuildWrapper,Descriptor<BuildWrapper>>) method.invoke(item));
-                    notfound = !isTimeout(buildWrapperList);
+                    boolean isWrapperTimeout = isTimeout(buildWrapperList);
+                    // builders
+                    boolean isBuildTimeout = false;
+                    Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                    if (getPrebuilders instanceof List) {
+                        isBuildTimeout = isBuildStepTimeout((List) getPrebuilders);
+                    }
+                    notfound = !(isBuildTimeout || isWrapperTimeout);
                 } catch (Exception e) {
                     LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                     notfound = false;
                 }
             }
             if (item instanceof Project) {
-                notfound = !isTimeout(((Project) item).getBuildWrappersList());
+                notfound = !(isTimeout(((Project) item).getBuildWrappersList()) ||
+                              isBuildStepTimeout (((Project)item).getBuilders()));
             }
             if (item.getClass().getSimpleName().equals("MatrixProject")) {
                 try {
                     Object getBuildWrappersList = item.getClass().getMethod("getBuildWrappersList", null).invoke(item);
+                    boolean isWrapperTimeout = false;
                     if (getBuildWrappersList instanceof List) {
-                        notfound = !isTimeout((List) getBuildWrappersList);
+                        isWrapperTimeout = isTimeout((List) getBuildWrappersList);
                     }
+                    Object getBuilders = item.getClass().getMethod("getBuilders", null).invoke(item);
+                    boolean isBuildTimeout = false;
+                    if (getBuilders instanceof List) {
+                        isBuildTimeout = isBuildStepTimeout((List) getBuilders);
+                    }
+                    notfound = !(isBuildTimeout || isWrapperTimeout);
                 }catch (Exception e) {
                     LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                    notfound = false;
                 }
             }
+        } else {
+            LOG.log(Level.FINE, "It's highly recommended to use  the plugin build-timeout");
         }
         return notfound;
     }
@@ -63,4 +83,19 @@ public class TimeoutChecker extends AbstractCheck {
         }
         return status;
     }
+
+    private boolean isBuildStepTimeout(List<Builder> builders) {
+        boolean found = false;
+        if (builders != null && builders.size() > 0 ) {
+            for (Builder builder : builders) {
+                if (builder.getClass().getName().endsWith("BuildStepWithTimeout")) {
+                    found = true;
+                }
+            }
+        } else {
+            found = false;
+        }
+        return found;
+    }
+
 }

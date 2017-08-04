@@ -75,6 +75,46 @@ public class TimeoutCheckerTestCase extends AbstractTestCase {
         project.getBuildWrappersList().add(createLikelyStuckTimeOutStrategy());
         assertFalse(checker.executeCheck(project));
     }
+    @Issue("JENKINS-45938")
+    @Test public void testJobWithBuildStepWithTimeout() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject();
+        project.getBuildersList().add(new hudson.tasks.Shell("#!/bin/bash #single line"));
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("AbsoluteTimeOutStrategy");
+        project.getBuildersList().add(new hudson.plugins.build_timeout.BuildStepWithTimeout(
+                new hudson.tasks.Shell("#!/bin/bash"),
+                new AbsoluteTimeOutStrategy("120"),
+                null));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("DeadlineTimeOutStrategy");
+        project.getBuildersList().add(new hudson.plugins.build_timeout.BuildStepWithTimeout(
+                new hudson.tasks.Shell("#!/bin/bash"),
+                new DeadlineTimeOutStrategy("120", 120),
+                null));
+        assertFalse(checker.executeCheck(project));
+    }
+    @Issue("JENKINS-45938")
+    @Test public void testMatrixProjectWithBuildStepWithTimeout() throws Exception {
+        MatrixProject project = j.createMatrixProject();
+        project.getBuildersList().add(new hudson.tasks.Shell("#!/bin/bash #single line"));
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("AbsoluteTimeOutStrategy");
+        project.getBuildersList().add(new hudson.plugins.build_timeout.BuildStepWithTimeout(
+                new hudson.tasks.Shell("#!/bin/bash"),
+                new AbsoluteTimeOutStrategy("120"),
+                null));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("DeadlineTimeOutStrategy");
+        project.getBuildersList().add(new hudson.plugins.build_timeout.BuildStepWithTimeout(
+                new hudson.tasks.Shell("#!/bin/bash"),
+                new DeadlineTimeOutStrategy("120", 120),
+                null));
+        assertFalse(checker.executeCheck(project));
+    }
     @Test public void testControlComment() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.isIgnored(project.getDescription()));
