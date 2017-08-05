@@ -3,7 +3,12 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+import hudson.model.ParametersDefinitionProperty;
 import hudson.plugins.groovy.StringScriptSource;
+import org.biouno.unochoice.CascadeChoiceParameter;
+import org.biouno.unochoice.ChoiceParameter;
+import org.biouno.unochoice.DynamicReferenceParameter;
+import org.biouno.unochoice.model.GroovyScript;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.junit.Test;
@@ -128,5 +133,108 @@ public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
         SecureGroovyScript with = new SecureGroovyScript("System.exit(0)",false,null);
         project.getPublishersList().add(new GroovyPostbuildRecorder(with, 0, false));
         assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testJobWithChoiceParameterGroovy() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject("WithoutSystem");
+        project.addProperty(createChoiceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("WithSystem");
+        project.addProperty(createChoiceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testJobWithCascadeChoiceParameterGroovy() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject("WithoutSystem");
+        project.addProperty(createCascadeChoiceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("WithSystem");
+        project.addProperty(createCascadeChoiceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testJobWithDynamicReferenceParameterGroovy() throws Exception {
+        FreeStyleProject project = j.createFreeStyleProject("WithoutSystem");
+        project.addProperty(createDynamicReferenceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("WithSystem");
+        project.addProperty(createDynamicReferenceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMavenModuleWithChoiceParameterGroovy() throws Exception {
+        MavenModuleSet project = j.createMavenProject("WithoutSystem");
+        project.addProperty(createChoiceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("WithSystem");
+        project.addProperty(createChoiceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMavenModuleWithCascadeChoiceParameterGroovy() throws Exception {
+        MavenModuleSet project = j.createMavenProject("WithoutSystem");
+        project.addProperty(createCascadeChoiceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("WithSystem");
+        project.addProperty(createCascadeChoiceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMavenModuleWithDynamicReferenceParameterGroovy() throws Exception {
+        MavenModuleSet project = j.createMavenProject("WithoutSystem");
+        project.addProperty(createDynamicReferenceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMavenProject("WithSystem");
+        project.addProperty(createDynamicReferenceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMatrixProjectWithChoiceParameterGroovy() throws Exception {
+        MatrixProject project = j.createMatrixProject("WithoutSystem");
+        project.addProperty(createChoiceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("WithSystem");
+        project.addProperty(createChoiceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMatrixProjectWithCascadeChoiceParameterGroovy() throws Exception {
+        MatrixProject project = j.createMatrixProject("WithoutSystem");
+        project.addProperty(createCascadeChoiceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("WithSystem");
+        project.addProperty(createCascadeChoiceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testMatrixProjectWithDynamicReferenceParameterGroovy() throws Exception {
+        MatrixProject project = j.createMatrixProject("WithoutSystem");
+        project.addProperty(createDynamicReferenceParameter("println 'hi'"));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("WithSystem");
+        project.addProperty(createDynamicReferenceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+
+    private ParametersDefinitionProperty createChoiceParameter(String content) {
+      GroovyScript script = new GroovyScript(createScript(content),createScript(content));
+      ChoiceParameter cp = new ChoiceParameter("param", "desc", script, "", false);
+      return new ParametersDefinitionProperty(cp);
+    }
+
+    private ParametersDefinitionProperty createCascadeChoiceParameter(String content) {
+      GroovyScript script = new GroovyScript(createScript(content),createScript(content));
+      CascadeChoiceParameter ccp = new CascadeChoiceParameter("param", "desc", script, "", "", false);
+      return new ParametersDefinitionProperty(ccp);
+    }
+
+    private ParametersDefinitionProperty createDynamicReferenceParameter(String content) {
+      GroovyScript script = new GroovyScript(createScript(content),createScript(content));
+      DynamicReferenceParameter drp = new DynamicReferenceParameter("param", "desc", script, "", "", false);
+      return new ParametersDefinitionProperty(drp);
+    }
+
+    private SecureGroovyScript createScript (String content) {
+      return new SecureGroovyScript(content,false,null);
     }
 }

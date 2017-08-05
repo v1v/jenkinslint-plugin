@@ -3,6 +3,10 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
+import hudson.model.JobProperty;
+import hudson.model.JobPropertyDescriptor;
+import hudson.model.ParameterDefinition;
+import hudson.model.ParametersDefinitionProperty;
 import hudson.model.Project;
 import hudson.tasks.Builder;
 import hudson.tasks.Publisher;
@@ -10,6 +14,7 @@ import hudson.util.DescribableList;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -51,6 +56,12 @@ public class GroovySystemExitChecker extends AbstractCheck {
 
         if (isSystemExitInPublisher(((AbstractProject) item).getPublishersList())) {
             found = true;
+        }
+
+        if (((AbstractProject) item).getProperty(ParametersDefinitionProperty.class)!=null) {
+            if (isSystemExitInParameters(((ParametersDefinitionProperty)((AbstractProject) item).getProperty(ParametersDefinitionProperty.class)).getParameterDefinitions())) {
+                found = true;
+            }
         }
         return found;
     }
@@ -97,6 +108,30 @@ public class GroovySystemExitChecker extends AbstractCheck {
         return status;
     }
 
+    private boolean isSystemExitInParameters (List<hudson.model.ParameterDefinition> properties) {
+        boolean status = false;
+        for (ParameterDefinition property : properties) {
+            if (property.getClass().getName().endsWith("ChoiceParameter") ||
+                property.getClass().getName().endsWith("CascadeChoiceParameter") ||
+                property.getClass().getName().endsWith("DynamicReferenceParameter") ) {
+                LOG.log(Level.FINEST, "unochoice " + property);
+                try {
+                    Object scriptSource = property.getClass().getMethod("getScript",null).invoke(property);
+                    if (scriptSource.getClass().getName().endsWith("GroovyScript")) {
+                        Object script = scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource);
+                        if (script != null && script.getClass().getName().endsWith("SecureGroovyScript")) {
+                            if (containsSystemExit(script.getClass().getMethod("getScript", null).invoke(script))) {
+                                status = true;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                }
+            }
+        }
+        return status;
+    }
 
     private boolean containsSystemExit (Object command) {
         boolean status = false;
