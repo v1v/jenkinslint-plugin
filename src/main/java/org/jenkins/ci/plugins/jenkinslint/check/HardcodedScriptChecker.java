@@ -5,6 +5,7 @@ import hudson.model.Project;
 import hudson.tasks.Builder;
 import hudson.tasks.CommandInterpreter;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
+import org.jenkins.ci.plugins.jenkinslint.utils.StringUtils;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -71,7 +72,13 @@ public class HardcodedScriptChecker extends AbstractCheck {
 
     private boolean isHarcoded (String content, int threshold) {
         if (content != null) {
-            return content.split("\r\n|\r|\n").length > threshold;
+            int length = 0;
+            for (String line : content.split("\r\n|\r|\n")) {
+                if (!StringUtils.isEmptyOrBlank(line)) {
+                    length++;
+                }
+            }
+            return length > threshold;
         } else {
             return false;
         }
