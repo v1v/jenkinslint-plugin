@@ -21,14 +21,7 @@ public final class JobLintAction extends AbstractAction implements Action {
 	private Job job;
 
 	public static boolean isDisabled () {
-		// DEPRECATED: Release 0.11.0
-		if (Boolean.getBoolean(JobLintAction.class.getName() + ".disabled")) {
-			LOG.warning("This system property is deprecated and it will be removed in the release 0.11.0. " +
-						"We encourage to use the Global Settings properties.");
-			return true;
-		} else {
-			return !JenkinsLintGlobalConfiguration.get().isJobActionEnabled();
-		}
+		return !JenkinsLintGlobalConfiguration.get().isJobActionEnabled();
 	}
 
 	public JobLintAction(AbstractProject<?, ?> project) {
