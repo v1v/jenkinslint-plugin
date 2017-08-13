@@ -5,8 +5,6 @@ import hudson.model.AbstractProject;
 import hudson.triggers.TimerTrigger;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 import org.jenkins.ci.plugins.jenkinslint.utils.StringUtils;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Victor Martinez
@@ -25,7 +23,7 @@ public class TimerTriggerChecker extends AbstractCheck{
             String spec = ((AbstractProject) item).getTrigger(TimerTrigger.class).getSpec().toLowerCase();
             String[] myData = spec.split("\n");
             for (String line: myData) {
-                if (!StringUtils.isH(line) && !StringUtils.isComment(line) &&
+                if (!StringUtils.isH(line) && !StringUtils.isShellComment(line) &&
                     !StringUtils.isAt(line) && !StringUtils.isEmptyOrBlank(line)) {
                     found = true;
                 }

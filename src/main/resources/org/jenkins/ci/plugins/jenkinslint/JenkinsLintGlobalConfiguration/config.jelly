@@ -41,6 +41,9 @@
             <f:entry title="${%Hardcoded Script Checker}" field="hardcodedScriptCheckerEnabled">
                 <f:checkbox/>
             </f:entry>
+            <f:entry title="${%Hardcoded Script Checker - Ignore Comments}" field="hardcodedScriptIgnoredComment">
+                <f:checkbox/>
+            </f:entry>
             <f:entry title="${%Hardcoded Script Checker - Threshold}" field="hardcodedScriptThreshold">
                 <f:textbox/>
             </f:entry>

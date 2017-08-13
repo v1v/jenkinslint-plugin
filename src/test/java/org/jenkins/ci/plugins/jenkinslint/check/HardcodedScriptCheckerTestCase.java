@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * @author Victor Martinez
  */
 public class HardcodedScriptCheckerTestCase extends AbstractTestCase {
-    private HardcodedScriptChecker checker = new HardcodedScriptChecker(true, HardcodedScriptChecker.THRESHOLD);
+    private HardcodedScriptChecker checker = new HardcodedScriptChecker(true, HardcodedScriptChecker.THRESHOLD, false);
     private final String SINGLE_LINE_BASH = "#!/bin/bash #single line";
     private final String MULTI_LINE_BASH = "#!/bin/bash\nline1\nline2\nline3\nline4\nline5\nline6";
     private final String SINGLE_LINE_BATCH = "echo first";
@@ -26,6 +26,8 @@ public class HardcodedScriptCheckerTestCase extends AbstractTestCase {
     private final String MULTI_SPACE_LINE2_BASH = "echo first\n \n \n \n \n \n ";
     private final String MULTI_LINE_WITH_BLANK1_BASH = "echo first\n\n\n\n\n\nline1";
     private final String MULTI_LINE_WITH_BLANK2_BASH = "echo first\n\n\n\n\n\nline1\nline2";
+    private final String MULTI_LINE_WITH_COMMENTS_SHELL = "echo first\n# \n# \n# \n# \n# \n# line1\n #";
+    private final String MULTI_LINE_WITH_COMMENTS_BATCH = "echo first\nREM \nREM \nREM \nREM \nREM \nREM line1\nline2";
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -132,7 +134,33 @@ public class HardcodedScriptCheckerTestCase extends AbstractTestCase {
         assertFalse(getMatrixProject(MULTI_LINE_WITH_BLANK1_BASH, true));
         assertTrue(getMatrixProject(MULTI_LINE_WITH_BLANK2_BASH, true));
     }
-
+    @Issue("JENKINS-46146")
+    @Test public void testJobWithCommentedLinesScript() throws Exception {
+        assertTrue(getJob(MULTI_LINE_WITH_COMMENTS_SHELL, true));
+        assertTrue(getJob(MULTI_LINE_WITH_COMMENTS_BATCH, false));
+        checker.setIgnoreComment(true);
+        assertFalse(getJob(MULTI_LINE_WITH_COMMENTS_SHELL, true));
+        assertFalse(getJob(MULTI_LINE_WITH_COMMENTS_BATCH, false));
+        checker.setIgnoreComment(false);
+    }
+    @Issue("JENKINS-46146")
+    @Test public void testMavenModuleWithCommentedLinesScript() throws Exception {
+        assertTrue(getMavenModule(MULTI_LINE_WITH_COMMENTS_SHELL, true));
+        assertTrue(getMavenModule(MULTI_LINE_WITH_COMMENTS_BATCH, false));
+        checker.setIgnoreComment(true);
+        assertFalse(getMavenModule(MULTI_LINE_WITH_COMMENTS_SHELL, true));
+        assertFalse(getMavenModule(MULTI_LINE_WITH_COMMENTS_BATCH, false));
+        checker.setIgnoreComment(false);
+    }
+    @Issue("JENKINS-46146")
+    @Test public void testMatrixProjectWithCommentedLinesScript() throws Exception {
+        assertTrue(getMatrixProject(MULTI_LINE_WITH_COMMENTS_SHELL, true));
+        assertTrue(getMatrixProject(MULTI_LINE_WITH_COMMENTS_BATCH, false));
+        checker.setIgnoreComment(true);
+        assertFalse(getMatrixProject(MULTI_LINE_WITH_COMMENTS_SHELL, true));
+        assertFalse(getMatrixProject(MULTI_LINE_WITH_COMMENTS_BATCH, false));
+        checker.setIgnoreComment(false);
+    }
     private boolean getMatrixProject(String shell, boolean isUnix) throws Exception {
         MatrixProject project = j.createMatrixProject();
         if (isUnix) {

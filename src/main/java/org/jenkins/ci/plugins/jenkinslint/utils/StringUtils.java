@@ -16,9 +16,17 @@ public class StringUtils {
         return found || line.isEmpty();
     }
 
-    public static boolean isComment (String line) {
+    public static boolean isShellComment(String line) {
         boolean found = false;
         Pattern p = Pattern.compile("^\\s*#\\s*.*");
+        Matcher m = p.matcher(line);
+        found = m.matches();
+        return found;
+    }
+
+    public static boolean isBatchComment(String line) {
+        boolean found = false;
+        Pattern p = Pattern.compile("^\\s*REM\\s*.*", Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(line);
         found = m.matches();
         return found;

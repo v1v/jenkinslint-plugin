@@ -45,6 +45,8 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
     private boolean windowsSlaveLaunchCheckerEnabled = true;
 
     private int hardcodedScriptThreshold = HardcodedScriptChecker.THRESHOLD;
+    private boolean hardcodedScriptIgnoredComment = false;
+
 
     public JenkinsLintGlobalConfiguration() {
         load();
@@ -290,6 +292,14 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
 
     public void setHardcodedScriptThreshold(int hardcodedScriptThreshold) {
         this.hardcodedScriptThreshold = hardcodedScriptThreshold;
+    }
+
+    public boolean isHardcodedScriptIgnoredComment() {
+        return hardcodedScriptIgnoredComment;
+    }
+
+    public void setHardcodedScriptIgnoredComment(boolean hardcodedScriptIgnoredComment) {
+        this.hardcodedScriptIgnoredComment = hardcodedScriptIgnoredComment;
     }
 
     /**

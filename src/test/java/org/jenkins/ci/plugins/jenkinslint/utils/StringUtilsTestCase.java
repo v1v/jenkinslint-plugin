@@ -2,7 +2,7 @@ package org.jenkins.ci.plugins.jenkinslint.utils;
 
 import org.junit.Test;
 import org.jvnet.hudson.test.WithoutJenkins;
-import org.jenkins.ci.plugins.jenkinslint.utils.StringUtils;
+
 import java.lang.NullPointerException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,15 +39,23 @@ public class StringUtilsTestCase {
         StringUtils.isH(null);
     }
     @WithoutJenkins
-    @Test public void testIsComment() {
-        assertTrue(StringUtils.isComment("# bob"));
-        assertTrue(StringUtils.isComment("    # bob"));
-        assertFalse(StringUtils.isComment("bob # bob"));
+    @Test public void testIsShellComment() {
+        assertTrue(StringUtils.isShellComment("# bob"));
+        assertTrue(StringUtils.isShellComment("    # bob"));
+        assertFalse(StringUtils.isShellComment("bob # bob"));
+    }
+    @WithoutJenkins
+    @Test public void testIsBatchComment() {
+        assertTrue(StringUtils.isBatchComment("REM bob"));
+        assertTrue(StringUtils.isBatchComment("rem bob"));
+        assertTrue(StringUtils.isBatchComment("    REM bob"));
+        assertFalse(StringUtils.isBatchComment("bob REM bob"));
     }
     @WithoutJenkins
     @Test(expected = NullPointerException.class)
     public void testIsCommentNull() throws Exception {
-        StringUtils.isComment(null);
+        StringUtils.isShellComment(null);
+        StringUtils.isBatchComment(null);
     }
     @WithoutJenkins
     @Test public void testIsEmptyOrBlank() {

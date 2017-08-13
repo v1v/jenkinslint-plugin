@@ -72,7 +72,8 @@ public abstract class AbstractAction {
         checkList.add(new GitShallowChecker((config.isGitShallowCheckerEnabled() && config.isGlobalEnabled())));
         checkList.add(new MultibranchJobTypeChecker((config.isMultibranchJobTypeCheckerEnabled() && config.isGlobalEnabled())));
         checkList.add(new HardcodedScriptChecker((config.isHardcodedScriptCheckerEnabled() && config.isGlobalEnabled()),
-                                                    config.getHardcodedScriptThreshold()));
+                                                    config.getHardcodedScriptThreshold(),
+                                                    config.isHardcodedScriptIgnoredComment()));
         checkList.add(new GradleWrapperChecker((config.isGradleWrapperCheckerEnabled() && config.isGlobalEnabled())));
         checkList.add(new TimeoutChecker((config.isTimeoutCheckerEnabled() && config.isGlobalEnabled())));
         checkList.add(new GroovySystemExitChecker((config.isGroovySystemExitCheckerEnabled() && config.isGlobalEnabled())));

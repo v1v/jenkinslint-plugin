@@ -17,12 +17,14 @@ public class HardcodedScriptChecker extends AbstractCheck {
 
     public final static int THRESHOLD = 2;
     private int threshold;
+    private boolean ignoreComment = false;
 
-    public HardcodedScriptChecker(boolean enabled, int threshold) {
+    public HardcodedScriptChecker(boolean enabled, int threshold, boolean ignoreComment) {
         super(enabled);
         this.setDescription(Messages.HardcodedScriptCheckerDesc());
         this.setSeverity(Messages.HardcodedScriptCheckerSeverity());
         this.setThreshold(threshold);
+        this.setIgnoreComment(ignoreComment);
     }
 
     public boolean executeCheck(Item item) {
@@ -59,7 +61,7 @@ public class HardcodedScriptChecker extends AbstractCheck {
         if (builders != null && builders.size() > 0 ) {
             for (Builder builder : builders) {
                 if (builder instanceof hudson.tasks.Shell || builder instanceof hudson.tasks.BatchFile) {
-                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), this.getThreshold())) {
+                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), this.getThreshold(), this.isIgnoreComment(), (builder instanceof hudson.tasks.Shell))) {
                         found = true;
                     }
                 }
@@ -70,17 +72,29 @@ public class HardcodedScriptChecker extends AbstractCheck {
         return found;
     }
 
-    private boolean isHarcoded (String content, int threshold) {
+    private boolean isHarcoded (String content, int threshold, boolean ignoreComment, boolean isUnix) {
         if (content != null) {
             int length = 0;
             for (String line : content.split("\r\n|\r|\n")) {
                 if (!StringUtils.isEmptyOrBlank(line)) {
-                    length++;
+                    if (ignoreComment && !isACommentLine(line, isUnix)) {
+                        length++;
+                    } else if (!ignoreComment) {
+                        length++;
+                    }
                 }
             }
             return length > threshold;
         } else {
             return false;
+        }
+    }
+
+    private boolean isACommentLine( String line, boolean isUnix ) {
+        if (isUnix) {
+            return StringUtils.isShellComment(line);
+        } else {
+            return StringUtils.isBatchComment(line);
         }
     }
 
@@ -91,5 +105,13 @@ public class HardcodedScriptChecker extends AbstractCheck {
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
+    }
+
+    public boolean isIgnoreComment() {
+        return ignoreComment;
+    }
+
+    public void setIgnoreComment(boolean ignoreComment) {
+        this.ignoreComment = ignoreComment;
     }
 }
