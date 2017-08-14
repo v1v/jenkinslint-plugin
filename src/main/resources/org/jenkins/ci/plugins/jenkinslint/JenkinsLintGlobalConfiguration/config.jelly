@@ -6,8 +6,8 @@
                  description="${%If Jobs should be scanned or not.}" field="globalEnabled">
             <f:checkbox/>
         </f:entry>
-        <f:entry title="${%Enable JobAction}"
-                 description="${%Whether to display JobAction floatingBox  or not.}" field="jobActionEnabled">
+        <f:entry title="${%Enable Job floating box}"
+                 description="${%Whether to display JobAction floatingBox or not.}" field="jobActionEnabled">
             <f:checkbox/>
         </f:entry>
     </f:section>
@@ -41,10 +41,12 @@
             <f:entry title="${%Hardcoded Script Checker}" field="hardcodedScriptCheckerEnabled">
                 <f:checkbox/>
             </f:entry>
-            <f:entry title="${%Hardcoded Script Checker - Ignore Comments}" field="hardcodedScriptIgnoredComment">
+            <f:entry title="${%Hardcoded Script Checker - Ignore Comments}"
+                description="${%Whether to ignore shell/batch comments or not.}" field="hardcodedScriptIgnoredComment">
                 <f:checkbox/>
             </f:entry>
-            <f:entry title="${%Hardcoded Script Checker - Threshold}" field="hardcodedScriptThreshold">
+            <f:entry title="${%Hardcoded Script Checker - Threshold}"
+                description="${%The lines of code count reporting threshold.}" field="hardcodedScriptThreshold">
                 <f:textbox/>
             </f:entry>
             <f:entry title="${%Javadoc Checker}" field="javadocCheckerEnabled">
