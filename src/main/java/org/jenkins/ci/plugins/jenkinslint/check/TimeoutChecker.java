@@ -66,8 +66,16 @@ public class TimeoutChecker extends AbstractCheck {
                     notfound = false;
                 }
             }
+            // This is duplicated either the plugin is not installed or if so then workflow is not linted
+            if (item.getClass().getSimpleName().equals("WorkflowJob")) {
+                notfound = false;
+            }
         } else {
-            LOG.log(Level.FINE, "It's highly recommended to use  the plugin build-timeout");
+            if (item.getClass().getSimpleName().equals("WorkflowJob")) {
+                notfound = false;
+            } else {
+                LOG.log(Level.FINE, "It's highly recommended to use  the plugin build-timeout");
+            }
         }
         return notfound;
     }

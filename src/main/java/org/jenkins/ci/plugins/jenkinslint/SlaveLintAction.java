@@ -1,7 +1,9 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
+import hudson.Extension;
 import hudson.model.Action;
 import hudson.model.Computer;
+import hudson.model.TransientComputerActionFactory;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractAction;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceSlaveCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.Lint;
@@ -10,6 +12,8 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,4 +47,11 @@ public class SlaveLintAction extends AbstractAction implements Action {
 		}
 	}
 
+	@Extension
+	public static class Factory extends TransientComputerActionFactory {
+		@Override
+		public Collection<? extends Action> createFor(Computer target) {
+			return Collections.singleton(new SlaveLintAction(target));
+		}
+	}
 }

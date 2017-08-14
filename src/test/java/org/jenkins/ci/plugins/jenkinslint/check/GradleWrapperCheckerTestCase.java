@@ -106,4 +106,7 @@ public class GradleWrapperCheckerTestCase extends AbstractTestCase {
         project.getPrebuilders().add(new hudson.plugins.gradle.Gradle("description","switches","tasks","rootBuildScriptDir","buildFile","gradleName", true, false, false, false));
         assertFalse(checker.executeCheck(project));
     }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
+    }
 }

@@ -4,6 +4,7 @@ import hudson.model.Node;
 import hudson.remoting.Callable;
 import hudson.remoting.Launcher;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractSlaveCheck;
+import org.jenkinsci.remoting.RoleChecker;
 
 import java.io.IOException;
 
@@ -46,6 +47,11 @@ public class SlaveVersionChecker extends AbstractSlaveCheck {
                 // Older slave.jar won't have VERSION
                 return "< 1.335";
             }
+        }
+
+        @Override
+        public void checkRoles(RoleChecker roleChecker) throws SecurityException {
+
         }
     }
 }

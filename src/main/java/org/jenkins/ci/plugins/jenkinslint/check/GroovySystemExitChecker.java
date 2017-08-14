@@ -3,8 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
-import hudson.model.JobProperty;
-import hudson.model.JobPropertyDescriptor;
+import hudson.model.Job;
 import hudson.model.ParameterDefinition;
 import hudson.model.ParametersDefinitionProperty;
 import hudson.model.Project;
@@ -14,7 +13,6 @@ import hudson.util.DescribableList;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -54,13 +52,31 @@ public class GroovySystemExitChecker extends AbstractCheck {
             }
         }
 
-        if (isSystemExitInPublisher(((AbstractProject) item).getPublishersList())) {
-            found = true;
+        if (item instanceof AbstractProject) {
+            if (isSystemExitInPublisher(((AbstractProject) item).getPublishersList())) {
+                found = true;
+            }
+
+            if (((AbstractProject) item).getProperty(ParametersDefinitionProperty.class) != null) {
+                if (isSystemExitInParameters(((ParametersDefinitionProperty) ((AbstractProject) item).getProperty(ParametersDefinitionProperty.class)).getParameterDefinitions())) {
+                    found = true;
+                }
+            }
         }
 
-        if (((AbstractProject) item).getProperty(ParametersDefinitionProperty.class)!=null) {
-            if (isSystemExitInParameters(((ParametersDefinitionProperty)((AbstractProject) item).getProperty(ParametersDefinitionProperty.class)).getParameterDefinitions())) {
-                found = true;
+        if (item instanceof Job) {
+            // Pipeline support
+            if (item.getClass().getSimpleName().equals("WorkflowJob")) {
+                try {
+                    Object getDefinition = item.getClass().getMethod("getDefinition", null).invoke(item);
+                    if (getDefinition.getClass().getSimpleName().equals("CpsFlowDefinition")) {
+                        if (containsSystemExit(getDefinition.getClass().getMethod("getScript",null).invoke(getDefinition))) {
+                            found = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    LOG.log(Level.FINE, "Exception " + e.getMessage(), e.getCause());
+                }
             }
         }
         return found;

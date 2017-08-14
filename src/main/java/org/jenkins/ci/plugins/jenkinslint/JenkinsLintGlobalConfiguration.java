@@ -44,6 +44,8 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
     private boolean timerTriggerCheckerEnabled = true;
     private boolean windowsSlaveLaunchCheckerEnabled = true;
 
+    private boolean groovySandboxCheckerEnabled = true;
+
     private int hardcodedScriptThreshold = HardcodedScriptChecker.THRESHOLD;
     private boolean hardcodedScriptIgnoredComment = false;
 
@@ -300,6 +302,14 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
 
     public void setHardcodedScriptIgnoredComment(boolean hardcodedScriptIgnoredComment) {
         this.hardcodedScriptIgnoredComment = hardcodedScriptIgnoredComment;
+    }
+
+    public boolean isGroovySandboxCheckerEnabled() {
+        return groovySandboxCheckerEnabled;
+    }
+
+    public void setWorkflowSandboxCheckerEnabled(boolean groovySandboxCheckerEnabled) {
+        this.groovySandboxCheckerEnabled = groovySandboxCheckerEnabled;
     }
 
     /**

@@ -1,6 +1,8 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.model.Item;
+import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -21,5 +23,13 @@ public abstract class AbstractTestCase {
         for (Item i: j.getInstance().getItems()) {
             i.delete();
         }
+    }
+
+    protected WorkflowJob createWorkflow(String script, boolean sandbox) throws Exception {
+        WorkflowJob project = j.jenkins.createProject(WorkflowJob.class, "testPipeline");
+        if (script!=null && !script.isEmpty()) {
+            project.setDefinition(new CpsFlowDefinition(script, sandbox));
+        }
+        return project;
     }
 }

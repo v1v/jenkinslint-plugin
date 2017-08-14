@@ -132,6 +132,9 @@ public class TimeoutCheckerTestCase extends AbstractTestCase {
         assertTrue(checker.executeCheck(project));
         project.delete();
     }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
+    }
 
     private BuildTimeoutWrapper createNoActivityTimeOut() {
         NoActivityTimeOutStrategy strategy = new NoActivityTimeOutStrategy("120");

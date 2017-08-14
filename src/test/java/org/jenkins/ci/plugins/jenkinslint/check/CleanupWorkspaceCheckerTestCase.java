@@ -67,4 +67,7 @@ public class CleanupWorkspaceCheckerTestCase extends AbstractTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
     }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
+    }
 }

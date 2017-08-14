@@ -5,6 +5,7 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.triggers.TimerTrigger;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.WithoutJenkins;
@@ -37,12 +38,10 @@ public class TimerTriggerCheckerTestCase extends AbstractTestCase {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger("@daily");
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
         project.delete();
         newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n" +"@daily");
         project.addTrigger(newTrigger);
-        project.save();
         assertTrue(checker.executeCheck(project));
     }
     @Issue("JENKINS-45879")
@@ -50,52 +49,44 @@ public class TimerTriggerCheckerTestCase extends AbstractTestCase {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITH_H + "\n\n" + TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
         project.delete();
         newTrigger = new TimerTrigger(TIMER_WITH_H + "\n\n    \n" + TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
     }
     @Test public void testWithTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertTrue(checker.executeCheck(project));
     }
     @Test public void testWithHTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
     }
     @Test public void testWithMultipleTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n" + TIMER_WITHOUT_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertTrue(checker.executeCheck(project));
     }
     @Test public void testWithMultipleHTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n" + TIMER_WITH_H +  "\n" + TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertTrue(checker.executeCheck(project));
     }
     @Test public void testCommentedTimerTrigger() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H + "\n#" + TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         project.delete();
         assertTrue(checker.executeCheck(project));
         newTrigger = new TimerTrigger(TIMER_WITH_COMMENT);
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
     }
     @Issue("JENKINS-42310")
@@ -108,13 +99,11 @@ public class TimerTriggerCheckerTestCase extends AbstractTestCase {
         MavenModuleSet project = j.createMavenProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertTrue(checker.executeCheck(project));
         project.delete();
         project = j.createMavenProject();
         newTrigger = new TimerTrigger(TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
     }
     @Issue("JENKINS-42310")
@@ -127,13 +116,11 @@ public class TimerTriggerCheckerTestCase extends AbstractTestCase {
         MatrixProject project = j.createMatrixProject();
         TimerTrigger newTrigger = new TimerTrigger(TIMER_WITHOUT_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertTrue(checker.executeCheck(project));
         project.delete();
         project = j.createMatrixProject();
         newTrigger = new TimerTrigger(TIMER_WITH_H);
         project.addTrigger(newTrigger);
-        project.save();
         assertFalse(checker.executeCheck(project));
     }
     @Test public void testControlComment() throws Exception {
@@ -141,5 +128,21 @@ public class TimerTriggerCheckerTestCase extends AbstractTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        WorkflowJob project = createWorkflow(null, false);
+        assertFalse(checker.executeCheck(project));
+
+        // With Hash
+        TimerTrigger newTrigger = new TimerTrigger(TIMER_WITH_H);
+        project.addTrigger(newTrigger);
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+
+        // Without Hash
+        project = createWorkflow(null, false);
+        newTrigger = new TimerTrigger(TIMER_WITHOUT_H);
+        project.addTrigger(newTrigger);
+        assertTrue(checker.executeCheck(project));
     }
 }

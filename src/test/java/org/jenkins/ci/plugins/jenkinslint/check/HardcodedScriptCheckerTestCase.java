@@ -161,6 +161,10 @@ public class HardcodedScriptCheckerTestCase extends AbstractTestCase {
         assertFalse(getMatrixProject(MULTI_LINE_WITH_COMMENTS_BATCH, false));
         checker.setIgnoreComment(false);
     }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
+    }
+
     private boolean getMatrixProject(String shell, boolean isUnix) throws Exception {
         MatrixProject project = j.createMatrixProject();
         if (isUnix) {

@@ -1,5 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
+import hudson.model.Actionable;
 import hudson.model.Api;
 import org.jenkins.ci.plugins.jenkinslint.JenkinsLintGlobalConfiguration;
 import org.jenkins.ci.plugins.jenkinslint.Messages;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
  * AbstractAction class.
  * @author Victor Martinez
  */
-public abstract class AbstractAction {
+public abstract class AbstractAction extends Actionable {
     protected static final Logger LOG = Logger.getLogger(AbstractAction.class.getName());
     private ArrayList<InterfaceCheck> checkList = new ArrayList<InterfaceCheck>();
     private ArrayList<InterfaceSlaveCheck> slaveCheckList = new ArrayList<InterfaceSlaveCheck>();
@@ -32,6 +33,10 @@ public abstract class AbstractAction {
     }
 
     public String getUrlName() {
+        return Messages.UrlName();
+    }
+
+    public String getSearchUrl() {
         return Messages.UrlName();
     }
 
@@ -81,6 +86,7 @@ public abstract class AbstractAction {
         checkList.add(new TimerTriggerChecker((config.isTimerTriggerCheckerEnabled() && config.isGlobalEnabled())));
         checkList.add(new GitRefSubmoduleChecker((config.isGitRefSubmoduleCheckerEnabled() && config.isGlobalEnabled())));
         checkList.add(new BFAChecker((config.isBfaCheckerEnabled() && config.isGlobalEnabled())));
+        checkList.add(new GroovySandboxChecker((config.isGroovySandboxCheckerEnabled() && config.isGlobalEnabled())));
     }
 
     protected void reloadSlaveCheckList() {

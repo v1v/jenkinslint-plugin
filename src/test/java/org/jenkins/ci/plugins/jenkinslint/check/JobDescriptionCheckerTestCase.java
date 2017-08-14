@@ -4,6 +4,7 @@ import hudson.matrix.MatrixProject;
 import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -58,5 +59,13 @@ public class JobDescriptionCheckerTestCase extends AbstractTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJobDescription() throws Exception {
+        WorkflowJob project =createWorkflow(null, true);
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = (createWorkflow(null, true));
+        project.setDescription("Some Description");
+        assertFalse(checker.executeCheck(project));
     }
 }

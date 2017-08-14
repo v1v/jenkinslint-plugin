@@ -29,14 +29,13 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
         this.reloadCheckList();
         this.reloadSlaveCheckList();
 
-        for (AbstractProject item : Jenkins.getInstance().getAllItems(AbstractProject.class)) {
-            LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
+        for (hudson.model.Job item : Jenkins.getInstance().getAllItems(hudson.model.Job.class)) {
+            LOG.log(Level.FINER, "queryChecks " + item.getName());
             Job newJob = new Job(item.getName(), item.getUrl());
             for (InterfaceCheck checker : this.getCheckList()) {
                 LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
                 // Lint is disabled when is ignored or globally disabled
                 newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
-
             }
             jobSet.put(item.getName(),newJob);
             LOG.log(Level.FINER, newJob.toString());

@@ -11,6 +11,7 @@ import org.biouno.unochoice.DynamicReferenceParameter;
 import org.biouno.unochoice.model.GroovyScript;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.Test;
 import org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder;
 import org.jvnet.hudson.test.Issue;
@@ -213,6 +214,13 @@ public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
         project.delete();
         project = j.createMatrixProject("WithSystem");
         project.addProperty(createDynamicReferenceParameter("System.exit(0)"));
+        assertTrue(checker.executeCheck(project));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        WorkflowJob project = createWorkflow(null, false);
+        assertFalse(checker.executeCheck(project));
+        project.delete();
+        project = createWorkflow("@NonCPS def systemExit() { System.exit(1) }\\n systemExit()", false);
         assertTrue(checker.executeCheck(project));
     }
 

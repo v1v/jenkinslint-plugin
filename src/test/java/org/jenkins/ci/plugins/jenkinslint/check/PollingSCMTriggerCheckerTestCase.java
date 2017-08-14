@@ -3,6 +3,7 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 import hudson.model.FreeStyleProject;
 import hudson.triggers.SCMTrigger;
 import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -30,5 +31,11 @@ public class PollingSCMTriggerCheckerTestCase extends AbstractTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        WorkflowJob project = createWorkflow(null, false);
+        assertFalse(checker.executeCheck(project));
+        project.addTrigger(new SCMTrigger("", true));
+        assertTrue(checker.executeCheck(project));
     }
 }

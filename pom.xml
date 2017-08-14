@@ -11,10 +11,11 @@
   </parent>
 
   <properties>
-    <jenkins.version>1.580</jenkins.version>
+    <jenkins.version>1.607</jenkins.version>
     <jenkins-test-harness.version>1.580</jenkins-test-harness.version>
     <!--TODO: make true after the code cleanup-->
     <findbugs.failOnError>false</findbugs.failOnError>
+    <workflow.version>1.14.2</workflow.version>
   </properties>
 
   <artifactId>jenkinslint</artifactId>
@@ -195,6 +196,19 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-job</artifactId>
+      <version>${workflow.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-cps</artifactId>
+      <version>${workflow.version}</version>
+      <scope>test</scope>
+    </dependency>
     <!-- JENKINS-29427 -->
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>

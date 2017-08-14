@@ -65,4 +65,7 @@ public class JobAssignedLabelCheckerTestCase extends AbstractTestCase {
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
     }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
+    }
 }
