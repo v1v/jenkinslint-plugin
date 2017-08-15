@@ -1,5 +1,5 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
   <j:getStatic var="permission" className="hudson.model.Item" field="CREATE"/>
   <l:layout norefresh="true" permission="${permission}" title="${%Jenkins.Lint.Title}">
     <l:side-panel>
@@ -24,10 +24,16 @@
         <j:set var="data" value="${it.data}"/>
         <h1>${%Jenkins.Lint.Title}</h1>
         <j:if test="${(filter == null) or (filter == 'job')}">
+
             <h4>${%Jenkins.Lint.Description}</h4>
             ${%Jenkins.Lint.Description.1}
             ${%Jenkins.Lint.Description.2}
             <br/>
+            <st:adjunct includes="org.jenkins.ci.plugins.jenkinslint.JenkinsLintAction._table"/>
+            <div id="filter-container">
+                ${%Filter}:
+                <input type="text" id="filter-box" />
+            </div>
             <table class="sortable pane bigtable" id="jenkinsLintTable">
                 <thead>
                   <tr>
