@@ -1,5 +1,6 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.PluginWrapper;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
@@ -10,6 +11,7 @@ import hudson.model.Project;
 import hudson.tasks.Builder;
 import hudson.tasks.Publisher;
 import hudson.util.DescribableList;
+import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
 import java.util.List;
@@ -82,16 +84,30 @@ public class GroovySystemExitChecker extends AbstractCheck {
         return found;
     }
 
-    private boolean isSystemExit (List<Builder> builders) {
+    private boolean isSystemExit(List<Builder> builders) {
         boolean status = false;
         if (builders != null && builders.size() > 0 ) {
             for (Builder builder : builders) {
                 if (builder.getClass().getName().endsWith("SystemGroovy")) {
                     try {
-                        Object scriptSource = builder.getClass().getMethod("getScriptSource",null).invoke(builder);
-                        if (scriptSource.getClass().getName().endsWith("StringScriptSource")) {
-                            if (containsSystemExit(scriptSource.getClass().getMethod("getCommand",null).invoke(scriptSource))) {
-                                status = true;
+                        // INFO: Groovy Version 2.0 support Secured Sandbox and changed its implementation
+                        PluginWrapper plugin = Jenkins.getInstance().pluginManager.getPlugin("groovy");
+                        if (plugin!=null && plugin.getVersionNumber().isOlderThan(new hudson.util.VersionNumber("2.0.0"))) {
+                            Object scriptSource = builder.getClass().getMethod("getScriptSource", null).invoke(builder);
+                            if (scriptSource.getClass().getName().endsWith("StringScriptSource")) {
+                                if (containsSystemExit(scriptSource.getClass().getMethod("getCommand", null).invoke(scriptSource))) {
+                                    status = true;
+                                }
+                            }
+                        } else {
+                            Object scriptSource = builder.getClass().getMethod("getSource", null).invoke(builder);
+                            if (scriptSource.getClass().getName().endsWith("StringSystemScriptSource")) {
+                                Object script = scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource);
+                                if (script != null && script.getClass().getName().endsWith("SecureGroovyScript")) {
+                                    if (containsSystemExit(script.getClass().getMethod("getScript", null).invoke(script))) {
+                                        status = true;
+                                    }
+                                }
                             }
                         }
                     } catch (Exception e) {
@@ -102,7 +118,6 @@ public class GroovySystemExitChecker extends AbstractCheck {
         }
         return status;
     }
-
 
     private boolean isSystemExitInPublisher (DescribableList<Publisher, Descriptor<Publisher>> publishersList) {
         boolean status = false;

@@ -89,6 +89,7 @@ public class JenkinsLintActionTestCase extends AbstractTestCase{
         assertTrue(content.contains(htmlLint("TimerTriggerChecker", "JL-19")));
         assertTrue(content.contains(htmlLint("GitRefSubmoduleChecker", "JL-20")));
         assertTrue(content.contains(htmlLint("BFAChecker", "JL-21")));
+        assertTrue(content.contains(htmlLint("GroovySandboxChecker", "JL-22")));
     }
 
     @Issue("JENKINS-46176")

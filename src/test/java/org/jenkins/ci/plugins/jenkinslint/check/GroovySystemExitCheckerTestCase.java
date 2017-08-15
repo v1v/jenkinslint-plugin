@@ -5,6 +5,7 @@ import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
 import hudson.model.ParametersDefinitionProperty;
 import hudson.plugins.groovy.StringScriptSource;
+import hudson.plugins.groovy.StringSystemScriptSource;
 import org.biouno.unochoice.CascadeChoiceParameter;
 import org.biouno.unochoice.ChoiceParameter;
 import org.biouno.unochoice.DynamicReferenceParameter;
@@ -24,8 +25,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
-    private GroovySystemExitChecker checker = new GroovySystemExitChecker(true);
+public class GroovySystemExitCheckerTestCase extends GroovyAbstractCheckerTestCase {
+    protected GroovySystemExitChecker checker = new GroovySystemExitChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -51,7 +52,10 @@ public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
         project.delete();
         project = j.createMatrixProject("WithSystem");
         project.getBuildersList().add(new hudson.plugins.groovy.SystemGroovy(new StringScriptSource("System.exit(0)"),null,null));
-        project.save();
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createMatrixProject("WithSystem2.0");
+        project.getBuildersList().add(new hudson.plugins.groovy.SystemGroovy(new StringSystemScriptSource(new SecureGroovyScript("System.exit(1)", false, null))));
         assertTrue(checker.executeCheck(project));
     }
     @Test public void testJobWithSystemGroovy() throws Exception {
@@ -61,7 +65,10 @@ public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
         project.delete();
         project = j.createFreeStyleProject("WithSystem");
         project.getBuildersList().add(new hudson.plugins.groovy.SystemGroovy(new StringScriptSource("System.exit(0)"),null,null));
-        project.save();
+        assertTrue(checker.executeCheck(project));
+        project.delete();
+        project = j.createFreeStyleProject("WithSystem2.0");
+        project.getBuildersList().add(new hudson.plugins.groovy.SystemGroovy(new StringSystemScriptSource(new SecureGroovyScript("System.exit(1)", false, null))));
         assertTrue(checker.executeCheck(project));
     }
     @Test public void testControlComment() throws Exception {
@@ -222,24 +229,6 @@ public class GroovySystemExitCheckerTestCase extends AbstractTestCase {
         project.delete();
         project = createWorkflow("@NonCPS def systemExit() { System.exit(1) }\\n systemExit()", false);
         assertTrue(checker.executeCheck(project));
-    }
-
-    private ParametersDefinitionProperty createChoiceParameter(String content) {
-      GroovyScript script = new GroovyScript(createScript(content),createScript(content));
-      ChoiceParameter cp = new ChoiceParameter("param", "desc", script, "", false);
-      return new ParametersDefinitionProperty(cp);
-    }
-
-    private ParametersDefinitionProperty createCascadeChoiceParameter(String content) {
-      GroovyScript script = new GroovyScript(createScript(content),createScript(content));
-      CascadeChoiceParameter ccp = new CascadeChoiceParameter("param", "desc", script, "", "", false);
-      return new ParametersDefinitionProperty(ccp);
-    }
-
-    private ParametersDefinitionProperty createDynamicReferenceParameter(String content) {
-      GroovyScript script = new GroovyScript(createScript(content),createScript(content));
-      DynamicReferenceParameter drp = new DynamicReferenceParameter("param", "desc", script, "", "", false);
-      return new ParametersDefinitionProperty(drp);
     }
 
     private SecureGroovyScript createScript (String content) {
