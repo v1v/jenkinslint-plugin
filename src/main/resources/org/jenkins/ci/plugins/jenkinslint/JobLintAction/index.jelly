@@ -30,20 +30,20 @@
                     <tr>
                         <j:if test="${!lint.isActive()}">
                             <j:if test="${!lint.isEnabled()}">
-                                <td data="disabled" tooltip="disabled" style="background-color: #f0f0f0;"/>
+                                <td data="disabled-${lint.name}" tooltip="disabled" style="background-color: #f0f0f0;"/>
                             </j:if>
                             <j:if test="${lint.isEnabled()}">
                                 <j:if test="${lint.isIgnored()}">
-                                    <td data="ignored" tooltip="ignored" style="background-color: #f9ef9e;"/>
+                                    <td data="ignored-${lint.name}" tooltip="ignored" style="background-color: #f9ef9e;"/>
                                 </j:if>
                             </j:if>
                         </j:if>
                         <j:if test="${lint.isActive()}">
                             <j:if test="${lint.found}">
-                                <td data="found" tooltip="found" style="background-color: #FF8566;"/>
+                                <td data="found-${lint.name}" tooltip="found" style="background-color: #FF8566;"/>
                             </j:if>
                             <j:if test="${!lint.found}">
-                                <td data="not_found" tooltip="not_found" style="background-color: #B8EEB8;"/>
+                                <td data="not_found-${lint.name}" tooltip="not_found" style="background-color: #B8EEB8;"/>
                             </j:if>
                         </j:if>
                         <td>${lint.name}</td>
