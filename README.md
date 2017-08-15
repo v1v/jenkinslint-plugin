@@ -6,7 +6,7 @@ This plugin has mainly two goals:
 
 See [JenkinsLint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin) for more information.
 
-[![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins/jenkinslint-plugin/master)](https://ci.jenkins.io/job/Plugins/jenkinslint-plugin/master)
+[![Build Status](https://ci.jenkins.io/job/Plugins/job/jenkinslint-plugin/job/master/badge/icon)](https://ci.jenkins.io/job/Plugins/job/jenkinslint-plugin/job/master/)
 
 ## Motivation
 
@@ -19,20 +19,16 @@ The jenkinslint plugin attempts to solve this problem by allowing jobs and slave
 best practices. The goal is for your team to be able to define those best practices to be related to their project.
 
 Manually reviewing those jobs and slaves wouldn't be too hard, but doing the same thing all over again for every new job or for
-a hundred other projects is where it gets difficult and tedious. This provides a much more powerful way of analyzing them.
+a hundred other projects is where it gets difficult and tedious. This provides a much more powerful way of analysing them.
 
 
 ## TODO
 
 - Load checks dynamically via Reflection
 - Show graphs
-- Configure Checks (enabled, disabled, change severity)
-- Example: Groovy script to configure globally.
-- Example: XML API to query
+- Enable/Configure severity
 - Load checks dynamically.
-- System.exit in system admin groovy scripts (publishers and parameters)
-- Support pipeline
-- Cyclomatic complexity check when using conditional steps plugin
+- Cyclomatic complexity check when using conditional steps plugin and pipelines
 - Fix Findbugs/Checkstyle defects
 - Integrate with Sonar or any other Linting defects tool
 
@@ -48,6 +44,8 @@ a hundred other projects is where it gets difficult and tedious. This provides a
 * Git Ref repo check
 * Git Ref Submodule repo check
 * Gradle Wrapper check
+* Groovy System Exit check
+* Groovy Sandbox check
 * Hardcoded Script check
 * Javadoc Publisher check
 * Job Assigned Label check
