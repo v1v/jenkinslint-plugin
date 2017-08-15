@@ -5,10 +5,16 @@ import com.gargoylesoftware.htmlunit.WebAssert;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
+import hudson.matrix.Axis;
+import hudson.matrix.AxisList;
+import hudson.matrix.MatrixProject;
+import hudson.matrix.TextAxis;
 import hudson.model.FreeStyleProject;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.Issue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
@@ -84,6 +90,26 @@ public class JenkinsLintActionTestCase extends AbstractTestCase{
         assertTrue(content.contains(htmlLint("GitRefSubmoduleChecker", "JL-20")));
         assertTrue(content.contains(htmlLint("BFAChecker", "JL-21")));
     }
+
+    @Issue("JENKINS-46176")
+    @Test
+    public void testMatrixJobWithConfigurations() throws Exception {
+        String jobName = "JOB";
+        MatrixProject project = j.createMatrixProject(jobName);
+        List<Axis> axes = new ArrayList<Axis>();
+        for (int i = 1; i <= 2; i++) {
+            List<String> vals = new ArrayList<String>();
+            for (int j = 1; j <= i; j++) {
+                vals.add(Integer.toString(j));
+            }
+            axes.add(new TextAxis("axis" + i, vals));
+        }
+        project.setAxes(new AxisList(axes));
+        HtmlPage page = j.createWebClient().goTo(URL);
+        String content = page.getWebResponse().getContentAsString();
+        assertFalse(content.contains("axis"));
+    }
+
 
     private String htmlLint (String name, String id) {
         return "<th tooltip=\"" +  name + "\" class=\"pane-header\">" + id + "</th>";

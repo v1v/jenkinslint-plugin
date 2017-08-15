@@ -1,13 +1,13 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.Extension;
-import hudson.model.AbstractProject;
 import hudson.model.Node;
 import hudson.model.RootAction;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.*;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
+
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.logging.Level;
@@ -30,15 +30,20 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
         this.reloadSlaveCheckList();
 
         for (hudson.model.Job item : Jenkins.getInstance().getAllItems(hudson.model.Job.class)) {
-            LOG.log(Level.FINER, "queryChecks " + item.getName());
-            Job newJob = new Job(item.getName(), item.getUrl());
-            for (InterfaceCheck checker : this.getCheckList()) {
-                LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                // Lint is disabled when is ignored or globally disabled
-                newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
+            // Fixing MatrixJobs @JENKINS-46176
+            if (!item.getParent().getClass().getSimpleName().equals("MatrixProject")) {
+                LOG.log(Level.FINER, "queryChecks " + item.getName());
+                Job newJob = new Job(item.getName(), item.getUrl());
+                for (InterfaceCheck checker : this.getCheckList()) {
+                    LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
+                    // Lint is disabled when is ignored or globally disabled
+                    newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
+                }
+                jobSet.put(item.getName(), newJob);
+                LOG.log(Level.FINER, newJob.toString());
+            } else {
+                LOG.log(Level.FINER, "Excluded MatrixConfiguration " + item.getName());
             }
-            jobSet.put(item.getName(),newJob);
-            LOG.log(Level.FINER, newJob.toString());
         }
 
 
