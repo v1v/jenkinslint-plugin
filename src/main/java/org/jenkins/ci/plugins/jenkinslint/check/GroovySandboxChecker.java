@@ -118,18 +118,20 @@ public class GroovySandboxChecker extends AbstractCheck {
 
     private boolean isSandboxInPublisher(DescribableList<Publisher, Descriptor<Publisher>> publishersList) {
         boolean status = true;
-        for (Publisher publisher : publishersList) {
-            if (publisher.getClass().getName().endsWith("GroovyPostbuildRecorder")) {
-                LOG.log(Level.FINEST, "GroovyPostbuildRecorder " + publisher);
-                try {
-                    Object scriptSource = publisher.getClass().getMethod("getScript",null).invoke(publisher);
-                    if (scriptSource.getClass().getName().endsWith("SecureGroovyScript")) {
-                        if (!isSandbox(scriptSource.getClass().getMethod("isSandbox",null).invoke(scriptSource))) {
-                            status = false;
+        if (publishersList != null) {
+            for (Publisher publisher : publishersList) {
+                if (publisher.getClass().getName().endsWith("GroovyPostbuildRecorder")) {
+                    LOG.log(Level.FINEST, "GroovyPostbuildRecorder " + publisher);
+                    try {
+                        Object scriptSource = publisher.getClass().getMethod("getScript", null).invoke(publisher);
+                        if (scriptSource.getClass().getName().endsWith("SecureGroovyScript")) {
+                            if (!isSandbox(scriptSource.getClass().getMethod("isSandbox", null).invoke(scriptSource))) {
+                                status = false;
+                            }
                         }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                     }
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
         }
@@ -138,23 +140,25 @@ public class GroovySandboxChecker extends AbstractCheck {
 
     private boolean isSandboxParameters(List<ParameterDefinition> properties) {
         boolean status = true;
-        for (ParameterDefinition property : properties) {
-            if (property.getClass().getName().endsWith("ChoiceParameter") ||
-                property.getClass().getName().endsWith("CascadeChoiceParameter") ||
-                property.getClass().getName().endsWith("DynamicReferenceParameter") ) {
-                LOG.log(Level.FINEST, "unochoice " + property);
-                try {
-                    Object scriptSource = property.getClass().getMethod("getScript",null).invoke(property);
-                    if (scriptSource.getClass().getName().endsWith("GroovyScript")) {
-                        Object script = scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource);
-                        if (script != null && script.getClass().getName().endsWith("SecureGroovyScript")) {
-                            if (!isSandbox(script.getClass().getMethod("isSandbox", null).invoke(script))) {
-                                status = false;
+        if (properties != null) {
+            for (ParameterDefinition property : properties) {
+                if (property.getClass().getName().endsWith("ChoiceParameter") ||
+                        property.getClass().getName().endsWith("CascadeChoiceParameter") ||
+                        property.getClass().getName().endsWith("DynamicReferenceParameter")) {
+                    LOG.log(Level.FINEST, "unochoice " + property);
+                    try {
+                        Object scriptSource = property.getClass().getMethod("getScript", null).invoke(property);
+                        if (scriptSource.getClass().getName().endsWith("GroovyScript")) {
+                            Object script = scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource);
+                            if (script != null && script.getClass().getName().endsWith("SecureGroovyScript")) {
+                                if (!isSandbox(script.getClass().getMethod("isSandbox", null).invoke(script))) {
+                                    status = false;
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                     }
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
         }
@@ -163,8 +167,8 @@ public class GroovySandboxChecker extends AbstractCheck {
 
     private boolean isSandbox(Object command) {
         boolean status = false;
-        if (command instanceof Boolean) {
-            status = ((Boolean) command).booleanValue();
+        if (command != null && command instanceof Boolean) {
+            status = (Boolean) command;
         }
         return status;
     }

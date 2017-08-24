@@ -51,16 +51,16 @@ public abstract class AbstractAction extends Actionable {
 
     public abstract void getData() throws IOException;
 
-    public ArrayList<InterfaceCheck> getCheckList() {
+    public synchronized ArrayList<InterfaceCheck> getCheckList() {
         return checkList;
     }
 
-    public ArrayList<InterfaceSlaveCheck> getSlaveCheckList() {
+    public synchronized ArrayList<InterfaceSlaveCheck> getSlaveCheckList() {
         return slaveCheckList;
     }
 
-    protected void reloadCheckList() {
-        checkList.clear();
+    protected synchronized void reloadCheckList() {
+        this.getCheckList().clear();
 
         JenkinsLintGlobalConfiguration config = JenkinsLintGlobalConfiguration.get();
         checkList.add(new JobNameChecker((config.isJobNameCheckerEnabled() && config.isGlobalEnabled())));
@@ -89,8 +89,8 @@ public abstract class AbstractAction extends Actionable {
         checkList.add(new GroovySandboxChecker((config.isGroovySandboxCheckerEnabled() && config.isGlobalEnabled())));
     }
 
-    protected void reloadSlaveCheckList() {
-        slaveCheckList.clear();
+    protected synchronized void reloadSlaveCheckList() {
+        this.getSlaveCheckList().clear();
 
         JenkinsLintGlobalConfiguration config = JenkinsLintGlobalConfiguration.get();
         slaveCheckList.add(new SlaveDescriptionChecker((config.isSlaveDescriptionCheckerEnabled() && config.isGlobalEnabled())));

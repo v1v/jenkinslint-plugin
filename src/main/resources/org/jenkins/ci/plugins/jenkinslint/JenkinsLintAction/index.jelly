@@ -9,6 +9,7 @@
           <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=description" title="${%    |--- Show Checks}" />
           <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=job" title="${%    |--- Filter Job Check}" />
           <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=slave" title="${%    |--- Filter Slave Check}" />
+          <l:task icon="plugin/jenkinslint/images/32x32/filter.png" href="?filter=graphs" title="${%    |--- Show Graphs}" />
       </l:tasks>
     </l:side-panel>
     <l:main-panel>
@@ -171,6 +172,17 @@
                     </j:forEach>
                 </tbody>
             </table>
+        </j:if>
+        <j:if test="${(filter == 'graphs')}">
+            <h4>${%Jenkins.Lint.Description}</h4>
+            ${%Jenkins.Lint.Description.1}
+            ${%Jenkins.Lint.Description.2}
+            <br/>
+            <img src="./graph" />
+            <br/><br/><br/><br/>
+            <img src="./pieGraph" />
+            <br/><br/><br/><br/>
+            <img src="./severityPieGraph" />
         </j:if>
     </l:main-panel>
  </l:layout>

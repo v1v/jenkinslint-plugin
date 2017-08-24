@@ -121,18 +121,20 @@ public class GroovySystemExitChecker extends AbstractCheck {
 
     private boolean isSystemExitInPublisher (DescribableList<Publisher, Descriptor<Publisher>> publishersList) {
         boolean status = false;
-        for (Publisher publisher : publishersList) {
-            if (publisher.getClass().getName().endsWith("GroovyPostbuildRecorder")) {
-                LOG.log(Level.FINEST, "GroovyPostbuildRecorder " + publisher);
-                try {
-                    Object scriptSource = publisher.getClass().getMethod("getScript",null).invoke(publisher);
-                    if (scriptSource.getClass().getName().endsWith("SecureGroovyScript")) {
-                        if (containsSystemExit(scriptSource.getClass().getMethod("getScript",null).invoke(scriptSource))) {
-                            status = true;
+        if (publishersList != null) {
+            for (Publisher publisher : publishersList) {
+                if (publisher.getClass().getName().endsWith("GroovyPostbuildRecorder")) {
+                    LOG.log(Level.FINEST, "GroovyPostbuildRecorder " + publisher);
+                    try {
+                        Object scriptSource = publisher.getClass().getMethod("getScript", null).invoke(publisher);
+                        if (scriptSource.getClass().getName().endsWith("SecureGroovyScript")) {
+                            if (containsSystemExit(scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource))) {
+                                status = true;
+                            }
                         }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                     }
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
         }
@@ -141,23 +143,25 @@ public class GroovySystemExitChecker extends AbstractCheck {
 
     private boolean isSystemExitInParameters (List<hudson.model.ParameterDefinition> properties) {
         boolean status = false;
-        for (ParameterDefinition property : properties) {
-            if (property.getClass().getName().endsWith("ChoiceParameter") ||
-                property.getClass().getName().endsWith("CascadeChoiceParameter") ||
-                property.getClass().getName().endsWith("DynamicReferenceParameter") ) {
-                LOG.log(Level.FINEST, "unochoice " + property);
-                try {
-                    Object scriptSource = property.getClass().getMethod("getScript",null).invoke(property);
-                    if (scriptSource.getClass().getName().endsWith("GroovyScript")) {
-                        Object script = scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource);
-                        if (script != null && script.getClass().getName().endsWith("SecureGroovyScript")) {
-                            if (containsSystemExit(script.getClass().getMethod("getScript", null).invoke(script))) {
-                                status = true;
+        if (properties != null) {
+            for (ParameterDefinition property : properties) {
+                if (property.getClass().getName().endsWith("ChoiceParameter") ||
+                        property.getClass().getName().endsWith("CascadeChoiceParameter") ||
+                        property.getClass().getName().endsWith("DynamicReferenceParameter")) {
+                    LOG.log(Level.FINEST, "unochoice " + property);
+                    try {
+                        Object scriptSource = property.getClass().getMethod("getScript", null).invoke(property);
+                        if (scriptSource.getClass().getName().endsWith("GroovyScript")) {
+                            Object script = scriptSource.getClass().getMethod("getScript", null).invoke(scriptSource);
+                            if (script != null && script.getClass().getName().endsWith("SecureGroovyScript")) {
+                                if (containsSystemExit(script.getClass().getMethod("getScript", null).invoke(script))) {
+                                    status = true;
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                     }
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
                 }
             }
         }
@@ -166,7 +170,7 @@ public class GroovySystemExitChecker extends AbstractCheck {
 
     private boolean containsSystemExit (Object command) {
         boolean status = false;
-        if (command instanceof String) {
+        if (command !=null && command instanceof String) {
             // TODO: Parse to search for non comments, otherwise some false positives!
             status = (command != null && ((String) command).toLowerCase().contains("system.exit"));
             LOG.log(Level.FINE, "isSystemExit " + status);
