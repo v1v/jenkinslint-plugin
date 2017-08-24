@@ -25,7 +25,6 @@ a hundred other projects is where it gets difficult and tedious. This provides a
 ## TODO
 
 - Load checks dynamically via Reflection
-- Show graphs
 - Enable/Configure severity
 - Load checks dynamically.
 - Cyclomatic complexity check when using conditional steps plugin and pipelines

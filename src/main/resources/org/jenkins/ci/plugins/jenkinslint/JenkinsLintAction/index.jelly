@@ -180,9 +180,11 @@
             <br/>
             <img src="./graph" />
             <br/><br/><br/><br/>
-            <img src="./pieGraph" />
-            <br/><br/><br/><br/>
-            <img src="./severityPieGraph" />
+            <table id="pieTable" >
+                <tr>
+                    <td><img src="./pieGraph" /></td><td><img src="./severityPieGraph" /></td>
+                </tr>
+            </table>
         </j:if>
     </l:main-panel>
  </l:layout>
