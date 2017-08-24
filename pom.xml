@@ -19,7 +19,7 @@
   </properties>
 
   <artifactId>jenkinslint</artifactId>
-  <version>0.13.0</version>
+  <version>0.13.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>JenkinsLint Plugin</name>
@@ -73,7 +73,7 @@
     <connection>scm:git:git://github.com/jenkinsci/jenkinslint-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/jenkinslint-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/jenkinslint-plugin</url>
-    <tag>jenkinslint-0.13.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <repositories>
