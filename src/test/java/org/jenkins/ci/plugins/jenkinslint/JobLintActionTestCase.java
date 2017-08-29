@@ -102,38 +102,39 @@ public class JobLintActionTestCase extends AbstractTestCase {
         FreeStyleProject project = j.createFreeStyleProject(jobName);
 
         // Default setup
-        HtmlPage htmlPage = j.createWebClient().goTo("job/" + jobName);
-        WebAssert.assertTextPresent(htmlPage, "stability");
+        WebAssert.assertTextPresent(j.createWebClient().goTo("job/" + jobName), "stability");
 
         // Disable floating box
         JenkinsLintGlobalConfiguration config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
         config.setJobActionEnabled(false);
         config.save();
-        htmlPage = j.createWebClient().goTo("job/" + jobName);
-        WebAssert.assertTextNotPresent(htmlPage, "stability");
+        WebAssert.assertTextNotPresent(j.createWebClient().goTo("job/" + jobName), "stability");
+    }
 
-        // Disable project
+
+    @Test
+    public void testDisabledFloatingBoxWithGlobalEnabled() throws Exception {
+        String jobName = "JOB";
+        FreeStyleProject project = j.createFreeStyleProject(jobName);
         project.disable();
-        htmlPage = j.createWebClient().goTo("job/" + jobName);
-        WebAssert.assertTextNotPresent(htmlPage, "stability");
 
         // Enable floating box
-        config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
+        JenkinsLintGlobalConfiguration config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
         config.setJobActionEnabled(true);
         config.save();
-        htmlPage = j.createWebClient().goTo("job/" + jobName);
-        WebAssert.assertTextPresent(htmlPage, "stability");
+        WebAssert.assertTextPresent(j.createWebClient().goTo("job/" + jobName), "stability");
+    }
+
+    @Test
+    public void testDisabledFloatingBoxWithGlobalDisabled() throws Exception {
+        String jobName = "JOB";
+        FreeStyleProject project = j.createFreeStyleProject(jobName);
+        project.disable();
 
         // Disable lint analysis of disabled project
-        config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
+        JenkinsLintGlobalConfiguration config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
         config.setLintDisabledJobEnabled(false);
         config.save();
-        htmlPage = j.createWebClient().goTo("job/" + jobName);
-        WebAssert.assertTextNotPresent(htmlPage, "stability");
-
-        // Enable project
-        project.enable();
-        htmlPage = j.createWebClient().goTo("job/" + jobName);
-        WebAssert.assertTextPresent(htmlPage, "stability");
+        WebAssert.assertTextNotPresent(j.createWebClient().goTo("job/" + jobName), "stability");
     }
 }
