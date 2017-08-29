@@ -38,20 +38,26 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
         this.reloadCheckList();
         this.reloadSlaveCheckList();
 
+        JenkinsLintGlobalConfiguration config = JenkinsLintGlobalConfiguration.get();
+
         for (hudson.model.Job item : Jenkins.getInstance().getAllItems(hudson.model.Job.class)) {
-            // Fixing MatrixJobs @JENKINS-46176
-            if (!item.getParent().getClass().getSimpleName().equals("MatrixProject")) {
-                LOG.log(Level.FINER, "queryChecks " + item.getName());
-                Job newJob = new Job(item.getName(), item.getUrl());
-                for (InterfaceCheck checker : this.getCheckList()) {
-                    LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                    // Lint is disabled when is ignored or globally disabled
-                    newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
+            if (config.isLintDisabledJobEnabled() || isJobEnabled(item) ) {
+                // Fixing MatrixJobs @JENKINS-46176
+                if (!item.getParent().getClass().getSimpleName().equals("MatrixProject")) {
+                    LOG.log(Level.FINER, "queryChecks " + item.getName());
+                    Job newJob = new Job(item.getName(), item.getUrl());
+                    for (InterfaceCheck checker : this.getCheckList()) {
+                        LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
+                        // Lint is disabled when is ignored or globally disabled
+                        newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
+                    }
+                    this.getJobSet().put(item.getName(), newJob);
+                    LOG.log(Level.FINER, newJob.toString());
+                } else {
+                    LOG.log(Level.FINER, "Excluded MatrixConfiguration " + item.getName());
                 }
-                this.getJobSet().put(item.getName(), newJob);
-                LOG.log(Level.FINER, newJob.toString());
             } else {
-                LOG.log(Level.FINER, "Excluded MatrixConfiguration " + item.getName());
+                LOG.log(Level.FINER, "Excluded Job '" + item.getName() + "' since isLintDisabledJobEnabled has been disabled");
             }
         }
 
@@ -114,7 +120,6 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
         ChartUtil.generateGraph(req,rsp, JenkinsLintGraph.createPieChart(this.getJobSet().elements()),512,384);
     }
 
-
     public void doSeverityPieGraph(StaplerRequest req, StaplerResponse rsp) throws IOException {
         if(ChartUtil.awtProblemCause != null) {
             // not available. send out error message
@@ -122,5 +127,26 @@ public final class JenkinsLintAction extends AbstractAction implements RootActio
             return;
         }
         ChartUtil.generateGraph(req,rsp, JenkinsLintGraph.createSeverityPieChart(this.getJobSet().elements(), this.getCheckSet()),512,384);
+    }
+
+    /**
+     * Whether the job has been disabled, since isDisabled is part of the AbstractProject and WorkflowJob doesn't
+     * extend it then let's use reflection.
+     *
+     * @return
+     */
+    private boolean isJobEnabled(hudson.model.Job job) {
+        boolean enabled = true;
+        if (job != null) {
+            try {
+                Object isDisabled = job.getClass().getMethod("isDisabled", null).invoke(job);
+                if (isDisabled instanceof Boolean) {
+                    enabled = !(Boolean) isDisabled;
+                }
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Exception " + e.getMessage(), e.getCause());
+            }
+        }
+        return enabled;
     }
 }

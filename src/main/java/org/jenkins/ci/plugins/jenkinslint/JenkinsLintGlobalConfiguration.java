@@ -17,6 +17,7 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
 
     private boolean globalEnabled = true;
     private boolean jobActionEnabled = true;
+    private boolean lintDisabledJobEnabled = true;
 
     private boolean artifactCheckerEnabled = true;
     private boolean bfaCheckerEnabled = true;
@@ -312,6 +313,14 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
         this.groovySandboxCheckerEnabled = groovySandboxCheckerEnabled;
     }
 
+    public boolean isLintDisabledJobEnabled() {
+        return lintDisabledJobEnabled;
+    }
+
+    public void setLintDisabledJobEnabled(boolean lintDisabledJobEnabled) {
+        this.lintDisabledJobEnabled = lintDisabledJobEnabled;
+    }
+
     /**
      * Performs on-the-fly validation of the form field 'name'.
      *
@@ -330,4 +339,5 @@ public final class JenkinsLintGlobalConfiguration extends GlobalConfiguration {
             return FormValidation.error("Please set a value greater than 1");
         return FormValidation.ok();
     }
+
 }

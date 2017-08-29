@@ -9,7 +9,9 @@ import hudson.matrix.Axis;
 import hudson.matrix.AxisList;
 import hudson.matrix.MatrixProject;
 import hudson.matrix.TextAxis;
+import hudson.model.Action;
 import hudson.model.FreeStyleProject;
+import jenkins.model.GlobalConfiguration;
 import org.junit.Test;
 import org.jvnet.hudson.test.Issue;
 
@@ -17,7 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author victor.martinez.
@@ -111,6 +117,31 @@ public class JenkinsLintActionTestCase extends AbstractTestCase{
         assertFalse(content.contains("axis"));
     }
 
+    @Test
+    public void testDisabledJobs() throws Exception {
+        JenkinsLintGlobalConfiguration config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
+        config.setLintDisabledJobEnabled(false);
+        config.save();
+        FreeStyleProject project = j.createFreeStyleProject();
+        project.disable();
+        for (Action action: j.getInstance().getActions()) {
+            if (action instanceof JenkinsLintAction) {
+                ((JenkinsLintAction) action).getData();
+                assertEquals(((JenkinsLintAction) action).getJobSet().size(), 0);
+                j.createFreeStyleProject();
+                j.createFreeStyleProject();
+                ((JenkinsLintAction) action).getData();
+                assertEquals(((JenkinsLintAction) action).getJobSet().size(), 2);
+                j.createFreeStyleProject().disable();
+                ((JenkinsLintAction) action).getData();
+                assertEquals(((JenkinsLintAction) action).getJobSet().size(), 2);
+                config.setLintDisabledJobEnabled(true);
+                config.save();
+                ((JenkinsLintAction) action).getData();
+                assertEquals(((JenkinsLintAction) action).getJobSet().size(), 4);
+            }
+        }
+    }
 
     private String htmlLint (String name, String id) {
         return "<th tooltip=\"" +  name + "\" class=\"pane-header\">" + id + "</th>";

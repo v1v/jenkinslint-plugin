@@ -13,9 +13,11 @@ import static org.junit.Assert.assertTrue;
 public class JenkinsLintGlobalConfigurationTestCase extends AbstractTestCase{
 
     @Test
-    public void testDefaultonfigured() throws Exception {
+    public void testDefaultGlobalConfiguration() throws Exception {
         JenkinsLintGlobalConfiguration config = GlobalConfiguration.all().get(JenkinsLintGlobalConfiguration.class);
         assertTrue(config.isGlobalEnabled());
+        assertTrue(config.isLintDisabledJobEnabled());
+        assertTrue(config.isJobActionEnabled());
     }
 
     @Test

@@ -23,8 +23,34 @@ public final class JobLintAction extends AbstractAction implements Action {
 	private hudson.model.Job project;
 	private Job job;
 
+	/**
+	 * Whether the project has been disabled, since isDisabled is part of the AbstractProject and WorkflowJob doesn't
+	 * extend it then let's use reflection.
+	 *
+	 * @return
+	 */
+	public boolean isProjectEnabled() {
+		boolean enabled = true;
+		if (this.project != null) {
+			try {
+				Object isDisabled = this.project.getClass().getMethod("isDisabled", null).invoke(this.project);
+				if (isDisabled instanceof Boolean) {
+					enabled = !(Boolean) isDisabled;
+				}
+			} catch (Exception e) {
+				LOG.log(Level.FINE, "Exception " + e.getMessage(), e.getCause());
+			}
+		}
+		return enabled;
+
+	}
+
 	public static boolean isDisabled () {
 		return !JenkinsLintGlobalConfiguration.get().isJobActionEnabled();
+	}
+
+	public static boolean isLintDisabledJobEnabled() {
+		return JenkinsLintGlobalConfiguration.get().isLintDisabledJobEnabled();
 	}
 
 	public JobLintAction(hudson.model.Job project) {
@@ -42,11 +68,15 @@ public final class JobLintAction extends AbstractAction implements Action {
 
 	public void getData() throws IOException {
 		this.reloadCheckList();
-		this.job = new Job(this.project.getName(), this.project.getUrl());
-		for (InterfaceCheck checker : this.getCheckList()) {
-			this.job.addLint(new Lint(checker.getName(), checker.executeCheck(this.project), checker.isIgnored(this.project.getDescription()), checker.isEnabled()) );
+
+		// In case it has been disabled from the global settings then no run lint analysis
+		if (isProjectEnabled() || isLintDisabledJobEnabled()) {
+			this.job = new Job(this.project.getName(), this.project.getUrl());
+			for (InterfaceCheck checker : this.getCheckList()) {
+				this.job.addLint(new Lint(checker.getName(), checker.executeCheck(this.project), checker.isIgnored(this.project.getDescription()), checker.isEnabled()));
+			}
+			LOG.log(Level.FINE, this.job.getLintList().toString());
 		}
-		LOG.log(Level.FINE, this.job.getLintList().toString());
 	}
 
 	@Extension

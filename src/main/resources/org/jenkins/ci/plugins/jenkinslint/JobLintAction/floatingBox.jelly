@@ -1,9 +1,11 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt" xmlns:local="local">
     <j:if test="${!from.isDisabled()}">
-        <j:set var="data" value="${from.data}"/>
-        <div style="background-color: #eee; overflow-x: auto; padding:10px; margin: 1px; border: 1px solid #777;">
-            <img src="${rootURL}${from.getIconFileName()}" alt=""/>  <img src="${rootURL}${from.job.getLintHealthReport().getIconUrl('16x16')}" alt=""/> ${from.job.getLintHealthReport().getDescription()}
-        </div>
+        <j:if test="${from.isLintDisabledJobEnabled() or from.isProjectEnabled()}">
+            <j:set var="data" value="${from.data}"/>
+            <div style="background-color: #eee; overflow-x: auto; padding:10px; margin: 1px; border: 1px solid #777;">
+                <img src="${rootURL}${from.getIconFileName()}" alt=""/>  <img src="${rootURL}${from.job.getLintHealthReport().getIconUrl('16x16')}" alt=""/> ${from.job.getLintHealthReport().getDescription()}
+            </div>
+        </j:if>
     </j:if>
 </j:jelly>
