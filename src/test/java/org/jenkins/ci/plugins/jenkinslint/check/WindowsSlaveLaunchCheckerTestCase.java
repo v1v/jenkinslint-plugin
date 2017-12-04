@@ -7,9 +7,8 @@ import hudson.slaves.DumbSlave;
 import hudson.slaves.JNLPLauncher;
 import hudson.slaves.NodeProperty;
 import hudson.slaves.RetentionStrategy;
-import org.junit.Rule;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.Collections;
 
@@ -21,10 +20,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class WindowsSlaveLaunchCheckerTestCase {
-    private WindowsSlaveLaunchChecker checker = new WindowsSlaveLaunchChecker();
+public class WindowsSlaveLaunchCheckerTestCase extends AbstractTestCase {
+    private WindowsSlaveLaunchChecker checker = new WindowsSlaveLaunchChecker(true);
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultSlave() throws Exception {
         Slave slave = createLinuxSlave("default", "", "");
         assertFalse(checker.executeCheck(slave));
@@ -50,4 +48,7 @@ public class WindowsSlaveLaunchCheckerTestCase {
         return new DumbSlave(name, description, "/wherever", "1", Node.Mode.NORMAL, label, new ManagedWindowsServiceLauncher("user", "pass"), RetentionStrategy.NOOP, Collections.<NodeProperty<?>>emptyList());
     }
 
+    @Test public void testMaster() throws Exception {
+        assertFalse(checker.executeCheck(j.hudson));
+    }
 }

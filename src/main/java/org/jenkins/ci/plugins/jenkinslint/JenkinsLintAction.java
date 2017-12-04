@@ -1,132 +1,152 @@
 package org.jenkins.ci.plugins.jenkinslint;
 
 import hudson.Extension;
-import hudson.model.AbstractProject;
 import hudson.model.Node;
 import hudson.model.RootAction;
+import hudson.util.ChartUtil;
 import jenkins.model.Jenkins;
-import org.jenkins.ci.plugins.jenkinslint.check.ArtifactChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.CleanupWorkspaceChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.GitShallowChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.GradleWrapperChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.HardcodedScriptChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JavadocChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobAssignedLabelChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobDescriptionChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobLogRotatorChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.JobNameChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.MasterLabelChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.MavenJobTypeChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.MultibranchJobTypeChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.NullSCMChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.PollingSCMTriggerChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.SlaveDescriptionChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.SlaveLabelChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.SlaveVersionChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.TimeoutChecker;
-import org.jenkins.ci.plugins.jenkinslint.check.WindowsSlaveLaunchChecker;
+import org.jenkins.ci.plugins.jenkinslint.graph.JenkinsLintGraph;
+import org.jenkins.ci.plugins.jenkinslint.model.AbstractAction;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.InterfaceSlaveCheck;
 import org.jenkins.ci.plugins.jenkinslint.model.Job;
 import org.jenkins.ci.plugins.jenkinslint.model.Lint;
 import org.jenkins.ci.plugins.jenkinslint.model.Slave;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@ExportedBean
 @Extension
-public final class JenkinsLintAction implements RootAction {
+public final class JenkinsLintAction extends AbstractAction implements RootAction {
 
     private static final Logger LOG = Logger.getLogger(JenkinsLintAction.class.getName());
     private Hashtable<String, Job> jobSet = new Hashtable<String, Job>();
-    private ArrayList<InterfaceCheck> checkList = new ArrayList<InterfaceCheck>();
     private Hashtable<String, Slave> slaveSet = new Hashtable<String, Slave>();
-    private ArrayList<InterfaceSlaveCheck> slaveCheckList = new ArrayList<InterfaceSlaveCheck>();
 
     public void getData() throws IOException {
         LOG.log(Level.FINE, "getData()");
-        jobSet.clear();
-        checkList.clear();
-        slaveSet.clear();
-        slaveCheckList.clear();
+        this.getJobSet().clear();
+        this.getSlaveSet().clear();
 
-        checkList.add(new JobNameChecker());
-        checkList.add(new JobDescriptionChecker());
-        checkList.add(new JobAssignedLabelChecker());
-        checkList.add(new MasterLabelChecker());
-        checkList.add(new JobLogRotatorChecker());
-        checkList.add(new MavenJobTypeChecker());
-        checkList.add(new CleanupWorkspaceChecker());
-        checkList.add(new JavadocChecker());
-        checkList.add(new ArtifactChecker());
-        checkList.add(new NullSCMChecker());
-        checkList.add(new PollingSCMTriggerChecker( ));
-        checkList.add(new GitShallowChecker());
-        checkList.add(new MultibranchJobTypeChecker());
-        checkList.add(new HardcodedScriptChecker());
-        checkList.add(new GradleWrapperChecker());
-        checkList.add(new TimeoutChecker());
+        this.reloadCheckList();
+        this.reloadSlaveCheckList();
 
-        slaveCheckList.add(new SlaveDescriptionChecker());
-        slaveCheckList.add(new SlaveVersionChecker());
-        slaveCheckList.add(new SlaveLabelChecker());
-        slaveCheckList.add(new WindowsSlaveLaunchChecker());
+        JenkinsLintGlobalConfiguration config = JenkinsLintGlobalConfiguration.get();
 
-        for (AbstractProject item : Jenkins.getInstance().getAllItems(AbstractProject.class)) {
-            LOG.log(Level.FINER, "queryChecks " + item.getDisplayName());
-            Job newJob = new Job(item.getName(), item.getUrl());
-            for (InterfaceCheck checker : checkList) {
-                LOG.log(Level.FINER, checker.getClass().getName() + " " + item.getName() + " " + checker.executeCheck(item));
-                newJob.addLint(new Lint(checker.getClass().getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription())));
+        for (hudson.model.Job item : Jenkins.getInstance().getAllItems(hudson.model.Job.class)) {
+            if (config.isLintDisabledJobEnabled() || isJobEnabled(item) ) {
+                // Fixing MatrixJobs @JENKINS-46176
+                if (!item.getParent().getClass().getSimpleName().equals("MatrixProject")) {
+                    LOG.log(Level.FINER, "queryChecks " + item.getName());
+                    Job newJob = new Job(item.getName(), item.getUrl());
+                    for (InterfaceCheck checker : this.getCheckList()) {
+                        LOG.log(Level.FINER, checker.getName() + " " + item.getName() + " " + checker.executeCheck(item));
+                        // Lint is disabled when is ignored or globally disabled
+                        newJob.addLint(new Lint(checker.getName(), checker.executeCheck(item), checker.isIgnored(item.getDescription()), checker.isEnabled()));
+                    }
+                    this.getJobSet().put(item.getName(), newJob);
+                    LOG.log(Level.FINER, newJob.toString());
+                } else {
+                    LOG.log(Level.FINER, "Excluded MatrixConfiguration " + item.getName());
+                }
+            } else {
+                LOG.log(Level.FINER, "Excluded Job '" + item.getName() + "' since isLintDisabledJobEnabled has been disabled");
             }
-            jobSet.put(item.getName(),newJob);
-            LOG.log(Level.FINER, newJob.toString());
-            //TODO: Update Job Data item.getActions().add(new GeneratedJobsAction());
         }
-
 
         for (Node node : Jenkins.getInstance().getNodes()) {
             LOG.log(Level.FINER, "querySlaveCheck " + node.getDisplayName());
             Slave newSlave = new Slave(node.getNodeName(), node.getSearchUrl());
-            for (InterfaceSlaveCheck checker : slaveCheckList) {
+            for (InterfaceSlaveCheck checker : this.getSlaveCheckList()) {
                 boolean status = checker.executeCheck(node);
-                LOG.log(Level.FINER, checker.getClass().getName() + " " + node.getDisplayName() + " " + status);
-                newSlave.addLint(new Lint(checker.getClass().getName(), status, checker.isIgnored(node.getNodeDescription())));
+                LOG.log(Level.FINER, checker.getName() + " " + node.getDisplayName() + " " + status);
+                newSlave.addLint(new Lint(checker.getName(), status, checker.isIgnored(node.getNodeDescription()), checker.isEnabled()));
             }
-            slaveSet.put(newSlave.getName(), newSlave);
+            this.getSlaveSet().put(newSlave.getName(), newSlave);
             LOG.log(Level.FINER, newSlave.toString());
-            //TODO: Update Job Data item.getActions().add(new GeneratedJobsAction());
         }
     }
 
-    public String getDisplayName() {
-        return Messages.DisplayName();
-    }
-
-    public String getIconFileName() {
-        return Messages.IconFileName();
-    }
-
-    public String getUrlName() {
-        return Messages.UrlName();
-    }
-
-    public Hashtable<String, Job> getJobSet() {
+    @Exported
+    public synchronized Hashtable<String, Job> getJobSet() {
         return jobSet;
     }
 
-    public ArrayList<InterfaceCheck> getCheckList() {
-        return checkList;
+    @Exported
+    public synchronized Hashtable<String, InterfaceCheck> getCheckSet() {
+        Hashtable<String, InterfaceCheck> temp = new Hashtable<String, InterfaceCheck>();
+        for (InterfaceCheck check : this.getCheckList()) {
+          temp.put(check.getName(), check);
+        }
+        return temp;
     }
 
-    public Hashtable<String, Slave> getSlaveSet() {
+    @Exported
+    public synchronized Hashtable<String, Slave> getSlaveSet() {
         return slaveSet;
     }
 
-    public ArrayList<InterfaceSlaveCheck> getSlaveCheckList() {
-        return slaveCheckList;
+    @Exported
+    public synchronized Hashtable<String, InterfaceSlaveCheck> getSlaveCheckSet() {
+        Hashtable<String, InterfaceSlaveCheck> temp = new Hashtable<String, InterfaceSlaveCheck>();
+        for (InterfaceSlaveCheck check : this.getSlaveCheckList()) {
+          temp.put(check.getName(), check);
+        }
+        return temp;
+    }
+
+    public void doGraph(StaplerRequest req, StaplerResponse rsp) throws IOException {
+        if(ChartUtil.awtProblemCause != null) {
+            // not available. send out error message
+            rsp.sendRedirect2(req.getContextPath()+"/images/headless.png");
+            return;
+        }
+        ChartUtil.generateGraph(req,rsp, JenkinsLintGraph.createChart(this.getJobSet().elements()),1024,768);
+    }
+
+    public void doPieGraph(StaplerRequest req, StaplerResponse rsp) throws IOException {
+        if(ChartUtil.awtProblemCause != null) {
+            // not available. send out error message
+            rsp.sendRedirect2(req.getContextPath()+"/images/headless.png");
+            return;
+        }
+        ChartUtil.generateGraph(req,rsp, JenkinsLintGraph.createPieChart(this.getJobSet().elements()),512,384);
+    }
+
+    public void doSeverityPieGraph(StaplerRequest req, StaplerResponse rsp) throws IOException {
+        if(ChartUtil.awtProblemCause != null) {
+            // not available. send out error message
+            rsp.sendRedirect2(req.getContextPath()+"/images/headless.png");
+            return;
+        }
+        ChartUtil.generateGraph(req,rsp, JenkinsLintGraph.createSeverityPieChart(this.getJobSet().elements(), this.getCheckSet()),512,384);
+    }
+
+    /**
+     * Whether the job has been disabled, since isDisabled is part of the AbstractProject and WorkflowJob doesn't
+     * extend it then let's use reflection.
+     *
+     * @return
+     */
+    private boolean isJobEnabled(hudson.model.Job job) {
+        boolean enabled = true;
+        if (job != null) {
+            try {
+                Object isDisabled = job.getClass().getMethod("isDisabled", null).invoke(job);
+                if (isDisabled instanceof Boolean) {
+                    enabled = !(Boolean) isDisabled;
+                }
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Exception " + e.getMessage(), e.getCause());
+            }
+        }
+        return enabled;
     }
 }

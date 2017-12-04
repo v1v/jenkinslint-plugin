@@ -7,7 +7,9 @@ import hudson.model.Item;
  * @author Victor Martinez
  */
 public interface InterfaceCheck {
-
+    public String getName();
+    public String getSeverity();
     boolean executeCheck(Item item);
     boolean isIgnored(String jobDescription);
+    public boolean isEnabled();
 }

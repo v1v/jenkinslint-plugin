@@ -2,9 +2,9 @@ package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
 import hudson.tasks.LogRotator;
-import org.junit.Rule;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,10 +14,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class JobLogRotatorCheckerTestCase {
-    private JobLogRotatorChecker checker = new JobLogRotatorChecker();
-
-    @Rule public JenkinsRule j = new JenkinsRule();
+public class JobLogRotatorCheckerTestCase extends AbstractTestCase {
+    private JobLogRotatorChecker checker = new JobLogRotatorChecker(true);
 
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -38,5 +36,14 @@ public class JobLogRotatorCheckerTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        WorkflowJob project = createWorkflow(null, true);
+        assertTrue(checker.executeCheck(project));
+        project.setBuildDiscarder(new LogRotator(-1,-1,-1,-1));
+        assertTrue(checker.executeCheck(project));
+        project.setBuildDiscarder(new LogRotator(1,1,1,1));
+        assertFalse(checker.executeCheck(project));
+        project.delete();
     }
 }

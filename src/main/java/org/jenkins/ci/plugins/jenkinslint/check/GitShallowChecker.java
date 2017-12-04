@@ -1,7 +1,7 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.Item;
-import hudson.model.Project;
+import hudson.model.AbstractProject;
 import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
@@ -14,21 +14,20 @@ import java.util.logging.Level;
  */
 public class GitShallowChecker extends AbstractCheck {
 
-    public GitShallowChecker() {
-        super();
-        this.setDescription("When setting Jenkins Jobs with Git SCM Artifact you might speed up the cloning time if " +
-                            "you use shallow cloning.");
-        this.setSeverity("Medium");
+    public GitShallowChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.GitShallowCheckerDesc());
+        this.setSeverity(Messages.GitShallowCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof Project) {
+        if (item instanceof AbstractProject) {
             if (Jenkins.getInstance().pluginManager.getPlugin("git")!=null) {
-                if (((Project) item).getScm().getClass().getName().endsWith("GitSCM")) {
+                if (((AbstractProject) item).getScm().getClass().getName().endsWith("GitSCM")) {
                     boolean status = true;
                     try {
-                        Method method = ((Project) item).getScm().getClass().getMethod("getExtensions", null);
-                        Object extensionsList = method.invoke( ((Project) item).getScm());
+                        Method method = ((AbstractProject) item).getScm().getClass().getMethod("getExtensions", null);
+                        Object extensionsList = method.invoke( ((AbstractProject) item).getScm());
                         if (extensionsList instanceof AbstractList) {
                             for (Object extension : ((AbstractList) extensionsList) ) {
                                 if (extension.getClass().getName().endsWith("CloneOption")) {

@@ -4,6 +4,7 @@ import hudson.model.Node;
 import hudson.remoting.Callable;
 import hudson.remoting.Launcher;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractSlaveCheck;
+import org.jenkinsci.remoting.RoleChecker;
 
 import java.io.IOException;
 
@@ -15,10 +16,10 @@ public class SlaveVersionChecker extends AbstractSlaveCheck {
 
     private static final String masterVersion = Launcher.VERSION;
 
-    public SlaveVersionChecker() {
-        super();
-        this.setDescription("Jenkins slave description might help you to know what it does and further details.");
-        this.setSeverity("Medium");
+    public SlaveVersionChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.SlaveVersionCheckerDesc());
+        this.setSeverity(Messages.SlaveVersionCheckerSeverity());
     }
 
     public boolean executeCheck(Node item) {
@@ -46,6 +47,11 @@ public class SlaveVersionChecker extends AbstractSlaveCheck {
                 // Older slave.jar won't have VERSION
                 return "< 1.335";
             }
+        }
+
+        @Override
+        public void checkRoles(RoleChecker roleChecker) throws SecurityException {
+
         }
     }
 }

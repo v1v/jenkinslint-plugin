@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   <span>
     The <a href="http://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin">JenkinsLint Plugin</a> detects whether your Jenkins configuration follows some best practices.

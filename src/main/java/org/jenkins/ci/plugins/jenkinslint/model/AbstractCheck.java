@@ -1,23 +1,34 @@
 package org.jenkins.ci.plugins.jenkinslint.model;
 
 import java.util.logging.Logger;
+import org.kohsuke.stapler.export.ExportedBean;
+import org.kohsuke.stapler.export.Exported;
 
 /**
  * AbstractCheck class.
  * @author Victor Martinez
  */
+ @ExportedBean
 public abstract class AbstractCheck implements Comparable<AbstractCheck>, InterfaceCheck {
     private String name;
     private String description;
     private String id = "JL-";
     private String severity;
+    private boolean enabled = true;
     protected static final Logger LOG = Logger.getLogger(AbstractCheck.class.getName());
+
+    public AbstractCheck(boolean enabled) {
+        super();
+        this.setName(this.getClass().getSimpleName());
+        this.setEnabled(enabled);
+    }
 
     public AbstractCheck() {
         super();
         this.setName(this.getClass().getSimpleName());
     }
 
+    @Exported
     public String getName() {
         return name;
     }
@@ -30,6 +41,15 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, Interf
         return id;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Exported
     public String getDescription() {
         return description;
     }
@@ -38,6 +58,7 @@ public abstract class AbstractCheck implements Comparable<AbstractCheck>, Interf
         this.description = description;
     }
 
+    @Exported
     public String getSeverity() {
         return severity;
     }

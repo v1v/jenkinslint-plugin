@@ -1,13 +1,11 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
-import hudson.matrix.MatrixProject;
 import hudson.model.Item;
 import hudson.model.Project;
 import hudson.tasks.Builder;
-import hudson.maven.MavenModuleSet;
 import hudson.tasks.CommandInterpreter;
-import jenkins.model.Jenkins;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
+import org.jenkins.ci.plugins.jenkinslint.utils.StringUtils;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -18,28 +16,42 @@ import java.util.logging.Level;
 public class HardcodedScriptChecker extends AbstractCheck {
 
     public final static int THRESHOLD = 2;
+    private int threshold;
+    private boolean ignoreComment = false;
 
-    public HardcodedScriptChecker() {
-        super();
-        this.setDescription("When setting Jenkins Jobs with Shell/Batch builds you shouldn't hardcoded the script "+
-                            "it's recommended to track them in your SCM tool instead.<br/>" +
-                            "Otherwise you won't be able to reproduce your CI environment easily.");
-        this.setSeverity("Medium");
+    public HardcodedScriptChecker(boolean enabled, int threshold, boolean ignoreComment) {
+        super(enabled);
+        this.setDescription(Messages.HardcodedScriptCheckerDesc());
+        this.setSeverity(Messages.HardcodedScriptCheckerSeverity());
+        this.setThreshold(threshold);
+        this.setIgnoreComment(ignoreComment);
     }
 
     public boolean executeCheck(Item item) {
         LOG.log(Level.FINE, "executeCheck " + item);
         boolean found = false;
-        if (Jenkins.getInstance().pluginManager.getPlugin("maven-plugin")!=null) {
-            if (item instanceof MavenModuleSet) {
-                found = isBuilderHarcoded(((MavenModuleSet) item).getPrebuilders());
+        if (item.getClass().getSimpleName().equals("MavenModuleSet")) {
+            try {
+                Object getPrebuilders = item.getClass().getMethod("getPrebuilders", null).invoke(item);
+                if (getPrebuilders instanceof List) {
+                    found = isBuilderHarcoded((List) getPrebuilders);
+                }
+            }catch (Exception e) {
+                LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
             }
         }
         if (item instanceof Project) {
             found = isBuilderHarcoded (((Project)item).getBuilders());
         }
-        if (item instanceof MatrixProject) {
-            found = isBuilderHarcoded (((MatrixProject)item).getBuilders());
+        if (item.getClass().getSimpleName().equals("MatrixProject")) {
+            try {
+                Object getBuilders = item.getClass().getMethod("getBuilders", null).invoke(item);
+                if (getBuilders instanceof List) {
+                    found = isBuilderHarcoded((List) getBuilders);
+                }
+            }catch (Exception e) {
+                LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+            }
         }
         return found;
     }
@@ -49,7 +61,7 @@ public class HardcodedScriptChecker extends AbstractCheck {
         if (builders != null && builders.size() > 0 ) {
             for (Builder builder : builders) {
                 if (builder instanceof hudson.tasks.Shell || builder instanceof hudson.tasks.BatchFile) {
-                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), THRESHOLD)) {
+                    if (isHarcoded (((CommandInterpreter)builder).getCommand(), this.getThreshold(), this.isIgnoreComment(), (builder instanceof hudson.tasks.Shell))) {
                         found = true;
                     }
                 }
@@ -60,11 +72,46 @@ public class HardcodedScriptChecker extends AbstractCheck {
         return found;
     }
 
-    private boolean isHarcoded (String content, int threshold) {
+    private boolean isHarcoded (String content, int threshold, boolean ignoreComment, boolean isUnix) {
         if (content != null) {
-            return content.split("\r\n|\r|\n").length > threshold;
+            int length = 0;
+            for (String line : content.split("\r\n|\r|\n")) {
+                if (!StringUtils.isEmptyOrBlank(line)) {
+                    if (ignoreComment && !isACommentLine(line, isUnix)) {
+                        length++;
+                    } else if (!ignoreComment) {
+                        length++;
+                    }
+                }
+            }
+            return length > threshold;
         } else {
             return false;
         }
+    }
+
+    private boolean isACommentLine( String line, boolean isUnix ) {
+        if (isUnix) {
+            return StringUtils.isShellComment(line);
+        } else {
+            return StringUtils.isBatchComment(line);
+        }
+    }
+
+    public int getThreshold () {
+        return this.threshold;
+    }
+
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+    }
+
+    public boolean isIgnoreComment() {
+        return ignoreComment;
+    }
+
+    public void setIgnoreComment(boolean ignoreComment) {
+        this.ignoreComment = ignoreComment;
     }
 }

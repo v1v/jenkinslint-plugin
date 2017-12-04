@@ -8,13 +8,10 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
  */
 public class MavenJobTypeChecker extends AbstractCheck{
 
-    public MavenJobTypeChecker() {
-        super();
-        this.setDescription("Maven job type builds considerably slowly compared to the freestyle projects.<br/>Besides " +
-                            "of that it has its own set of bugs. t's worth to use freeStyle jobs and specify the maven " +
-                            "build wrapper instead.<br/>" +
-                            "<a href=https://issues.jenkins-ci.org/browse/JENKINS-22354>Open ticket</a>.");
-        this.setSeverity("High");
+    public MavenJobTypeChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.MavenJobTypeCheckerDesc());
+        this.setSeverity(Messages.MavenJobTypeCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

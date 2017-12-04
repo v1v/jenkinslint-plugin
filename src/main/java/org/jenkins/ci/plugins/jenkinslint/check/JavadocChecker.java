@@ -1,37 +1,46 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
 import hudson.model.Item;
-import hudson.model.Project;
-import hudson.tasks.JavadocArchiver;
 import hudson.tasks.Publisher;
 import hudson.util.DescribableList;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
+
+import java.util.logging.Level;
 
 /**
  * @author Victor Martinez
  */
 public class JavadocChecker extends AbstractCheck{
 
-    public JavadocChecker() {
-        super();
-        this.setDescription("When setting Jenkins Jobs with Javadoc post build you should either set which javadocs " +
-                            "or remove this unused publisher phase.<br/>" +
-                            "Otherwise the archive artifact phase may not match what you expect.");
-        this.setSeverity("Low");
+    public JavadocChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.JavadocCheckerDesc());
+        this.setSeverity(Messages.JavadocCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof Project) {
-            DescribableList<Publisher, Descriptor<Publisher>> publishersList = ((Project) item).getPublishersList();
+        boolean found = false;
+        if (item instanceof AbstractProject) {
+            DescribableList<Publisher, Descriptor<Publisher>> publishersList = ((AbstractProject) item).getPublishersList();
             for (Publisher publisher : publishersList) {
-                if (publisher instanceof hudson.tasks.JavadocArchiver) {
-                    return ( ((JavadocArchiver) publisher).getJavadocDir() == null ||
-                             ( ((JavadocArchiver) publisher).getJavadocDir() != null &&
-                               ((JavadocArchiver) publisher).getJavadocDir().length() == 0 ));
+                if (publisher.getClass().getSimpleName().equals("JavadocArchiver")) {
+                    try {
+                        Object getJavadocDir = publisher.getClass().getMethod("getJavadocDir", null).invoke(publisher);
+                        if (getJavadocDir instanceof String) {
+                            if (getJavadocDir == null) {
+                                found = true;
+                            } else {
+                                found = ((String) getJavadocDir).isEmpty();
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, "Exception " + e.getMessage(), e.getCause());
+                    }
                 }
             }
         }
-        return false;
+        return found;
     }
 }

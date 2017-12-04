@@ -13,11 +13,10 @@ public class JobLogRotatorChecker extends AbstractCheck{
 
     private final int EMPTY = -1;
 
-    public JobLogRotatorChecker() {
-        super();
-        this.setDescription("When setting Jenkins Jobs with some Log Rotator configuration helps to reduce the <br/> "+
-                            "amount of disk space and speed up Jenkins UI.");
-        this.setSeverity("High");
+    public JobLogRotatorChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.JobLogRotatorCheckerDesc());
+        this.setSeverity(Messages.JobLogRotatorCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {

@@ -1,5 +1,4 @@
-JenkinsLint Plugin
-==================
+# JenkinsLint Plugin
 
 This plugin has mainly two goals:
 - To make it easier to detect issues in your Jenkins configuration that will cause Jenkins to blow up when you attempt to run those jobs.
@@ -7,62 +6,68 @@ This plugin has mainly two goals:
 
 See [JenkinsLint Plugin](https://wiki.jenkins-ci.org/display/JENKINS/JenkinsLint+Plugin) for more information.
 
-[![Build Status](https://jenkins.ci.cloudbees.com/buildStatus/icon?job=plugins/jenkinslint-plugin)](https://jenkins.ci.cloudbees.com/job/plugins/job/jenkinslint-plugin/)
+[![Build Status](https://ci.jenkins.io/job/Plugins/job/jenkinslint-plugin/job/master/badge/icon)](https://ci.jenkins.io/job/Plugins/job/jenkinslint-plugin/job/master/)
 
-
-Motivation
-==========
+## Motivation
 
 Jenkins is an awesome Automation System, and there are a bunch of people using it in different ways, for instances:
 developers, testers, automation, build engineers, release engineers, scrum master, product owner and so on. Unfortunately, as
 the number of jobs grows, maintaining them becomes tedious, and the paradigm of no using a predefined set of best practices
 falls apart.
 
-The jenkinslint plugin attempts to solve this problem by allowing jobs to be evaluated with some predefined
+The jenkinslint plugin attempts to solve this problem by allowing jobs and slaves to be evaluated with some predefined
 best practices. The goal is for your team to be able to define those best practices to be related to their project.
 
-Manually reviewing those jobs wouldn't be too hard, but doing the same thing all over again for every new job or for
-a hundred other projects is where it gets difficult and tedious. This provides a much more powerful way of analyzing them.
+Manually reviewing those jobs and slaves wouldn't be too hard, but doing the same thing all over again for every new job or for
+a hundred other projects is where it gets difficult and tedious. This provides a much more powerful way of analysing them.
 
 
-TODO
-=====================
+## TODO
 
 - Load checks dynamically via Reflection
-- Show graphs
-- Configure Checks (enabled, disabled, change severity)
+- Enable/Configure severity
 - Load checks dynamically.
-- Jobs action to show those Jenkins lints.
-- System.exit in system admin groovy scripts (prebuilder, builders, publishers and parameters)
-- Support pipeline
+- Cyclomatic complexity check when using conditional steps plugin and pipelines
+- Fix Findbugs/Checkstyle defects
+- Integrate with Sonar or any other Linting defects tool
 
-List available Checks
-=====================
+## List available Checks
+
+### Jobs based
 
 * Artifact Publisher check
+* BFA check
+* Build timeout check
 * CleanUp Workspace check
 * Git Shallow clone check
+* Git Ref repo check
+* Git Ref Submodule repo check
+* Gradle Wrapper check
+* Groovy System Exit check
+* Groovy Sandbox check
+* Hardcoded Script check
 * Javadoc Publisher check
 * Job Assigned Label check
-* Master Assigned Label check
 * Job Description check
 * Job Log Rotator check
 * Job Name check
+* Master Assigned Label check
 * Maven Job Type check
+* Multibranch Job Type check
 * Null SCM check
 * Polling SCM Trigger check
-* Multibranch Job Type check
-* Hardcoded Script check
-* Gradle Wrapper check
-* Build timeout check
+* System.exit in system admin groovy scripts
+* TimerTrigger 'Hash' check
+
+### Slaves based
+
 * Slave description check
 * Slave label check
 * Slave version check
 * Windows slave launch check
 
 
-Development
-===========
+## Development
 
 Start the local Jenkins instance:
 
@@ -86,26 +91,22 @@ To install:
 2. or use the plugin management console (http://example.com:8080/pluginManager/advanced) to upload the hpi file. You have to restart Jenkins in order to find the plugin in the installed plugins list.
 
 
-Plugin releases
----------------
+### Plugin releases
 
 	mvn release:prepare release:perform
 
 
-Authors
-=======
+## Authors
 
 Victor Martinez
 
 
-References
-==========
+## References
 
 1. [Linters list](https://github.com/mcandre/linters)
 2. [Jenkins Performance Hints](http://soldering-iron.blogspot.com.es/2014/01/jenkins-performance-hints.html)
 
-License
-=======
+## License
 
     The MIT License
 

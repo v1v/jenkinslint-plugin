@@ -5,23 +5,39 @@ import hudson.model.Item;
 import hudson.triggers.SCMTrigger;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
 
+import java.util.Map;
+import java.util.logging.Level;
+
 /**
  * @author Victor Martinez
  */
 public class PollingSCMTriggerChecker extends AbstractCheck {
 
-    public PollingSCMTriggerChecker() {
-        super();
-        this.setDescription("Polling a repository from Jenkins is inefficient; it adds delay on the order of minutes " +
-                            "before a build starts after a commit is pushed, and it adds additional loads.<br/>" +
-                            "It is much better instead to do push-notification from the repository.");
-        this.setSeverity("High");
+    public PollingSCMTriggerChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.PollingSCMTriggerCheckerDesc());
+        this.setSeverity(Messages.PollingSCMTriggerCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
+        boolean found = false;
         if (item instanceof AbstractProject) {
-            return (((AbstractProject) item).getTrigger(SCMTrigger.class) != null);
+            found = (((AbstractProject) item).getTrigger(SCMTrigger.class) != null);
         }
-        return false;
+        if (item.getClass().getSimpleName().equals("WorkflowJob")) {
+            try {
+                Object getTriggers = item.getClass().getMethod("getTriggers", null).invoke(item);
+                if (getTriggers instanceof Map) {
+                    for (Object value : ((Map) getTriggers).values()) {
+                        if (value instanceof SCMTrigger) {
+                            found = true;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Exception " + e.getMessage(), e.getCause());
+            }
+        }
+        return found;
     }
 }

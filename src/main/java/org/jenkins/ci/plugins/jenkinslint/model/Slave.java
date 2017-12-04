@@ -4,11 +4,15 @@ import hudson.model.HealthReport;
 import org.jenkins.ci.plugins.jenkinslint.Messages;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import org.kohsuke.stapler.export.ExportedBean;
+import org.kohsuke.stapler.export.Exported;
 
 /**
  * Slave class.
  * @author Victor Martinez
  */
+@ExportedBean
 public final class Slave implements Comparable<Slave> {
     private String name;
     private String url;
@@ -20,6 +24,7 @@ public final class Slave implements Comparable<Slave> {
         this.url = url;
     }
 
+    @Exported
     public String getName() {
         return name;
     }
@@ -38,6 +43,15 @@ public final class Slave implements Comparable<Slave> {
 
     public ArrayList<Lint> getLintList() {
         return lintList;
+    }
+
+    @Exported
+    public Hashtable<String, Lint> getLintSet() {
+        Hashtable<String, Lint> temp = new Hashtable<String, Lint>();
+        for (Lint lint : lintList) {
+          temp.put(lint.getName(), lint);
+        }
+        return temp;
     }
 
     public void addLint(Lint lint) {
@@ -76,11 +90,12 @@ public final class Slave implements Comparable<Slave> {
                     append(", ").append(lintList).toString();
     }
 
+    @Exported
     public HealthReport getLintHealthReport() {
         if (lintList != null && lintList.size() > 0) {
             int ok = 0;
             for (Lint lint : lintList) {
-                if (!lint.isIgnored()) {
+                if (!lint.isIgnored() && lint.isEnabled()) {
                     if (! lint.isFound()) { ok++; }
                 } else {
                     ok++;

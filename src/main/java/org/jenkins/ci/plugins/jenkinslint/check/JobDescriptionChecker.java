@@ -1,25 +1,41 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
+import hudson.model.AbstractItem;
 import hudson.model.Item;
-import hudson.model.Project;
 import org.jenkins.ci.plugins.jenkinslint.model.AbstractCheck;
+
+import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 /**
  * @author Victor Martinez
  */
 public class JobDescriptionChecker extends AbstractCheck{
 
-    public JobDescriptionChecker() {
-        super();
-        this.setDescription("Jenkins project description might help you to know what it does and further details.");
-        this.setSeverity("Medium");
+    public JobDescriptionChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.JobDescriptionCheckerDesc());
+        this.setSeverity(Messages.JobDescriptionCheckerSeverity());
     }
 
     public boolean executeCheck(Item item) {
-        if (item instanceof hudson.model.Project) {
-            return (((Project) item).getDescription() == null
-                    ||  ((Project) item).getDescription().length() == 0);
+        if (item instanceof AbstractItem) {
+            return isDescription(((AbstractItem) item).getDescription());
+        }
+        if (item.getClass().getSimpleName().equals("WorkflowJob")) {
+            try {
+                Object getDescription = item.getClass().getMethod("getDescription", null).invoke(item);
+                if (getDescription instanceof String) {
+                    return isDescription((String) getDescription);
+                }
+            } catch (Exception e) {
+                LOG.log(Level.FINE, "Exception " + e.getMessage(), e.getCause());
+            }
         }
         return false;
+    }
+
+    private boolean isDescription(String description) {
+        return (description == null || description.length() == 0);
     }
 }

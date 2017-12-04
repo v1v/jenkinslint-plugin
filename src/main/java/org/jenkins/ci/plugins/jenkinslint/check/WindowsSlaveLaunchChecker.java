@@ -11,19 +11,19 @@ import java.util.logging.Level;
  */
 public class WindowsSlaveLaunchChecker extends AbstractSlaveCheck {
 
-    public WindowsSlaveLaunchChecker() {
-        super();
-        this.setDescription("This launch method relies on DCOM and is often associated with <a href=https://wiki.jenkins-ci.org/display/JENKINS/Windows+slaves+fail+to+start+via+DCOM>subtle problems</a>. " +
-                            "Consider using Launch slave agents using Java Web Start instead,<br/>which also permits " +
-                            "installation as a Windows service but is generally considered more reliable.");
-        this.setSeverity("Medium");
+    public WindowsSlaveLaunchChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.WindowsSlaveLaunchCheckerDesc());
+        this.setSeverity(Messages.WindowsSlaveLaunchCheckerSeverity());
     }
 
     public boolean executeCheck(Node item) {
         try {
-            LOG.log(Level.INFO, "slave " + item.getDisplayName() + " service " +  ( (Slave) item).getComputer().getLauncher().toString());
+            LOG.log(Level.FINER, "slave " + item.getDisplayName() + " service " +  ( (Slave) item).getComputer().getLauncher().toString());
             return ((Slave) item).getComputer().getLauncher().toString().contains("ManagedWindowsServiceLauncher");
         } catch (NullPointerException npe) {
+            return false;
+        } catch (java.lang.ClassCastException cce) {
             return false;
         }
     }

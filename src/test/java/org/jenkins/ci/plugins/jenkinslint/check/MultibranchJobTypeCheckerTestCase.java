@@ -1,11 +1,9 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import com.github.mjdetullio.jenkins.plugins.multibranch.FreeStyleMultiBranchProject;
-import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
-import org.junit.Rule;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,10 +13,8 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class MultibranchJobTypeCheckerTestCase {
-    private MultibranchJobTypeChecker checker = new MultibranchJobTypeChecker();
-
-    @Rule public JenkinsRule j = new JenkinsRule();
+public class MultibranchJobTypeCheckerTestCase extends AbstractTestCase {
+    private MultibranchJobTypeChecker checker = new MultibranchJobTypeChecker(true);
 
     @Test public void testEmptyJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -34,5 +30,8 @@ public class MultibranchJobTypeCheckerTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
     }
 }

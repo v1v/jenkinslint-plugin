@@ -19,7 +19,7 @@ We are always happy for folk to help us out on this project.  Here are some ways
 ## Git Protocol
 If you want to make a change to the code on `jenkinsci/jenkinslint-plugin`, here's the protocol we follow (you need a Github account in order to do this):
 
-1. Fork the `v1v/jenkinslint-plugin` repository to your account.
+1. Fork the `jenkinsci/jenkinslint-plugin` repository to your account.
 2. On your local machine, clone your copy of the `jenkinslint-plugin` repo.
 3. Again on your local machine, create a branch, ideally named after a JIRA issue you've created for the work.
 4. Switch to the local branch and make your changes. Commit them as you go, and when you're happy, push them to your repo branch.

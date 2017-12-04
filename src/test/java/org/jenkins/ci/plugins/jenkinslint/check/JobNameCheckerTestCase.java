@@ -1,9 +1,9 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
-import org.junit.Rule;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,10 +13,9 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Victor Martinez
  */
-public class JobNameCheckerTestCase {
-    private JobNameChecker checker = new JobNameChecker();
+public class JobNameCheckerTestCase extends AbstractTestCase {
+    private JobNameChecker checker = new JobNameChecker(true);
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
         assertFalse(checker.executeCheck(project));
@@ -40,5 +39,11 @@ public class JobNameCheckerTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
+        WorkflowJob project = j.jenkins.createProject(WorkflowJob.class, " Name A");
+        assertTrue(checker.executeCheck(project));
+        project.delete();
     }
 }

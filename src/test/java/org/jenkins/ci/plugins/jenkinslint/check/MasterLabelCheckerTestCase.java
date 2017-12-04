@@ -1,26 +1,24 @@
 package org.jenkins.ci.plugins.jenkinslint.check;
 
 import hudson.model.FreeStyleProject;
-import hudson.model.Label;
-import org.junit.Rule;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
+import org.jenkins.ci.plugins.jenkinslint.AbstractTestCase;
 import org.junit.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * JobAssignedLabelChecker Test Case.
+ * MasterLabelCheckerTestCase Test Case.
  *
  * @author Victor Martinez
  */
-public class MasterLabelCheckerTestCase {
-    private MasterLabelChecker checker = new MasterLabelChecker();
+public class MasterLabelCheckerTestCase extends AbstractTestCase {
+    private MasterLabelChecker checker = new MasterLabelChecker(true);
 
-    @Rule public JenkinsRule j = new JenkinsRule();
     @Test public void testDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
-        assertTrue(checker.executeCheck(project));
+        assertFalse(checker.executeCheck(project));
     }
     @Test public void testNonDefaultJob() throws Exception {
         FreeStyleProject project = j.createFreeStyleProject();
@@ -40,5 +38,8 @@ public class MasterLabelCheckerTestCase {
         assertFalse(checker.isIgnored(project.getDescription()));
         project.setDescription("#lint:ignore:" + checker.getClass().getSimpleName());
         assertTrue(checker.isIgnored(project.getDescription()));
+    }
+    @Test public void testWorkflowJob() throws Exception {
+        assertFalse(checker.executeCheck(createWorkflow(null, true)));
     }
 }

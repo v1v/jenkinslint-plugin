@@ -8,10 +8,10 @@ import org.jenkins.ci.plugins.jenkinslint.model.AbstractSlaveCheck;
  */
 public class SlaveDescriptionChecker extends AbstractSlaveCheck {
 
-    public SlaveDescriptionChecker() {
-        super();
-        this.setDescription("Jenkins slave description might help you to know what it does and further details.");
-        this.setSeverity("Medium");
+    public SlaveDescriptionChecker(boolean enabled) {
+        super(enabled);
+        this.setDescription(Messages.SlaveDescriptionCheckerDesc());
+        this.setSeverity(Messages.SlaveDescriptionCheckerSeverity());
     }
 
     public boolean executeCheck(Node item) {
