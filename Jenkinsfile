@@ -1,1 +1,4 @@
-buildPlugin(platforms: ['linux'])
+node('docker') {
+    sh 'docker -version'
+    sh 'docker info'
+}
